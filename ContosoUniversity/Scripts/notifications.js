@@ -1,6 +1,7 @@
 // Notification System for Admin Users
 (function() {
     'use strict';
+    var baseUrl = window.appBaseUrl || '/';
 
     var NotificationSystem = {
         container: null,
@@ -32,8 +33,7 @@
 
         checkForNotifications: function() {
             var self = this;
-            
-            fetch('/Notifications/GetNotifications', {
+            fetch(baseUrl + 'Notifications/GetNotifications', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -150,4 +150,44 @@
 
     // Make NotificationSystem globally available for close button
     window.NotificationSystem = NotificationSystem;
+
+    // Use the application base URL set in _Layout.cshtml
+    var baseUrl = window.appBaseUrl || '/';
+
+    function loadNotifications() {
+        $.ajax({
+            url: baseUrl + 'Notifications/GetNotifications',
+            type: 'GET',
+            success: function(data) {
+                if (data.success) {
+                    // Handle notifications
+                    displayNotifications(data.notifications);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading notifications:', error);
+            }
+        });
+    }
+
+    function markAsRead(notificationId) {
+        $.ajax({
+            url: baseUrl + 'Notifications/MarkAsRead',
+            type: 'POST',
+            data: { id: notificationId },
+            success: function(data) {
+                if (data.success) {
+                    // Handle success
+                    loadNotifications(); // Reload
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error marking notification as read:', error);
+            }
+        });
+    }
+
+    // Expose loadNotifications and markAsRead to global scope if needed
+    window.loadNotifications = loadNotifications;
+    window.markAsRead = markAsRead;
 })();
