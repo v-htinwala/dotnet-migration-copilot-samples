@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Services;
+using ContosoUniversity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSystemWebAdapters()
@@ -10,14 +13,25 @@ builder.Services.AddSystemWebAdapters()
     {
         options.RegisterKey<string>("MachineName");
         options.RegisterKey<string>("SessionStartTime");
-    })
-    .AddHttpApplication<MvcApplication>();
+    });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<NotificationService>();
 
+// Add DbContext with connection string from configuration
+builder.Services.AddDbContext<SchoolContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 var app = builder.Build();
+
+// Initialize database
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<SchoolContext>();
+    DbInitializer.Initialize(context);
+}
 
 if (!app.Environment.IsDevelopment())
 {
