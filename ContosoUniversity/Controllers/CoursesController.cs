@@ -53,7 +53,7 @@ namespace ContosoUniversity.Controllers
         // POST: Courses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("CourseID", "Title", "Credits", "DepartmentID", "TeachingMaterialImagePath")] Course course, HttpPostedFileBase teachingMaterialImage)
+        public ActionResult Create([Bind("CourseID", "Title", "Credits", "DepartmentID", "TeachingMaterialImagePath")] Course course, System.Web.HttpPostedFileBase teachingMaterialImage)
         {
             if (ModelState.IsValid)
             {
@@ -136,7 +136,7 @@ namespace ContosoUniversity.Controllers
         // POST: Courses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind("CourseID", "Title", "Credits", "DepartmentID", "TeachingMaterialImagePath")] Course course, HttpPostedFileBase teachingMaterialImage)
+        public ActionResult Edit([Bind("CourseID", "Title", "Credits", "DepartmentID", "TeachingMaterialImagePath")] Course course, System.Web.HttpPostedFileBase teachingMaterialImage)
         {
             if (ModelState.IsValid)
             {
