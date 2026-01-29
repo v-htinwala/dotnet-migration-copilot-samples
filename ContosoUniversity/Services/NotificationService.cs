@@ -1,5 +1,5 @@
 using System;
-using MSMQ.Messaging;
+// MSMQ.Messaging is not available in .NET 8.0. Consider using alternative messaging solutions such as Azure Service Bus, RabbitMQ, or other supported message queue libraries.
 using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Models;
 using Newtonsoft.Json;
