@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ContosoUniversity.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSystemWebAdapters()
@@ -14,6 +15,7 @@ builder.Services.AddSystemWebAdapters()
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<NotificationService>();
 
 var app = builder.Build();
 
