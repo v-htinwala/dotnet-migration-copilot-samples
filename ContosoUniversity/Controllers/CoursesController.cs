@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
 using System.IO;
-using System.Web;
+using Microsoft.AspNetCore.Hosting;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +13,13 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace ContosoUniversity.Controllers
 {
     public class CoursesController : BaseController
+    {
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public CoursesController(IWebHostEnvironment webHostEnvironment)
+        {
+            _webHostEnvironment = webHostEnvironment;
+        }
     {
         // GET: Courses
         public ActionResult Index()
@@ -158,7 +165,7 @@ namespace ContosoUniversity.Controllers
                     try
                     {
                         // Create uploads directory if it doesn't exist
-                        var uploadsPath = Server.MapPath("~/Uploads/TeachingMaterials/");
+                        var uploadsPath = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads", "TeachingMaterials");
                         if (!Directory.Exists(uploadsPath))
                         {
                             Directory.CreateDirectory(uploadsPath);
@@ -171,7 +178,7 @@ namespace ContosoUniversity.Controllers
                         // Delete old file if exists
                         if (!string.IsNullOrEmpty(course.TeachingMaterialImagePath))
                         {
-                            var oldFilePath = Server.MapPath(course.TeachingMaterialImagePath);
+                            var oldFilePath = Path.Combine(_webHostEnvironment.WebRootPath, course.TeachingMaterialImagePath.TrimStart('~', '/').Replace('/', Path.DirectorySeparatorChar));
                             if (System.IO.File.Exists(oldFilePath))
                             {
                                 System.IO.File.Delete(oldFilePath);
@@ -228,7 +235,7 @@ namespace ContosoUniversity.Controllers
             // Delete associated image file if it exists
             if (!string.IsNullOrEmpty(course.TeachingMaterialImagePath))
             {
-                var filePath = Server.MapPath(course.TeachingMaterialImagePath);
+                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, course.TeachingMaterialImagePath.TrimStart('~', '/').Replace('/', Path.DirectorySeparatorChar));
                 if (System.IO.File.Exists(filePath))
                 {
                     try
