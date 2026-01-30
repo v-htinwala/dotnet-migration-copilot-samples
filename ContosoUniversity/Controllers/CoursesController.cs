@@ -1,9 +1,12 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +19,12 @@ namespace ContosoUniversity.Controllers
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CoursesController(IWebHostEnvironment webHostEnvironment)
+        public CoursesController(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+            : base(configuration)
         {
             _webHostEnvironment = webHostEnvironment;
         }
-    {
+
         // GET: Courses
         public ActionResult Index()
         {
@@ -53,12 +57,12 @@ namespace ContosoUniversity.Controllers
         // POST: Courses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("CourseID", "Title", "Credits", "DepartmentID", "TeachingMaterialImagePath")] Course course, System.Web.HttpPostedFileBase teachingMaterialImage)
+        public async Task<ActionResult> Create([Bind("CourseID", "Title", "Credits", "DepartmentID", "TeachingMaterialImagePath")] Course course, IFormFile teachingMaterialImage)
         {
             if (ModelState.IsValid)
             {
                 // Handle file upload if an image is provided
-                if (teachingMaterialImage != null && teachingMaterialImage.ContentLength > 0)
+                if (teachingMaterialImage != null && teachingMaterialImage.Length > 0)
                 {
                     // Validate file type
                     var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
@@ -72,7 +76,7 @@ namespace ContosoUniversity.Controllers
                     }
 
                     // Validate file size (max 5MB)
-                    if (teachingMaterialImage.ContentLength > 5 * 1024 * 1024)
+                    if (teachingMaterialImage.Length > 5 * 1024 * 1024)
                     {
                         ModelState.AddModelError("teachingMaterialImage", "File size must be less than 5MB.");
                         ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name", course.DepartmentID);
@@ -82,7 +86,7 @@ namespace ContosoUniversity.Controllers
                     try
                     {
                         // Create uploads directory if it doesn't exist
-                        var uploadsPath = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads", "TeachingMaterials");
+                        var uploadsPath = Path.Combine(_webHostEnvironment.WebRootPath ?? "wwwroot", "Uploads", "TeachingMaterials");
                         if (!Directory.Exists(uploadsPath))
                         {
                             Directory.CreateDirectory(uploadsPath);
@@ -93,7 +97,10 @@ namespace ContosoUniversity.Controllers
                         var filePath = Path.Combine(uploadsPath, fileName);
 
                         // Save file
-                        teachingMaterialImage.SaveAs(filePath);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await teachingMaterialImage.CopyToAsync(stream);
+                        }
                         course.TeachingMaterialImagePath = $"~/Uploads/TeachingMaterials/{fileName}";
                     }
                     catch (Exception ex)
@@ -136,12 +143,12 @@ namespace ContosoUniversity.Controllers
         // POST: Courses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind("CourseID", "Title", "Credits", "DepartmentID", "TeachingMaterialImagePath")] Course course, System.Web.HttpPostedFileBase teachingMaterialImage)
+        public ActionResult Edit([Bind("CourseID", "Title", "Credits", "DepartmentID", "TeachingMaterialImagePath")] Course course, IFormFile teachingMaterialImage)
         {
             if (ModelState.IsValid)
             {
                 // Handle file upload if a new image is provided
-                if (teachingMaterialImage != null && teachingMaterialImage.ContentLength > 0)
+                if (teachingMaterialImage != null && teachingMaterialImage.Length > 0)
                 {
                     // Validate file type
                     var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
@@ -155,7 +162,7 @@ namespace ContosoUniversity.Controllers
                     }
 
                     // Validate file size (max 5MB)
-                    if (teachingMaterialImage.ContentLength > 5 * 1024 * 1024)
+                    if (teachingMaterialImage.Length > 5 * 1024 * 1024)
                     {
                         ModelState.AddModelError("teachingMaterialImage", "File size must be less than 5MB.");
                         ViewBag.DepartmentID = new SelectList(db.Departments, "DepartmentID", "Name", course.DepartmentID);
@@ -186,7 +193,10 @@ namespace ContosoUniversity.Controllers
                         }
 
                         // Save new file
-                        teachingMaterialImage.SaveAs(filePath);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            teachingMaterialImage.CopyTo(stream);
+                        }
                         course.TeachingMaterialImagePath = $"~/Uploads/TeachingMaterials/{fileName}";
                     }
                     catch (Exception ex)

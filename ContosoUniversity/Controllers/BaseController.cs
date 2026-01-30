@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Services;
 using ContosoUniversity.Models;
 using ContosoUniversity.Data;
@@ -9,11 +10,14 @@ namespace ContosoUniversity.Controllers
     public abstract class BaseController : Controller
     {
         protected SchoolContext db;
-        protected NotificationService notificationService = new NotificationService();
+        protected NotificationService notificationService;
+        private readonly IConfiguration _configuration;
 
-        public BaseController()
+        public BaseController(IConfiguration configuration)
         {
+            _configuration = configuration;
             db = SchoolContextFactory.Create();
+            notificationService = new NotificationService(_configuration);
         }
 
         protected void SendEntityNotification(string entityType, string entityId, EntityOperation operation)

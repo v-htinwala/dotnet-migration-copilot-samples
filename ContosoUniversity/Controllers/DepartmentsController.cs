@@ -2,6 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,11 @@ namespace ContosoUniversity.Controllers
 {
     public class DepartmentsController : BaseController
     {
+        public DepartmentsController(IConfiguration configuration)
+            : base(configuration)
+        {
+        }
+
         // GET: Departments - All roles can view
         public ActionResult Index()
         {

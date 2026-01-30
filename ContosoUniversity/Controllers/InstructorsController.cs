@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 using ContosoUniversity.Models.SchoolViewModels;
@@ -13,6 +14,11 @@ namespace ContosoUniversity.Controllers
 {
     public class InstructorsController : BaseController
     {
+        public InstructorsController(IConfiguration configuration)
+            : base(configuration)
+        {
+        }
+
         // GET: Instructors - All roles can view
         public ActionResult Index(int? id, int? courseID)
         {
@@ -147,14 +153,31 @@ namespace ContosoUniversity.Controllers
                .Where(i => i.ID == id)
                .Single();
 
-            if (TryUpdateModel(instructorToUpdate, "",
-               new string[] { "LastName", "FirstMidName", "HireDate", "OfficeAssignment" }))
+            if (TryValidateModel(instructorToUpdate))
             {
                 try
                 {
-                    if (String.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssignment.Location))
+                    // Manually update properties from form
+                    instructorToUpdate.LastName = Request.Form["LastName"];
+                    instructorToUpdate.FirstMidName = Request.Form["FirstMidName"];
+                    if (DateTime.TryParse(Request.Form["HireDate"], out DateTime hireDate))
+                    {
+                        instructorToUpdate.HireDate = hireDate;
+                    }
+                    
+                    // Handle OfficeAssignment
+                    var officeLocation = Request.Form["OfficeAssignment.Location"].ToString();
+                    if (String.IsNullOrWhiteSpace(officeLocation))
                     {
                         instructorToUpdate.OfficeAssignment = null;
+                    }
+                    else if (instructorToUpdate.OfficeAssignment == null)
+                    {
+                        instructorToUpdate.OfficeAssignment = new OfficeAssignment { Location = officeLocation };
+                    }
+                    else
+                    {
+                        instructorToUpdate.OfficeAssignment.Location = officeLocation;
                     }
 
                     UpdateInstructorCourses(selectedCourses, instructorToUpdate);

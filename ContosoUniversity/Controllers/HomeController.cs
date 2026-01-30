@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models.SchoolViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,11 @@ namespace ContosoUniversity.Controllers
 {
     public class HomeController : BaseController
     {
+        public HomeController(IConfiguration configuration)
+            : base(configuration)
+        {
+        }
+
         public ActionResult Index()
         {
             return View();

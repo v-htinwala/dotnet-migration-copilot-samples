@@ -2,6 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 using System.Diagnostics;
@@ -12,6 +13,11 @@ namespace ContosoUniversity.Controllers
 {
     public class StudentsController : BaseController
     {
+        public StudentsController(IConfiguration configuration)
+            : base(configuration)
+        {
+        }
+
         // GET: Students - Admins and Teachers can view
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {

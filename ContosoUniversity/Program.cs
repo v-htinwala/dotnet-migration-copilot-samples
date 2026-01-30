@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -7,17 +8,19 @@ using ContosoUniversity.Services;
 using ContosoUniversity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSystemWebAdapters()
-    .AddWrappedAspNetCoreSession()
-    .AddJsonSessionSerializer(options =>
-    {
-        options.RegisterKey<string>("MachineName");
-        options.RegisterKey<string>("SessionStartTime");
-    });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<NotificationService>();
+
+// Add session support
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 // Add DbContext with connection string from configuration
 builder.Services.AddDbContext<SchoolContext>(options =>
@@ -51,13 +54,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseSession();
-app.UseSystemWebAdapters();
 
-app.MapControllers()
-    .RequireSystemWebAdapterSession();
+app.MapControllers();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .RequireSystemWebAdapterSession();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
