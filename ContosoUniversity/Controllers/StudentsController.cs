@@ -13,8 +13,8 @@ namespace ContosoUniversity.Controllers
 {
     public class StudentsController : BaseController
     {
-        public StudentsController(IConfiguration configuration)
-            : base(configuration)
+        public StudentsController(SchoolContext context, IConfiguration configuration)
+            : base(context, configuration)
         {
         }
 

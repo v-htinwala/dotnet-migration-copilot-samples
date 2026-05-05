@@ -9,8 +9,8 @@ namespace ContosoUniversity.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(IConfiguration configuration)
-            : base(configuration)
+        public HomeController(SchoolContext context, IConfiguration configuration)
+            : base(context, configuration)
         {
         }
 

@@ -9,15 +9,13 @@ namespace ContosoUniversity.Controllers
 {
     public abstract class BaseController : Controller
     {
-        protected SchoolContext db;
-        protected NotificationService notificationService;
-        private readonly IConfiguration _configuration;
+        protected readonly SchoolContext db;
+        protected readonly NotificationService notificationService;
 
-        public BaseController(IConfiguration configuration)
+        public BaseController(SchoolContext context, IConfiguration configuration)
         {
-            _configuration = configuration;
-            db = SchoolContextFactory.Create();
-            notificationService = new NotificationService(_configuration);
+            db = context;
+            notificationService = new NotificationService(configuration);
         }
 
         protected void SendEntityNotification(string entityType, string entityId, EntityOperation operation)
@@ -29,7 +27,8 @@ namespace ContosoUniversity.Controllers
         {
             try
             {
-                var userName = "System"; // No authentication, use System as default user
+                // Get authenticated user name from claims
+                var userName = User?.Identity?.Name ?? "System";
                 notificationService.SendNotification(entityType, entityId, entityDisplayName, operation, userName);
             }
             catch (Exception ex)
@@ -43,7 +42,7 @@ namespace ContosoUniversity.Controllers
         {
             if (disposing)
             {
-                db?.Dispose();
+                // Don't dispose db - it's managed by DI container
                 notificationService?.Dispose();
             }
             base.Dispose(disposing);

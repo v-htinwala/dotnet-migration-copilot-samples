@@ -1,16 +1,18 @@
 using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Services;
 using ContosoUniversity.Models;
+using ContosoUniversity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContosoUniversity.Controllers
 {
     public class NotificationsController : BaseController
     {
-        public NotificationsController(IConfiguration configuration)
-            : base(configuration)
+        public NotificationsController(SchoolContext context, IConfiguration configuration)
+            : base(context, configuration)
         {
         }
 

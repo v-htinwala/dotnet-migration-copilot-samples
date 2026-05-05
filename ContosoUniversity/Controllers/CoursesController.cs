@@ -19,8 +19,8 @@ namespace ContosoUniversity.Controllers
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CoursesController(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
-            : base(configuration)
+        public CoursesController(SchoolContext context, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+            : base(context, configuration)
         {
             _webHostEnvironment = webHostEnvironment;
         }
