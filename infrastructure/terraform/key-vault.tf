@@ -22,7 +22,8 @@ data "azurerm_client_config" "current" {}
 # Local variables for naming
 locals {
   # Shorten Key Vault name to meet 3-24 character requirement
-  kv_name = "kv-contosouni-${var.environment}"
+  # Added suffix to avoid conflict with soft-deleted vault
+  kv_name = "kv-contosouni-in-${var.environment}"
 }
 
 # Key Vault for storing secrets (recommended for production)
