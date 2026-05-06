@@ -72,4 +72,3 @@ resource "azurerm_key_vault" "main" {
 #     azurerm_role_assignment.current_user_keyvault_secrets_officer
 #   ]
 # }
-}

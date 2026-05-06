@@ -27,16 +27,16 @@ resource "azurerm_windows_web_app" "main" {
   }
 
   app_settings = {
-    "ASPNETCORE_ENVIRONMENT"                    = var.environment
-    "WEBSITE_RUN_FROM_PACKAGE"                  = "1"
-    "ApplicationInsights__InstrumentationKey"   = azurerm_application_insights.main.instrumentation_key
-    "ApplicationInsights__ConnectionString"     = azurerm_application_insights.main.connection_string
+    "ASPNETCORE_ENVIRONMENT"                  = var.environment
+    "WEBSITE_RUN_FROM_PACKAGE"                = "1"
+    "ApplicationInsights__InstrumentationKey" = azurerm_application_insights.main.instrumentation_key
+    "ApplicationInsights__ConnectionString"   = azurerm_application_insights.main.connection_string
 
     # Microsoft Entra ID Authentication (if enabled)
-    "AzureAd__Instance"       = var.enable_entra_id_auth ? "https://login.microsoftonline.com/" : ""
-    "AzureAd__TenantId"       = var.enable_entra_id_auth ? var.entra_tenant_id : ""
-    "AzureAd__ClientId"       = var.enable_entra_id_auth ? var.entra_client_id : ""
-    "AzureAd__CallbackPath"   = var.enable_entra_id_auth ? "/signin-oidc" : ""
+    "AzureAd__Instance"     = var.enable_entra_id_auth ? "https://login.microsoftonline.com/" : ""
+    "AzureAd__TenantId"     = var.enable_entra_id_auth ? var.entra_tenant_id : ""
+    "AzureAd__ClientId"     = var.enable_entra_id_auth ? var.entra_client_id : ""
+    "AzureAd__CallbackPath" = var.enable_entra_id_auth ? "/signin-oidc" : ""
   }
 
   connection_string {

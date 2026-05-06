@@ -18,7 +18,7 @@ terraform {
     storage_account_name = "tfstatecontosouniupgrade"
     container_name       = "tfstate"
     key                  = "contoso-university.tfstate"
-    use_azuread_auth     = true  # Use Azure AD auth instead of Shared Key
+    use_azuread_auth     = true # Use Azure AD auth instead of Shared Key
   }
 }
 
