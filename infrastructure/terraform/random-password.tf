@@ -15,16 +15,17 @@ resource "random_password" "sql_admin_password" {
 }
 
 # Store the generated password in Key Vault
-resource "azurerm_key_vault_secret" "sql_admin_password_generated" {
-  name         = "sql-admin-password"
-  value        = random_password.sql_admin_password.result
-  key_vault_id = azurerm_key_vault.main.id
-
-  depends_on = [
-    azurerm_key_vault.main,
-    azurerm_role_assignment.current_user_keyvault_secrets_officer,
-    random_password.sql_admin_password
-  ]
-
-  tags = var.tags
-}
+# COMMENTED OUT: Depends on RBAC role assignments - configure manually or ask admin
+# resource "azurerm_key_vault_secret" "sql_admin_password_generated" {
+#   name         = "sql-admin-password"
+#   value        = random_password.sql_admin_password.result
+#   key_vault_id = azurerm_key_vault.main.id
+#
+#   depends_on = [
+#     azurerm_key_vault.main,
+#     azurerm_role_assignment.current_user_keyvault_secrets_officer,
+#     random_password.sql_admin_password
+#   ]
+#
+#   tags = var.tags
+# }

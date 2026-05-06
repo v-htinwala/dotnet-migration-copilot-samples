@@ -14,7 +14,7 @@ environment         = "dev"
 app_name            = "contoso-university-upgraded"
 
 # Pricing Tiers
-app_service_sku  = "B1"   # Basic tier for dev (use P1V2+ for production)
+app_service_sku  = "F1"   # Free tier for dev (no quota required)
 sql_database_sku = "S0"   # Standard tier
 
 # SQL Configuration (non-secret)
