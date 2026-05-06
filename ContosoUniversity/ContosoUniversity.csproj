@@ -45,6 +45,7 @@
     <PackageReference Include="MSMQ.Messaging" Version="1.0.4" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".github\GITIGNORE-STRUCTURE.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
   </ItemGroup>
   <ItemGroup>

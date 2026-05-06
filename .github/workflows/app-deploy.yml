@@ -1,0 +1,75 @@
+name: Deploy Application
+
+on:
+  # Automatic triggers are disabled - use workflow_dispatch to run manually
+  # push:
+  #   branches:
+  #     - main
+  #     - upgrade-to-NET8
+  #   paths:
+  #     - 'ContosoUniversity/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore ContosoUniversity/ContosoUniversity.csproj
+
+    - name: Build
+      run: dotnet build ContosoUniversity/ContosoUniversity.csproj --configuration Release --no-restore
+
+    - name: Test
+      run: dotnet test ContosoUniversity/ContosoUniversity.csproj --no-restore --verbosity normal
+      continue-on-error: true
+
+    - name: Publish
+      run: dotnet publish ContosoUniversity/ContosoUniversity.csproj --configuration Release --output ./publish --no-build
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-app
+        path: ./publish
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy.outputs.webapp-url }}
+
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: dotnet-app
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Azure Web App
+      id: deploy
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+        slot-name: 'production'
+        package: .
+
+    - name: Logout from Azure
+      run: az logout
