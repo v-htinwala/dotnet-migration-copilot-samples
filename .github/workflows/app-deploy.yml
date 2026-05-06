@@ -1,7 +1,6 @@
 name: Deploy Application
 
 on:
-  # Automatic triggers are disabled - use workflow_dispatch to run manually
   push:
     branches:
       - main
