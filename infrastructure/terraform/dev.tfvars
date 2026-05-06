@@ -9,7 +9,7 @@
 
 # Basic Configuration
 resource_group_name = "rg-contoso-university-upgraded-dev"
-location            = "East US"
+location            = "Central India"  # Using Central India due to quota restrictions in East US
 environment         = "dev"
 app_name            = "contoso-university-upgraded"
 

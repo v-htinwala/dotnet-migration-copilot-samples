@@ -2,10 +2,12 @@
 resource "azurerm_mssql_server" "main" {
   name                         = "sql-${var.app_name}-${var.environment}"
   resource_group_name          = azurerm_resource_group.main.name
-  location                     = "Central India" # SQL Server in Central India due to policy restrictions in East US
+  location                     = azurerm_resource_group.main.location
   version                      = "12.0"
   administrator_login          = var.sql_admin_username
   administrator_login_password = random_password.sql_admin_password.result
+  minimum_tls_version          = "1.2"
+  public_network_access_enabled = false  # Required by Azure Policy
 
   tags = var.tags
 
