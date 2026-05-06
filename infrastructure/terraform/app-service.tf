@@ -24,9 +24,6 @@ resource "azurerm_windows_web_app" "main" {
       current_stack  = "dotnet"
       dotnet_version = "v8.0"
     }
-
-    # Enable detailed error logging
-    detailed_error_logging_enabled = true
   }
 
   app_settings = {
