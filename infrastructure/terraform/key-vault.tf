@@ -19,9 +19,15 @@
 # Data source for current Azure client configuration
 data "azurerm_client_config" "current" {}
 
+# Local variables for naming
+locals {
+  # Shorten Key Vault name to meet 3-24 character requirement
+  kv_name = "kv-contosouni-${var.environment}"
+}
+
 # Key Vault for storing secrets (recommended for production)
 resource "azurerm_key_vault" "main" {
-  name                       = "kv-${var.app_name}-${var.environment}"
+  name                       = local.kv_name
   location                   = azurerm_resource_group.main.location
   resource_group_name        = azurerm_resource_group.main.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
