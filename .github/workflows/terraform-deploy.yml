@@ -2,18 +2,18 @@ name: Deploy Infrastructure
 
 on:
   # Automatic triggers are disabled - use workflow_dispatch to run manually
-  # push:
-  #   branches:
-  #     - main
-  #     - upgrade-to-NET8
-  #   paths:
-  #     - 'infrastructure/terraform/**'
-  # pull_request:
-  #   branches:
-  #     - main
-  #     - upgrade-to-NET8
-  #   paths:
-  #     - 'infrastructure/terraform/**'
+  push:
+    branches:
+      - main
+      - upgrade-to-NET8
+    paths:
+      - 'infrastructure/terraform/**'
+  pull_request:
+    branches:
+      - main
+      - upgrade-to-NET8
+    paths:
+      - 'infrastructure/terraform/**'
   workflow_dispatch:
     inputs:
       action:
@@ -34,7 +34,7 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: production
+    environment: dev
 
     defaults:
       run:
