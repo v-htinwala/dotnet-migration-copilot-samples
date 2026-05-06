@@ -7,7 +7,7 @@ on:
       - upgrade-to-NET8
     paths:
       - 'ContosoUniversity/**'
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 permissions:
   contents: read
