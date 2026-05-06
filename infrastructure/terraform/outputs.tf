@@ -13,15 +13,17 @@ output "app_service_url" {
   value       = "https://${azurerm_windows_web_app.main.default_hostname}"
 }
 
-output "sql_server_fqdn" {
-  description = "Fully Qualified Domain Name of the SQL Server"
-  value       = azurerm_mssql_server.main.fully_qualified_domain_name
-}
+# SQL Server outputs
+# COMMENTED OUT: SQL Server will be created manually
+# output "sql_server_fqdn" {
+#   description = "Fully Qualified Domain Name of the SQL Server"
+#   value       = azurerm_mssql_server.main.fully_qualified_domain_name
+# }
 
-output "sql_database_name" {
-  description = "Name of the SQL Database"
-  value       = azurerm_mssql_database.main.name
-}
+# output "sql_database_name" {
+#   description = "Name of the SQL Database"
+#   value       = azurerm_mssql_database.main.name
+# }
 
 output "application_insights_connection_string" {
   description = "Application Insights connection string"
@@ -40,15 +42,17 @@ output "key_vault_name" {
   value       = azurerm_key_vault.main.name
 }
 
-output "sql_password_key_vault_secret_name" {
-  description = "Key Vault secret name containing the SQL admin password"
-  value       = "sql-admin-password"
-}
+# SQL password outputs
+# COMMENTED OUT: SQL Server will be created manually
+# output "sql_password_key_vault_secret_name" {
+#   description = "Key Vault secret name containing the SQL admin password"
+#   value       = "sql-admin-password"
+# }
 
-output "sql_password_retrieval_command" {
-  description = "Command to retrieve SQL password from Key Vault"
-  value       = "az keyvault secret show --name sql-admin-password --vault-name ${azurerm_key_vault.main.name} --query value -o tsv"
-}
+# output "sql_password_retrieval_command" {
+#   description = "Command to retrieve SQL password from Key Vault"
+#   value       = "az keyvault secret show --name sql-admin-password --vault-name ${azurerm_key_vault.main.name} --query value -o tsv"
+# }
 
 output "app_service_principal_id" {
   description = "Principal ID of the App Service user-assigned managed identity"

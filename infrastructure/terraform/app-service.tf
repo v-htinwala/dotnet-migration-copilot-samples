@@ -39,11 +39,13 @@ resource "azurerm_windows_web_app" "main" {
     "AzureAd__CallbackPath" = var.enable_entra_id_auth ? "/signin-oidc" : ""
   }
 
-  connection_string {
-    name  = "DefaultConnection"
-    type  = "SQLAzure"
-    value = "Server=tcp:${azurerm_mssql_server.main.fully_qualified_domain_name},1433;Initial Catalog=${azurerm_mssql_database.main.name};Persist Security Info=False;User ID=${var.sql_admin_username};Password=${random_password.sql_admin_password.result};MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-  }
+  # SQL Connection String
+  # COMMENTED OUT: SQL Server will be created manually, add connection string manually after deployment
+  # connection_string {
+  #   name  = "DefaultConnection"
+  #   type  = "SQLAzure"
+  #   value = "Server=tcp:${azurerm_mssql_server.main.fully_qualified_domain_name},1433;Initial Catalog=${azurerm_mssql_database.main.name};Persist Security Info=False;User ID=${var.sql_admin_username};Password=${random_password.sql_admin_password.result};MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  # }
 
   identity {
     type         = "UserAssigned"
@@ -52,7 +54,8 @@ resource "azurerm_windows_web_app" "main" {
 
   tags = var.tags
 
-  depends_on = [
-    azurerm_mssql_database.main
-  ]
+  # COMMENTED OUT: SQL dependency removed
+  # depends_on = [
+  #   azurerm_mssql_database.main
+  # ]
 }
