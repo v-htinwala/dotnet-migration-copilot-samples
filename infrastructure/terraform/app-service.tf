@@ -40,7 +40,7 @@ resource "azurerm_windows_web_app" "main" {
   }
 
   # SQL Connection String
-  # COMMENTED OUT: SQL Server will be created manually, add connection string manually after deployment
+  # COMMENTED OUT: SQL Server will be created manually
   # connection_string {
   #   name  = "DefaultConnection"
   #   type  = "SQLAzure"

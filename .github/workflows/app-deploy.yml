@@ -1,13 +1,13 @@
 name: Deploy Application
 
 on:
-  # Automatic triggers are disabled - use workflow_dispatch to run manually
-  # push:
-  #   branches:
-  #     - main
-  #     - upgrade-to-NET8
-  #   paths:
-  #     - 'ContosoUniversity/**'
+  Automatic triggers are disabled - use workflow_dispatch to run manually
+  push:
+    branches:
+      - main
+      - upgrade-to-NET8
+    paths:
+      - 'ContosoUniversity/**'
   workflow_dispatch:
 
 permissions:

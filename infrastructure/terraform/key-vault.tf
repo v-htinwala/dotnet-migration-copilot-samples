@@ -22,8 +22,8 @@ data "azurerm_client_config" "current" {}
 # Local variables for naming
 locals {
   # Shorten Key Vault name to meet 3-24 character requirement
-  # Added suffix to avoid conflict with soft-deleted vault
-  kv_name = "kv-contosouni-in-${var.environment}"
+  # Changed name to avoid soft-delete conflict
+  kv_name = "kv-contoso-uni-${var.environment}"
 }
 
 # Key Vault for storing secrets (recommended for production)
@@ -44,32 +44,29 @@ resource "azurerm_key_vault" "main" {
 
 # RBAC: Grant Key Vault Secrets User role to the user-assigned managed identity
 # This allows the App Service to read secrets from Key Vault
-# COMMENTED OUT: Requires User Access Administrator role - configure manually or ask admin
-# resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
-#   scope                = azurerm_key_vault.main.id
-#   role_definition_name = "Key Vault Secrets User"
-#   principal_id         = azurerm_user_assigned_identity.app_service.principal_id
-# }
+resource "azurerm_role_assignment" "app_service_keyvault_secrets_user" {
+  scope                = azurerm_key_vault.main.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.app_service.principal_id
+}
 
 # RBAC: Grant Key Vault Secrets Officer role to the current user/service principal
 # This allows Terraform to manage secrets in Key Vault
-# COMMENTED OUT: Requires User Access Administrator role - configure manually or ask admin
-# resource "azurerm_role_assignment" "current_user_keyvault_secrets_officer" {
-#   scope                = azurerm_key_vault.main.id
-#   role_definition_name = "Key Vault Secrets Officer"
-#   principal_id         = data.azurerm_client_config.current.object_id
-# }
+resource "azurerm_role_assignment" "current_user_keyvault_secrets_officer" {
+  scope                = azurerm_key_vault.main.id
+  role_definition_name = "Key Vault Secrets Officer"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
 
 # Store Entra ID Client Secret in Key Vault (if enabled)
-# COMMENTED OUT: Depends on RBAC role assignments above
-# resource "azurerm_key_vault_secret" "entra_client_secret" {
-#   count        = var.enable_entra_id_auth ? 1 : 0
-#   name         = "entra-client-secret"
-#   value        = var.entra_client_secret
-#   key_vault_id = azurerm_key_vault.main.id
-#
-#   depends_on = [
-#     azurerm_key_vault.main,
-#     azurerm_role_assignment.current_user_keyvault_secrets_officer
-#   ]
-# }
+resource "azurerm_key_vault_secret" "entra_client_secret" {
+  count        = var.enable_entra_id_auth ? 1 : 0
+  name         = "entra-client-secret"
+  value        = var.entra_client_secret
+  key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [
+    azurerm_key_vault.main,
+    azurerm_role_assignment.current_user_keyvault_secrets_officer
+  ]
+}

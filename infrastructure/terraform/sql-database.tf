@@ -1,5 +1,5 @@
 # SQL Server
-# COMMENTED OUT: Will be created manually due to Azure Policy restrictions
+# COMMENTED OUT: Azure Policy blocking creation - will be created manually
 # resource "azurerm_mssql_server" "main" {
 #   name                         = "sql-${var.app_name}-${var.environment}"
 #   resource_group_name          = azurerm_resource_group.main.name
