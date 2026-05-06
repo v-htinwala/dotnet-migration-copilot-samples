@@ -11,7 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton<NotificationService>();
+
+// MSMQ NotificationService is not available in Azure App Service
+// Only register if running locally with MSMQ installed
+// builder.Services.AddSingleton<NotificationService>();
 
 // Add session support
 builder.Services.AddDistributedMemoryCache();

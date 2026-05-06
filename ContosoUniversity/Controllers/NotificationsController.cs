@@ -22,6 +22,12 @@ namespace ContosoUniversity.Controllers
         {
             var notifications = new List<Notification>();
             
+            // If notification service is not available (e.g., in Azure), return empty list
+            if (notificationService == null)
+            {
+                return Json(new { success = true, notifications = notifications, count = 0 });
+            }
+            
             try
             {
                 // Read all available notifications from the queue
@@ -52,6 +58,12 @@ namespace ContosoUniversity.Controllers
         [HttpPost]
         public JsonResult MarkAsRead(int id)
         {
+            // If notification service is not available (e.g., in Azure), return success
+            if (notificationService == null)
+            {
+                return Json(new { success = true });
+            }
+            
             try
             {
                 notificationService.MarkAsRead(id);

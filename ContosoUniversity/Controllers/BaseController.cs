@@ -15,7 +15,17 @@ namespace ContosoUniversity.Controllers
         public BaseController(SchoolContext context, IConfiguration configuration)
         {
             db = context;
-            notificationService = new NotificationService(configuration);
+            
+            // Try to initialize NotificationService, but gracefully handle failure if MSMQ is not available (e.g., in Azure)
+            try
+            {
+                notificationService = new NotificationService(configuration);
+            }
+            catch (InvalidOperationException)
+            {
+                // MSMQ not available - notifications will be disabled
+                notificationService = null;
+            }
         }
 
         protected void SendEntityNotification(string entityType, string entityId, EntityOperation operation)
