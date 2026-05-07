@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Services;
 using ContosoUniversity.Data;
@@ -32,11 +33,20 @@ builder.Services.AddDbContext<SchoolContext>(options =>
 var app = builder.Build();
 
 // Initialize database
-using (var scope = app.Services.CreateScope())
+try
 {
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<SchoolContext>();
-    DbInitializer.Initialize(context);
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<SchoolContext>();
+        DbInitializer.Initialize(context);
+    }
+}
+catch (Exception ex)
+{
+    // Log the error but don't crash the application
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred while initializing the database.");
 }
 
 if (!app.Environment.IsDevelopment())
