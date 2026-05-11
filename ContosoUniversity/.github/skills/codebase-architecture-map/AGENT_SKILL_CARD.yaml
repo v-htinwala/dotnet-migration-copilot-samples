@@ -1,0 +1,232 @@
+﻿# ============================================================================
+# AGENT_SKILL_CARD.yaml - codebase-architecture-map
+# ============================================================================
+# Comprehensive agent configuration following AGENT_CARD_SCHEMA.yaml template
+# Generated for codebase architecture mapping
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SECTION 1: Core Metadata
+# ----------------------------------------------------------------------------
+name: "codebase-architecture-map"
+version: "1.0.0"
+description: |
+  Maps the architecture of a Java Spring Boot + React codebase. Produces ASCII
+  visual architecture diagrams, layer cake views, component trees, integration
+  sequence charts, and deployment topology maps. Use when onboarding developers
+  or QA to an unfamiliar codebase, understanding system boundaries and data flow.
+author: "knowledge-transition"
+created_date: "2026-01-15"
+last_updated: "2026-02-13"
+platform:
+  - generic
+artifact_type: skill
+
+# ----------------------------------------------------------------------------
+# SECTION 2: Categorization & Discovery
+# ----------------------------------------------------------------------------
+category: "analyzer"
+domain: "code-analysis"
+tags:
+  - architecture
+  - mapping
+  - ascii-diagrams
+  - spring-boot
+  - react
+  - onboarding
+  - visualization
+
+keywords:
+  - "map codebase architecture"
+  - "architecture diagram"
+  - "layer cake view"
+  - "system structure"
+  - "project boundaries"
+
+# ----------------------------------------------------------------------------
+# SECTION 3: Input Requirements
+# ----------------------------------------------------------------------------
+inputs:
+  required:
+    - name: "codebase_path"
+      type: "path"
+      description: "Path to codebase root with Spring Boot + React"
+
+  optional:
+    - name: "focus_area"
+      type: "string"
+      description: "Specific area to focus on (backend, frontend, integration)"
+
+  context_requirements:
+    - "Filesystem access to codebase"
+    - "Java Spring Boot + React project structure"
+
+# ----------------------------------------------------------------------------
+# SECTION 4: Output Artifacts
+# ----------------------------------------------------------------------------
+outputs:
+  primary:
+    - name: "architecture_diagrams"
+      type: "text"
+      format: "ascii-art"
+      path: "ASCII architecture diagrams"
+      description: "Boundary diagram, layer cake, component trees"
+
+  secondary:
+    - name: "architecture_report"
+      type: "markdown"
+      format: "report"
+      path: "assessment/{timestamp}/architecture-map.md"
+      description: "Comprehensive architecture documentation"
+
+# ----------------------------------------------------------------------------
+# SECTION 5: Dependencies & Relationships
+# ----------------------------------------------------------------------------
+dependencies:
+  required_skills: []
+
+  optional_skills:
+    - name: "dependency-flow-visualizer"
+      purpose: "Deep dependency chain tracing"
+    - name: "api-contract-discovery"
+      purpose: "API surface documentation"
+    - name: "data-model-analysis"
+      purpose: "Entity relationship details"
+
+  tools: []
+
+packages: []
+
+# ----------------------------------------------------------------------------
+# SECTION 6: Workflow Relationships
+# ----------------------------------------------------------------------------
+workflow:
+  predecessors: []
+
+  successors:
+    - skill: "dependency-flow-visualizer"
+      receives: "High-level architecture context"
+    - skill: "api-contract-discovery"
+      receives: "Backend structure overview"
+    - skill: "data-model-analysis"
+      receives: "Persistence layer mapping"
+
+  parallel_skills: []
+
+  workflow_stage: "discovery"
+  workflow_order: 1.0
+
+# ----------------------------------------------------------------------------
+# SECTION 7: Execution Metadata
+# ----------------------------------------------------------------------------
+execution:
+  estimated_duration: "20-40 minutes"
+  complexity: "medium"
+  resource_requirements:
+    memory: "medium"
+    api_calls: "none"
+
+  retry_policy:
+    max_retries: 1
+    retry_on:
+      - "filesystem_error"
+
+  timeout: "60 minutes"
+
+# ----------------------------------------------------------------------------
+# SECTION 8: Quality & Validation
+# ----------------------------------------------------------------------------
+quality:
+  validation_rules:
+    - rule: "All modules identified"
+      severity: "critical"
+      description: "Find all Maven/Gradle modules and React apps"
+
+    - rule: "Layer boundaries mapped"
+      severity: "error"
+      description: "Controller, Service, Repository layers identified"
+
+    - rule: "Integration points documented"
+      severity: "warning"
+      description: "REST APIs, databases, external services"
+
+  success_criteria:
+    - "Project boundaries identified"
+    - "Backend layers mapped"
+    - "Frontend structure documented"
+    - "Integration points cataloged"
+
+  output_validation:
+    - check: "diagrams_complete"
+      description: "All major architecture views generated"
+
+# ----------------------------------------------------------------------------
+# SECTION 9: Documentation & Learning
+# ----------------------------------------------------------------------------
+documentation:
+  detailed_methodology: "methodology.md"
+  examples: "examples.md"
+
+  usage_examples:
+    - scenario: "New team onboarding"
+      input: "Path to unfamiliar codebase"
+      output: "Complete architecture map with ASCII diagrams"
+
+  best_practices:
+    - practice: "Start with boundaries"
+      rationale: "High-level first, then drill down"
+
+    - practice: "Use ASCII diagrams"
+      rationale: "Portable, version-controllable, no special tools needed"
+
+# ----------------------------------------------------------------------------
+# SECTION 10: Use Cases & Target Audience
+# ----------------------------------------------------------------------------
+use_cases:
+  primary:
+    - use_case: "Developer onboarding"
+      description: "Help new developers understand codebase"
+      user_types:
+        - "new_developer"
+        - "qa_engineer"
+
+  target_audience:
+    - role: "New Developer"
+      benefit: "Quick understanding of system structure"
+    - role: "QA Engineer"
+      benefit: "Know which components exist and how they interact"
+
+# ----------------------------------------------------------------------------
+# SECTION 11: Metadata & Governance
+# ----------------------------------------------------------------------------
+governance:
+  owner: "GenAI CoE"
+  review_cycle: "quarterly"
+
+  change_log:
+    - version: "1.0.0"
+      date: "2026-02-13"
+      changes:
+        - "Initial AGENT_SKILL_CARD.yaml creation"
+
+# ----------------------------------------------------------------------------
+# SECTION 12: Analytics & Usage
+# ----------------------------------------------------------------------------
+analytics:
+  track_metrics:
+    - metric: "codebases_mapped"
+      description: "Number of codebases architecture-mapped"
+
+  success_indicators:
+    - indicator: "diagrams_generated"
+      target: "All architecture views produced"
+
+# ----------------------------------------------------------------------------
+# SECTION 14: Trigger Phrases
+# ----------------------------------------------------------------------------
+trigger_phrases:
+  - "map codebase architecture"
+  - "how is this project structured"
+  - "generate architecture diagram"
+  - "understand system boundaries"
+  - "onboard to unfamiliar codebase"

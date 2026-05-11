@@ -1,19 +1,31 @@
 using System;
-using System.Web.Mvc;
+using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Services;
 using ContosoUniversity.Models;
 using ContosoUniversity.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ContosoUniversity.Controllers
 {
     public abstract class BaseController : Controller
     {
-        protected SchoolContext db;
-        protected NotificationService notificationService = new NotificationService();
+        protected readonly SchoolContext db;
+        protected readonly NotificationService notificationService;
 
-        public BaseController()
+        public BaseController(SchoolContext context, IConfiguration configuration)
         {
-            db = SchoolContextFactory.Create();
+            db = context;
+            
+            // Try to initialize NotificationService, but gracefully handle failure if MSMQ is not available (e.g., in Azure)
+            try
+            {
+                notificationService = new NotificationService(configuration);
+            }
+            catch (InvalidOperationException)
+            {
+                // MSMQ not available - notifications will be disabled
+                notificationService = null;
+            }
         }
 
         protected void SendEntityNotification(string entityType, string entityId, EntityOperation operation)
@@ -25,7 +37,8 @@ namespace ContosoUniversity.Controllers
         {
             try
             {
-                var userName = "System"; // No authentication, use System as default user
+                // Get authenticated user name from claims
+                var userName = User?.Identity?.Name ?? "System";
                 notificationService.SendNotification(entityType, entityId, entityDisplayName, operation, userName);
             }
             catch (Exception ex)
@@ -39,7 +52,7 @@ namespace ContosoUniversity.Controllers
         {
             if (disposing)
             {
-                db?.Dispose();
+                // Don't dispose db - it's managed by DI container
                 notificationService?.Dispose();
             }
             base.Dispose(disposing);

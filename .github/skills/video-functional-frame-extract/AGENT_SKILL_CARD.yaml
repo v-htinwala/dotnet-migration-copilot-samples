@@ -1,0 +1,91 @@
+# ──────────────────────────────────────────────────────
+# AGENT SKILL CARD — video-functional-frame-extract
+# ──────────────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: video-functional-frame-extract
+version: "1.0"
+author: functional-test-automation
+license: MIT
+category: testing
+domain: video-processing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Extracts key UI screens from video recordings using OpenCV scene-change
+  detection with high sensitivity (threshold 0.95) optimized for functional
+  test case generation. Captures detailed UI state changes including form
+  interactions, validation messages, and error states. Outputs frames and
+  manifest.json for video-functional-journey-analyzer.
+tags:
+  - video-processing
+  - frame-extraction
+  - functional-testing
+  - scene-detection
+  - opencv
+keywords:
+  - video frames
+  - UI state extraction
+  - scene change detection
+  - functional test frames
+  - high sensitivity extraction
+  - form state capture
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: input
+      type: file_path
+      description: Path to video file (MP4, AVI, MKV, MOV)
+    - name: output-dir
+      type: directory_path
+      description: Directory to save extracted frames (default functional-tests/intermediate/video/frames)
+  optional:
+    - name: threshold
+      type: float
+      default: 0.95
+      description: >
+        Similarity threshold for scene detection. Higher = more frames captured
+        = more UI detail for functional testing. Default 0.95 (high sensitivity).
+    - name: min-interval
+      type: integer
+      default: 3
+      description: Minimum frames between captures (low to catch rapid UI changes)
+    - name: format
+      type: string
+      default: jpg
+      description: Output format (jpg recommended at quality 95 for OCR clarity)
+    - name: quality
+      type: integer
+      default: 95
+      description: JPEG quality (high for text preservation in downstream OCR)
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: frames/
+      type: directory
+      description: Extracted frame images (frame_000001.jpg, frame_000002.jpg, ...)
+    - name: manifest.json
+      type: json
+      description: Frame metadata with timestamps and similarity scores
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python:
+    - opencv-python
+  skills: []
+  notes: >
+    Requires only opencv-python. No other dependencies. Script uses OpenCV
+    histogram comparison for scene-change detection.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream: []  # First skill in the video pipeline
+  downstream:
+    - video-functional-journey-analyzer  # Consumes frames/ and manifest.json
+platform:
+  - generic
+artifact_type: skill

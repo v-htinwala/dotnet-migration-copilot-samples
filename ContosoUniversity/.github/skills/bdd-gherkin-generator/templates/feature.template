@@ -1,0 +1,35 @@
+@{{stack}} @{{layer}} @{{priority}}
+Feature: {{feature_title}}
+  As a {{actor}}
+  I want {{capability}}
+  So that {{business_value}}
+
+  Background:
+    Given {{shared_precondition}}
+
+  Scenario: {{happy_outcome}}
+    Given {{precondition}}
+    When {{action}}
+    Then {{observable_outcome}}
+    And {{additional_assertion}}
+
+  Scenario: {{error_outcome}}
+    Given {{invalid_precondition}}
+    When {{action}}
+    Then {{error_response}}
+    And {{state_unchanged_assertion}}
+
+  Scenario: {{edge_outcome}}
+    Given {{boundary_precondition}}
+    When {{action}}
+    Then {{boundary_outcome}}
+
+  Scenario Outline: {{parameterized_outcome}}
+    Given input "<input>"
+    When {{action}}
+    Then result is "<result>"
+
+    Examples:
+      | input    | result   |
+      | <val1>   | <res1>   |
+      | <val2>   | <res2>   |

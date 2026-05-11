@@ -1,0 +1,95 @@
+# ──────────────────────────────────────────────
+# AGENT SKILL CARD — functional-test-generator
+# ──────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: functional-test-generator
+version: "2.1"
+author: functional-test-automation
+license: MIT
+category: testing
+domain: functional-testing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Generates comprehensive functional test cases using the 35-field schema from
+  merged scenario candidates via a batched workflow. Uses adaptive volume
+  estimation based on per-scenario data richness (fields, validations, endpoints)
+  instead of worst-case multipliers. Selects inline, module-batched, or
+  scenario-batched strategy with optimized thresholds (50K/200K). Skips
+  inapplicable test categories per batch. Supports parallel module processing
+  when orchestrator provides subagent parallelism. Writes JSONL incrementally
+  per batch to prevent context overflow. Supports resume on interruption.
+  Auto-generates test data with boundary, security, and format patterns.
+  Outputs JSONL + report.
+tags:
+  - test-generation
+  - functional-testing
+  - test-data
+  - schema
+  - automation
+  - batching
+  - incremental-write
+keywords:
+  - functional test cases
+  - 35-field schema
+  - test data generation
+  - boundary testing
+  - security testing
+  - validation testing
+  - FT-{MODULE}-{SEQ}
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: merged_scenarios
+      type: file_path
+      description: Path to merged-scenarios.jsonl from functional-scenario-merger
+    - name: output_dir
+      type: directory_path
+      description: Output directory for generated test artifacts
+  optional:
+    - name: test_data_overrides
+      type: file_path
+      description: Path to test-data-overrides.json for domain-specific test values
+    - name: app_name
+      type: string
+      description: Application name for report and naming (auto-detected if omitted)
+    - name: max_tests_per_scenario
+      type: integer
+      default: 15
+      description: Maximum test cases generated per merged scenario
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: functional-tests.jsonl
+      type: jsonl
+      description: All generated test cases with 35 fields each (written incrementally per batch)
+  secondary:
+    - name: generation-report.json
+      type: json
+      description: Statistics per feature, category, priority, source, confidence
+    - name: batch-schedule.json
+      type: json
+      description: Planned batch list with volume estimates
+    - name: .generation-progress.json
+      type: json
+      description: Resume state tracking — completed batches, ID counters, status
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python: []
+  notes: No external dependencies. Purely LLM-driven generation using skill instructions with batched output to prevent context overflow.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream:
+    - functional-scenario-merger  # Provides merged-scenarios.jsonl
+  downstream:
+    - excel-workbook-generator    # Consumes functional-tests.jsonl for workbook
+platform:
+  - generic
+artifact_type: skill

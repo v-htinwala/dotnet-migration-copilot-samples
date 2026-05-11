@@ -12,7 +12,7 @@ namespace ContosoUniversity.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Hire Date")]
         [Column(TypeName = "datetime2")]
-        [Range(typeof(DateTime), "1/1/1753", "12/31/9999", ErrorMessage = "Hire date must be between 1753 and 9999")]
+        [Range(typeof(DateTime), "1753-01-01", "9999-12-31", ErrorMessage = "Hire date must be between 1753 and 9999")]
         public DateTime HireDate { get; set; }
 
         public virtual ICollection<CourseAssignment> CourseAssignments { get; set; }

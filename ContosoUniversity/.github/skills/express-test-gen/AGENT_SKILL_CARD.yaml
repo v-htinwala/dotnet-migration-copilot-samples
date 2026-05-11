@@ -1,0 +1,106 @@
+# ============================================================================
+# AGENT_SKILL_CARD.yaml - express-test-gen
+# ============================================================================
+# Comprehensive agent configuration following AGENT_CARD_SCHEMA.yaml template
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SECTION 1: Core Metadata
+# ----------------------------------------------------------------------------
+name: "express-test-gen"
+version: "1.0.0"
+description: |
+  Generate comprehensive unit tests for Express.js projects using Jest,
+  Mocha/Chai, or Vitest. Auto-detects test framework, TypeScript usage,
+  and project structure. Produces test files with Supertest for HTTP
+  assertions, proper middleware testing, and service/controller isolation.
+  Covers routes, controllers, services, middleware, validators, models,
+  and utility modules. Integrates with Istanbul/c8 for coverage.
+author: "specification-project"
+created_date: "2026-04-24"
+last_updated: "2026-04-24"
+platform:
+  - generic
+artifact_type: skill
+
+# ----------------------------------------------------------------------------
+# SECTION 2: Categorization & Discovery
+# ----------------------------------------------------------------------------
+category: "generator"
+domain: "express-testing"
+tags:
+  - express
+  - nodejs
+  - typescript
+  - jest
+  - mocha
+  - vitest
+  - supertest
+  - unit-tests
+  - test-generation
+
+keywords:
+  - "generate Express tests"
+  - "Node.js API tests"
+  - "Supertest test generation"
+  - "Express middleware tests"
+  - "REST API test scaffolding"
+
+# ----------------------------------------------------------------------------
+# SECTION 3: Input Requirements
+# ----------------------------------------------------------------------------
+inputs:
+  required:
+    - name: "project_path"
+      type: "path"
+      description: "Express project root containing package.json"
+
+  optional:
+    - name: "test_framework"
+      type: "string"
+      description: "Jest, Mocha, or Vitest (auto-detected from project config)"
+    - name: "target_files"
+      type: "list"
+      description: "Specific files or directories to generate tests for"
+    - name: "coverage_gaps"
+      type: "boolean"
+      description: "Focus on coverage gap filling (default: false)"
+    - name: "typescript"
+      type: "boolean"
+      description: "Whether project uses TypeScript (auto-detected)"
+
+  context_requirements:
+    - "Node.js 18+ installed"
+    - "Express 4.x or 5.x project"
+    - "Jest, Mocha, or Vitest configured"
+
+# ----------------------------------------------------------------------------
+# SECTION 4: Output Artifacts
+# ----------------------------------------------------------------------------
+outputs:
+  primary:
+    - name: "test_files"
+      type: "files"
+      format: "typescript"
+      path: "**/*.test.{ts,js}"
+      description: "Test files for each source module"
+
+  secondary:
+    - name: "test_summary"
+      type: "markdown"
+      format: "report"
+      path: "test-generation-report.md"
+      description: "Summary of generated tests and coverage analysis"
+
+# ----------------------------------------------------------------------------
+# SECTION 5: Dependencies & Relationships
+# ----------------------------------------------------------------------------
+dependencies:
+  required_skills: []
+
+  optional_skills:
+    - name: "javascript-typescript-regression-testcase-generation"
+      purpose: "Regression-focused test generation for Node.js"
+
+  tools:
+    - "Bash(npx:*)"

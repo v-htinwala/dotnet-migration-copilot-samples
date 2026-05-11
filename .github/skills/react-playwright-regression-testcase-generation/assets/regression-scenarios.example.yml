@@ -1,0 +1,149 @@
+# =============================================================================
+# Regression Scenarios Example — React + Playwright
+# =============================================================================
+# Define regression scenarios to ensure critical business flows are tested
+# after code changes. Each scenario targets specific source files, page routes,
+# and defines expected behaviors that must be preserved.
+#
+# Place this file in the project root or specify its path via the
+# `regression_scenarios` user input or `.regression-config.json`.
+#
+# Unlike unit-level scenarios, Playwright scenarios include `target_routes`
+# for E2E page-level testing and may reference API endpoints for mocking.
+# =============================================================================
+
+scenarios:
+
+  - name: ShoppingCartFlow
+    description: >
+      End-to-end verification of the shopping cart flow: browsing products,
+      adding items, updating quantities, removing items, proceeding to checkout.
+      Must work across browsers after the cart context refactoring.
+    target_files:
+      - "src/features/cart/**"
+      - "src/context/CartContext.tsx"
+      - "src/hooks/useCart.ts"
+    target_routes:
+      - "/products"
+      - "/cart"
+      - "/checkout"
+    api_endpoints:
+      - "GET /api/products"
+      - "POST /api/cart"
+      - "PUT /api/cart/:id"
+      - "DELETE /api/cart/:id"
+    expected_behaviors:
+      - "User can add a product to the cart from the products page"
+      - "Cart badge updates to show correct item count"
+      - "Cart page displays all added items with correct names and prices"
+      - "User can increment/decrement item quantity in the cart"
+      - "User can remove items from the cart"
+      - "Cart total updates correctly after quantity changes"
+      - "Empty cart shows appropriate message with link to products"
+      - "Proceed to checkout navigates to /checkout with cart data"
+    requirement_ids:
+      - "REQ-CART-001"
+      - "REQ-CART-002"
+    priority: critical
+
+  - name: AuthenticationFlow
+    description: >
+      End-to-end verification of the authentication flow including login,
+      logout, session persistence, and protected route access. Tests must
+      verify real browser behavior including cookie handling and redirects.
+    target_files:
+      - "src/hooks/useAuth.ts"
+      - "src/context/AuthContext.tsx"
+      - "src/components/ProtectedRoute.tsx"
+      - "src/api/auth.ts"
+    target_routes:
+      - "/login"
+      - "/dashboard"
+      - "/profile"
+    api_endpoints:
+      - "POST /api/auth/login"
+      - "POST /api/auth/logout"
+      - "GET /api/auth/session"
+    expected_behaviors:
+      - "Login form accepts email and password and submits to API"
+      - "Successful login redirects to /dashboard"
+      - "Failed login shows error message without redirect"
+      - "Navigating to /dashboard without auth redirects to /login"
+      - "Authenticated user can access /profile"
+      - "Logout clears session and redirects to /login"
+      - "Session persists across page reloads (storageState)"
+    requirement_ids:
+      - "REQ-AUTH-101"
+    priority: critical
+
+  - name: UserRegistrationForm
+    description: >
+      End-to-end verification of user registration including form validation,
+      field interactions, error display, and successful submission.
+    target_files:
+      - "src/features/registration/**"
+      - "src/components/RegistrationForm.tsx"
+      - "src/hooks/useFormValidation.ts"
+    target_routes:
+      - "/register"
+    api_endpoints:
+      - "POST /api/users"
+    expected_behaviors:
+      - "Registration page renders the form with all required fields"
+      - "Email field rejects invalid format (shows inline error)"
+      - "Password field enforces min length and special character requirements"
+      - "Password confirmation must match the password field"
+      - "Submit button is disabled until all validations pass"
+      - "Successful registration calls POST /api/users with form data"
+      - "Successful registration shows success message and redirects to /login"
+      - "API error during registration shows error message without clearing form"
+    requirement_ids:
+      - "REQ-USR-201"
+      - "REQ-USR-202"
+    priority: high
+
+  - name: DataTableInteractions
+    description: >
+      Verify data table sorting, filtering, pagination, and row actions
+      work correctly after the table component refactoring.
+    target_files:
+      - "src/components/DataTable.tsx"
+      - "src/hooks/useTableData.ts"
+    target_routes:
+      - "/items"
+      - "/admin/users"
+    api_endpoints:
+      - "GET /api/items?page=N&sort=field&order=asc"
+    expected_behaviors:
+      - "Table renders data from API with correct columns"
+      - "Clicking a column header sorts by that column"
+      - "Clicking the same header toggles sort direction"
+      - "Filter input filters table rows in real time"
+      - "Pagination controls navigate between pages"
+      - "Row action buttons trigger the correct operation"
+      - "Empty state is shown when no data matches filters"
+    requirement_ids:
+      - "REQ-TABLE-301"
+    priority: medium
+
+  - name: ResponsiveLayoutIntegrity
+    description: >
+      Verify that the application layout adapts correctly across viewport
+      sizes (mobile, tablet, desktop) after the responsive redesign.
+    target_files:
+      - "src/components/layout/**"
+      - "src/components/Sidebar.tsx"
+      - "src/components/Header.tsx"
+    target_routes:
+      - "/"
+      - "/dashboard"
+    expected_behaviors:
+      - "Desktop viewport shows full sidebar and header"
+      - "Tablet viewport collapses sidebar to icons only"
+      - "Mobile viewport hides sidebar behind hamburger menu"
+      - "Hamburger menu opens and overlays the sidebar on mobile"
+      - "Navigation links remain accessible at all viewport sizes"
+      - "Content area adjusts width based on sidebar state"
+    requirement_ids:
+      - "REQ-LAYOUT-401"
+    priority: medium

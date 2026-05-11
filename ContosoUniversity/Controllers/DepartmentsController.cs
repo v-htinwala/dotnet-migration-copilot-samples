@@ -2,14 +2,22 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Net;
-using System.Web.Mvc;
+using Microsoft.Extensions.Configuration;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ContosoUniversity.Controllers
 {
     public class DepartmentsController : BaseController
     {
+        public DepartmentsController(SchoolContext context, IConfiguration configuration)
+            : base(context, configuration)
+        {
+        }
+
         // GET: Departments - All roles can view
         public ActionResult Index()
         {
@@ -22,12 +30,12 @@ namespace ContosoUniversity.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new StatusCodeResult((int)HttpStatusCode.BadRequest);
             }
             Department department = db.Departments.Find(id);
             if (department == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(department);
         }
@@ -42,16 +50,16 @@ namespace ContosoUniversity.Controllers
         // POST: Departments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name,Budget,StartDate,InstructorID")] Department department)
+        public ActionResult Create([Bind("Name", "Budget", "StartDate", "InstructorID")] Department department)
         {
             if (ModelState.IsValid)
             {
                 db.Departments.Add(department);
                 db.SaveChanges();
-                
+
                 // Send notification for department creation
                 SendEntityNotification("Department", department.DepartmentID.ToString(), department.Name, EntityOperation.CREATE);
-                
+
                 return RedirectToAction("Index");
             }
 
@@ -64,12 +72,12 @@ namespace ContosoUniversity.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new StatusCodeResult((int)HttpStatusCode.BadRequest);
             }
             Department department = db.Departments.Find(id);
             if (department == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             ViewBag.InstructorID = new SelectList(db.Instructors, "ID", "FullName", department.InstructorID);
             return View(department);
@@ -78,7 +86,7 @@ namespace ContosoUniversity.Controllers
         // POST: Departments/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DepartmentID,Name,Budget,StartDate,InstructorID,RowVersion")] Department department)
+        public ActionResult Edit([Bind("DepartmentID", "Name", "Budget", "StartDate", "InstructorID", "RowVersion")] Department department)
         {
             try
             {
@@ -86,10 +94,10 @@ namespace ContosoUniversity.Controllers
                 {
                     db.Entry(department).State = EntityState.Modified;
                     db.SaveChanges();
-                    
+
                     // Send notification for department update
                     SendEntityNotification("Department", department.DepartmentID.ToString(), department.Name, EntityOperation.UPDATE);
-                    
+
                     return RedirectToAction("Index");
                 }
             }
@@ -98,7 +106,7 @@ namespace ContosoUniversity.Controllers
                 var entry = ex.Entries.Single();
                 var clientValues = (Department)entry.Entity;
                 var databaseEntry = entry.GetDatabaseValues();
-                
+
                 if (databaseEntry == null)
                 {
                     ModelState.AddModelError(string.Empty, "Unable to save changes. The department was deleted by another user.");
@@ -106,7 +114,7 @@ namespace ContosoUniversity.Controllers
                 else
                 {
                     var databaseValues = (Department)databaseEntry.ToObject();
-                    
+
                     if (databaseValues.Name != clientValues.Name)
                         ModelState.AddModelError("Name", $"Current value: {databaseValues.Name}");
                     if (databaseValues.Budget != clientValues.Budget)
@@ -118,17 +126,17 @@ namespace ContosoUniversity.Controllers
                         var instructor = db.Instructors.Find(databaseValues.InstructorID);
                         ModelState.AddModelError("InstructorID", $"Current value: {instructor?.FullName}");
                     }
-                    
+
                     ModelState.AddModelError(string.Empty, "The record you attempted to edit "
                         + "was modified by another user after you got the original value. The "
                         + "edit operation was canceled and the current values in the database "
                         + "have been displayed. If you still want to edit this record, click "
                         + "the Save button again. Otherwise click the Back to List hyperlink.");
-                    
+
                     department.RowVersion = databaseValues.RowVersion;
                 }
             }
-            
+
             ViewBag.InstructorID = new SelectList(db.Instructors, "ID", "FullName", department.InstructorID);
             return View(department);
         }
@@ -138,12 +146,12 @@ namespace ContosoUniversity.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new StatusCodeResult((int)HttpStatusCode.BadRequest);
             }
             Department department = db.Departments.Find(id);
             if (department == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
             return View(department);
         }
@@ -157,10 +165,10 @@ namespace ContosoUniversity.Controllers
             var departmentName = department.Name;
             db.Departments.Remove(department);
             db.SaveChanges();
-            
+
             // Send notification for department deletion
             SendEntityNotification("Department", id.ToString(), departmentName, EntityOperation.DELETE);
-            
+
             return RedirectToAction("Index");
         }
 

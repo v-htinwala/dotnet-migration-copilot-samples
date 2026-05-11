@@ -1,0 +1,229 @@
+﻿# ============================================================================
+# AGENT_SKILL_CARD.yaml - data-model-analysis
+# ============================================================================
+# Comprehensive agent configuration following AGENT_CARD_SCHEMA.yaml template
+# Generated for JPA/Hibernate data model analysis
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SECTION 1: Core Metadata
+# ----------------------------------------------------------------------------
+name: "data-model-analysis"
+version: "1.0.0"
+description: |
+  Analyzes the data model of a Java Spring Boot application including JPA/Hibernate
+  entities, database schema, relationships, migrations, and query patterns. Produces
+  ASCII ER diagrams, entity card visuals, relationship maps, migration timelines,
+  and data flow diagrams. Use when onboarding to a codebase and needing to
+  understand the database structure, entity relationships, or data flow.
+author: "knowledge-transition"
+created_date: "2026-01-15"
+last_updated: "2026-02-13"
+platform:
+  - generic
+artifact_type: skill
+
+# ----------------------------------------------------------------------------
+# SECTION 2: Categorization & Discovery
+# ----------------------------------------------------------------------------
+category: "analyzer"
+domain: "data-analysis"
+tags:
+  - jpa
+  - hibernate
+  - data-model
+  - entity
+  - er-diagram
+  - database
+  - spring-boot
+
+keywords:
+  - "analyze data model"
+  - "entity relationships"
+  - "ER diagram"
+  - "database structure"
+  - "JPA entities"
+
+# ----------------------------------------------------------------------------
+# SECTION 3: Input Requirements
+# ----------------------------------------------------------------------------
+inputs:
+  required:
+    - name: "codebase_path"
+      type: "path"
+      description: "Path to Java Spring Boot codebase root"
+
+  optional:
+    - name: "entity_filter"
+      type: "string"
+      description: "Filter to specific entity packages"
+
+  context_requirements:
+    - "Filesystem access to codebase"
+    - "Java Spring Boot project with JPA entities"
+
+# ----------------------------------------------------------------------------
+# SECTION 4: Output Artifacts
+# ----------------------------------------------------------------------------
+outputs:
+  primary:
+    - name: "data_model_diagrams"
+      type: "text"
+      format: "ascii-art"
+      path: "ASCII ER diagrams and entity cards"
+      description: "Entity cards, relationship maps, cascade heatmaps"
+
+  secondary:
+    - name: "data_model_report"
+      type: "markdown"
+      format: "report"
+      path: "assessment/{timestamp}/data-model-analysis.md"
+      description: "Comprehensive data model documentation"
+
+# ----------------------------------------------------------------------------
+# SECTION 5: Dependencies & Relationships
+# ----------------------------------------------------------------------------
+dependencies:
+  required_skills: []
+
+  optional_skills:
+    - name: "api-contract-discovery"
+      purpose: "How entities surface in APIs"
+    - name: "dependency-flow-visualizer"
+      purpose: "Data flow tracing"
+
+  tools: []
+
+packages: []
+
+# ----------------------------------------------------------------------------
+# SECTION 6: Workflow Relationships
+# ----------------------------------------------------------------------------
+workflow:
+  predecessors:
+    - skill: "codebase-architecture-map"
+      provides: "Persistence layer mapping"
+
+  successors: []
+
+  parallel_skills:
+    - skill: "api-contract-discovery"
+      relationship: "Complementary API-to-entity mapping"
+
+  workflow_stage: "discovery"
+  workflow_order: 3.0
+
+# ----------------------------------------------------------------------------
+# SECTION 7: Execution Metadata
+# ----------------------------------------------------------------------------
+execution:
+  estimated_duration: "15-30 minutes"
+  complexity: "medium"
+  resource_requirements:
+    memory: "medium"
+    api_calls: "none"
+
+  retry_policy:
+    max_retries: 1
+    retry_on:
+      - "parse_error"
+
+  timeout: "45 minutes"
+
+# ----------------------------------------------------------------------------
+# SECTION 8: Quality & Validation
+# ----------------------------------------------------------------------------
+quality:
+  validation_rules:
+    - rule: "All entities cataloged"
+      severity: "critical"
+      description: "Find all @Entity and @Document classes"
+
+    - rule: "Relationships mapped"
+      severity: "error"
+      description: "OneToMany, ManyToOne, ManyToMany documented"
+
+    - rule: "Cascade risks identified"
+      severity: "warning"
+      description: "Highlight dangerous cascade configurations"
+
+  success_criteria:
+    - "All entities discovered"
+    - "Relationships mapped"
+    - "Migration history documented"
+    - "Query patterns analyzed"
+
+  output_validation:
+    - check: "entities_complete"
+      description: "All JPA entities found and documented"
+
+# ----------------------------------------------------------------------------
+# SECTION 9: Documentation & Learning
+# ----------------------------------------------------------------------------
+documentation:
+  detailed_methodology: "methodology.md"
+  examples: "examples.md"
+
+  usage_examples:
+    - scenario: "Understand database structure"
+      input: "Path to Spring Boot codebase"
+      output: "ER diagrams, entity cards, relationship maps"
+
+  best_practices:
+    - practice: "Check for N+1 risks"
+      rationale: "Common JPA performance issue"
+
+    - practice: "Document fetch strategies"
+      rationale: "EAGER vs LAZY affects performance"
+
+# ----------------------------------------------------------------------------
+# SECTION 10: Use Cases & Target Audience
+# ----------------------------------------------------------------------------
+use_cases:
+  primary:
+    - use_case: "Data model understanding"
+      description: "Understand entity relationships and database schema"
+      user_types:
+        - "backend_developer"
+        - "qa_engineer"
+
+  target_audience:
+    - role: "Backend Developer"
+      benefit: "Clear data model visualization"
+    - role: "QA Engineer"
+      benefit: "Test data strategy planning"
+
+# ----------------------------------------------------------------------------
+# SECTION 11: Metadata & Governance
+# ----------------------------------------------------------------------------
+governance:
+  owner: "GenAI CoE"
+  review_cycle: "quarterly"
+
+  change_log:
+    - version: "1.0.0"
+      date: "2026-02-13"
+      changes:
+        - "Initial AGENT_SKILL_CARD.yaml creation"
+
+# ----------------------------------------------------------------------------
+# SECTION 12: Analytics & Usage
+# ----------------------------------------------------------------------------
+analytics:
+  track_metrics:
+    - metric: "entities_analyzed"
+      description: "Number of JPA entities processed"
+
+  success_indicators:
+    - indicator: "model_complete"
+      target: "All entities and relationships documented"
+
+# ----------------------------------------------------------------------------
+# SECTION 14: Trigger Phrases
+# ----------------------------------------------------------------------------
+trigger_phrases:
+  - "analyze data model"
+  - "show entity relationships"
+  - "generate ER diagram"
+  - "understand database structure"
+  - "map JPA entities"

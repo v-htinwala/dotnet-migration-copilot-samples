@@ -1,0 +1,123 @@
+// =============================================================================
+// Jest/Vitest Data-Driven Regression Test Template
+// =============================================================================
+// Use this template when user-provided test data (fixtures, golden files)
+// is available. Replace {{PLACEHOLDER}} variables with actual values.
+// =============================================================================
+
+/**
+ * @regression {{CHANGE_DESCRIPTION}}
+ * {{OPTIONAL_REQUIREMENT_TAG}} @requirement {{REQUIREMENT_ID}}
+ */
+
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import { {{MODULE_NAME}} } from '{{MODULE_PATH}}';
+// import { {{DEPENDENCY_TYPE_1}} } from '{{DEPENDENCY_PATH_1}}';
+
+// jest.mock('{{DEPENDENCY_PATH_1}}');
+
+// Helper: load JSON fixture
+const loadFixture = <T>(name: string): T =>
+  JSON.parse(readFileSync(join(__dirname, '{{FIXTURES_DIR}}', name), 'utf-8'));
+
+// Helper: load CSV fixture (skip header row)
+const loadCsvFixture = (name: string): string[][] =>
+  readFileSync(join(__dirname, '{{FIXTURES_DIR}}', name), 'utf-8')
+    .split('\n')
+    .filter(l => l.trim())
+    .slice(1)
+    .map(l => l.split(','));
+
+describe('Regression: {{MODULE_NAME}} (data-driven) — {{CHANGE_DESCRIPTION}}', () => {
+  // let {{MODULE_INSTANCE}}: {{MODULE_NAME}};
+  // let mock{{DEPENDENCY_NAME_1}}: jest.Mocked<{{DEPENDENCY_TYPE_1}}>;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // Initialize module under test
+  });
+
+  // =========================================================================
+  // JSON Fixture-Driven Tests
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — JSON fixture tests', () => {
+    // const validEntity = loadFixture<{{ENTITY_TYPE}}>('{{FIXTURE_FILENAME}}');
+
+    test('with fixture data returns expected result', async () => {
+      // Arrange
+      // mock{{DEPENDENCY_NAME_1}}.method.mockReturnValue(expectedValue);
+
+      // Act
+      // const result = await {{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(validEntity);
+
+      // Assert
+      // expect(result).toBeDefined();
+      // expect(result.status).toBe('CONFIRMED');
+    });
+  });
+
+  // =========================================================================
+  // CSV File-Driven Parameterized Tests
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — CSV fixture tests', () => {
+    // const csvData = loadCsvFixture('{{CSV_FIXTURE_FILENAME}}');
+    //
+    // test.each(csvData)(
+    //   'produces consistent result for (%s, %s)',
+    //   async (inputParam1, inputParam2, expectedResult) => {
+    //     const result = await {{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(
+    //       inputParam1, parseInt(inputParam2)
+    //     );
+    //     expect(result.status).toBe(expectedResult);
+    //   }
+    // );
+  });
+
+  // =========================================================================
+  // Golden-File Assertion Tests
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — golden file tests', () => {
+    test('output still matches golden file', async () => {
+      // Arrange
+      // const input = loadFixture<{{ENTITY_TYPE}}>('{{FIXTURE_FILENAME}}');
+      // mock{{DEPENDENCY_NAME_1}}.method.mockReturnValue(value);
+
+      // Act
+      // const result = await {{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(input);
+
+      // Assert — compare against golden file
+      // const expected = loadFixture('{{EXPECTED_OUTPUT_FILENAME}}');
+      // expect(JSON.parse(JSON.stringify(result))).toEqual(expected);
+    });
+  });
+
+  // =========================================================================
+  // Batch Fixture Tests (Multiple Entities)
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — batch fixture tests', () => {
+    // const entities = loadFixture<{{ENTITY_TYPE}}[]>('{{BATCH_FIXTURE_FILENAME}}');
+    //
+    // test.each(entities.map((e, i) => [i, e]))(
+    //   'processes entity %i correctly',
+    //   async (index, entity) => {
+    //     const result = await {{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(entity);
+    //     expect(result).toBeDefined();
+    //   }
+    // );
+  });
+
+  // =========================================================================
+  // Snapshot Regression with Fixtures
+  // =========================================================================
+
+  // test('fixture-based output shape matches snapshot', () => {
+  //   const input = loadFixture<{{ENTITY_TYPE}}>('{{FIXTURE_FILENAME}}');
+  //   const result = {{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(input);
+  //   expect(result).toMatchSnapshot();
+  // });
+});

@@ -1,0 +1,132 @@
+// =============================================================================
+// Regression Test Template — React (Jest/Vitest + React Testing Library)
+// =============================================================================
+// Fill in placeholders marked with {{PLACEHOLDER}} before use.
+//
+// Placeholders:
+//   {{COMPONENT_NAME}}      — Target component name (e.g., UserProfile)
+//   {{SOURCE_FILE}}         — Path to the source file under test
+//   {{CHANGE_DESCRIPTION}}  — Brief description of the change (e.g., "PR #123")
+//   {{REQUIREMENT_ID}}      — Requirement/ticket ID (e.g., REQ-USER-001)
+//   {{MOCK_MODULE}}         — Module path to mock (e.g., './api/userApi')
+//   {{TEST_FRAMEWORK}}      — 'jest' or 'vitest'
+// =============================================================================
+
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+// For Vitest, uncomment the following:
+// import { describe, test, expect, vi, beforeEach } from 'vitest';
+
+// Import the component under test
+import { {{COMPONENT_NAME}} } from '{{SOURCE_FILE}}';
+
+// @requirement {{REQUIREMENT_ID}}
+describe('Regression: {{COMPONENT_NAME}} after {{CHANGE_DESCRIPTION}}', () => {
+  const user = userEvent.setup();
+
+  // --- Mocks ---
+  // const mockDependency = jest.fn();  // or vi.fn() for Vitest
+  // jest.mock('{{MOCK_MODULE}}', () => ({ ... }));
+
+  beforeEach(() => {
+    // jest.clearAllMocks();  // or vi.clearAllMocks();
+  });
+
+  // =========================================================================
+  // Section 1: Behavior Preservation Tests
+  //   Verify that existing behaviors are unchanged after the modification.
+  // =========================================================================
+
+  describe('rendering behavior', () => {
+    test('[{{REQUIREMENT_ID}}] still renders expected content after changes', () => {
+      // ARRANGE
+      // Set up props and context needed for rendering
+
+      // ACT
+      render(<{{COMPONENT_NAME}} /* props */ />);
+
+      // ASSERT
+      // expect(screen.getByText('...')).toBeInTheDocument();
+      // expect(screen.getByRole('button', { name: /submit/i })).toBeEnabled();
+    });
+
+    test('[{{REQUIREMENT_ID}}] still renders correctly with empty/null data', () => {
+      // ARRANGE — empty or null state
+
+      // ACT
+      render(<{{COMPONENT_NAME}} /* empty props */ />);
+
+      // ASSERT — verify graceful handling
+      // expect(screen.getByText('No data')).toBeInTheDocument();
+    });
+  });
+
+  // =========================================================================
+  // Section 2: Integration Point Tests
+  //   Verify interactions with dependencies (APIs, context, router, etc.)
+  // =========================================================================
+
+  describe('integration points', () => {
+    test('[{{REQUIREMENT_ID}}] still calls API with correct parameters', async () => {
+      // ARRANGE
+      // const mockFetch = jest.fn().mockResolvedValue(mockData);
+
+      // ACT
+      // render(<{{COMPONENT_NAME}} fetchData={mockFetch} />);
+
+      // ASSERT
+      // await waitFor(() => {
+      //   expect(mockFetch).toHaveBeenCalledWith(expectedParams);
+      // });
+    });
+
+    test('[{{REQUIREMENT_ID}}] still dispatches correct action on user interaction', async () => {
+      // ARRANGE
+      // const mockDispatch = jest.fn();
+
+      // ACT
+      // render(<{{COMPONENT_NAME}} />);
+      // await user.click(screen.getByRole('button', { name: /save/i }));
+
+      // ASSERT
+      // expect(mockDispatch).toHaveBeenCalledWith({ type: 'SAVE', payload: ... });
+    });
+  });
+
+  // =========================================================================
+  // Section 3: Error Handling Tests
+  //   Verify exception/error handling still works correctly.
+  // =========================================================================
+
+  describe('error handling', () => {
+    test('[{{REQUIREMENT_ID}}] still handles API errors gracefully', async () => {
+      // ARRANGE
+      // const mockFetch = jest.fn().mockRejectedValue(new Error('API error'));
+
+      // ACT
+      // render(<{{COMPONENT_NAME}} fetchData={mockFetch} />);
+
+      // ASSERT
+      // await waitFor(() => {
+      //   expect(screen.getByText(/error/i)).toBeInTheDocument();
+      // });
+    });
+  });
+
+  // =========================================================================
+  // Section 4: Backward Compatibility Tests
+  //   Verify that previously documented behaviors still hold.
+  // =========================================================================
+
+  describe('backward compatibility', () => {
+    test('[{{REQUIREMENT_ID}}] still accepts legacy props format', () => {
+      // ARRANGE — use the old props format
+
+      // ACT
+      // render(<{{COMPONENT_NAME}} legacyProp={value} />);
+
+      // ASSERT
+      // expect(screen.getByText('...')).toBeInTheDocument();
+    });
+  });
+});

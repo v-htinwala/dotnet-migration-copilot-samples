@@ -1,0 +1,143 @@
+// =============================================================================
+// Angular Data-Driven Regression Test Template
+// =============================================================================
+// Use this template when user-provided test data (fixtures, golden files)
+// is available. Replace {{PLACEHOLDER}} variables with actual values.
+//
+// Fixture loading strategies:
+//   1. TypeScript import: import fixtureData from '{{FIXTURE_PATH}}';
+//   2. fs.readFileSync: for golden file comparisons
+//   3. HttpTestingController.flush: for API response fixtures
+// =============================================================================
+
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
+import { {{CLASS_NAME}} } from './{{FILE_NAME}}';
+// import { {{DEPENDENCY_TYPE_1}} } from './{{DEPENDENCY_PATH_1}}';
+
+// --- Fixture imports ---
+// import fixtureData from '{{FIXTURE_PATH}}';
+// import expectedOutput from '{{EXPECTED_OUTPUT_PATH}}';
+
+// {{OPTIONAL_REQUIREMENT_TAG}} // @requirement {{REQUIREMENT_ID}}
+describe('Regression: {{CLASS_NAME}} — {{CHANGE_DESCRIPTION}} (data-driven)', () => {
+
+  let service: {{CLASS_NAME}};
+  let httpMock: HttpTestingController;
+
+  // --- Mocks ---
+  // let mock{{DEPENDENCY_NAME_1}}: jasmine.SpyObj<{{DEPENDENCY_TYPE_1}}>;
+
+  beforeEach(() => {
+    // mock{{DEPENDENCY_NAME_1}} = jasmine.createSpyObj('{{DEPENDENCY_TYPE_1}}', ['{{METHOD_1}}']);
+
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        {{CLASS_NAME}},
+        // { provide: {{DEPENDENCY_TYPE_1}}, useValue: mock{{DEPENDENCY_NAME_1}} },
+      ]
+    });
+
+    service = TestBed.inject({{CLASS_NAME}});
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
+  });
+
+  // =========================================================================
+  // JSON Fixture-Driven Tests
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — JSON fixture tests', () => {
+
+    // it('should process fixture data correctly', () => {
+    //   fixtureData.forEach((item: any) => {
+    //     const result = service.{{IMPACTED_METHOD}}(item);
+    //     expect(result).toBeTruthy();
+    //   });
+    // });
+
+    // it('should return expected fixture response from API', () => {
+    //   const fixtureResponse = require('{{FIXTURE_PATH}}');
+    //
+    //   service.{{IMPACTED_METHOD}}().subscribe(result => {
+    //     expect(result).toEqual(fixtureResponse);
+    //   });
+    //
+    //   const req = httpMock.expectOne('{{API_ENDPOINT}}');
+    //   req.flush(fixtureResponse);
+    // });
+  });
+
+  // =========================================================================
+  // Parameterized Tests with Fixture Data
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — parameterized fixture tests', () => {
+
+    // --- Jasmine style ---
+    // [
+    //   { input: fixtureData[0], expected: 'result1' },
+    //   { input: fixtureData[1], expected: 'result2' },
+    // ].forEach(({ input, expected }) => {
+    //   it(`should produce ${expected} for fixture ${input.id}`, () => {
+    //     const result = service.{{IMPACTED_METHOD}}(input);
+    //     expect(result).toBe(expected);
+    //   });
+    // });
+
+    // --- Jest style ---
+    // test.each([
+    //   [fixtureData[0], 'result1'],
+    //   [fixtureData[1], 'result2'],
+    // ])('should produce %s for fixture %s', (input, expected) => {
+    //   const result = service.{{IMPACTED_METHOD}}(input);
+    //   expect(result).toBe(expected);
+    // });
+  });
+
+  // =========================================================================
+  // Golden-File Assertion Tests
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — golden file assertions', () => {
+
+    // it('should still produce output matching golden file', () => {
+    //   const input = fixtureData[0];
+    //   const actual = service.{{IMPACTED_METHOD}}(input);
+    //   expect(actual).toEqual(expectedOutput);
+    // });
+
+    // it('should still produce expected JSON structure', () => {
+    //   const fs = require('fs');
+    //   const expectedJson = JSON.parse(
+    //     fs.readFileSync('{{EXPECTED_OUTPUT_PATH}}', 'utf-8')
+    //   );
+    //   const actual = service.{{IMPACTED_METHOD}}(testInput);
+    //   expect(actual).toEqual(expectedJson);
+    // });
+  });
+
+  // =========================================================================
+  // API Response Fixture Tests
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — API response fixture tests', () => {
+
+    // it('should handle paginated fixture response', () => {
+    //   const paginatedFixture = require('{{FIXTURE_PATH}}/paginated-response.json');
+    //
+    //   service.{{IMPACTED_METHOD}}(1, 10).subscribe(result => {
+    //     expect(result.items.length).toBe(paginatedFixture.items.length);
+    //     expect(result.totalCount).toBe(paginatedFixture.totalCount);
+    //   });
+    //
+    //   const req = httpMock.expectOne(req => req.url.includes('{{API_ENDPOINT}}'));
+    //   req.flush(paginatedFixture);
+    // });
+  });
+});

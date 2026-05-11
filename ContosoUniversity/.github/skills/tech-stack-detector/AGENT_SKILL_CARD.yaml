@@ -1,0 +1,75 @@
+# ──────────────────────────────────────────────
+# AGENT SKILL CARD — tech-stack-detector
+# ──────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: tech-stack-detector
+version: "1.0"
+author: functional-test-automation
+license: MIT
+category: testing
+domain: functional-testing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Auto-detects the technology stack, frameworks, languages, and tooling from a
+  codebase directory by analyzing package manifests, directory structures,
+  import patterns, and configuration files.
+tags:
+  - codebase
+  - framework
+  - tech-stack
+  - detection
+  - static-analysis
+  - functional-testing
+keywords:
+  - framework detection
+  - tech stack
+  - package.json
+  - pom.xml
+  - requirements.txt
+  - React
+  - Angular
+  - Vue
+  - Express
+  - Django
+  - Spring Boot
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: codebase_path
+      type: directory_path
+      description: Root directory of the application codebase
+    - name: output_dir
+      type: directory_path
+      description: Output directory for stack-profile.json
+  optional: []
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: stack-profile.json
+      type: json
+      description: >
+        Complete tech stack profile with framework identifications,
+        confidence scores, file evidence, and fallback analysis
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python: []
+  notes: >
+    No external dependencies. Detection is purely file-based static analysis
+    using the agent's file reading capabilities.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream: []
+  downstream:
+    - codebase-functional-analyzer  # Consumes stack profile for framework-specific parsing
+    - functional-scenario-merger    # Merges codebase scenario candidates
+platform:
+  - generic
+artifact_type: skill

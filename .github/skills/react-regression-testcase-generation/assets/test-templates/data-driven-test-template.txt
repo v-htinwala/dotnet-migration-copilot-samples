@@ -1,0 +1,95 @@
+// =============================================================================
+// Data-Driven Regression Test Template — React (Jest/Vitest + RTL)
+// =============================================================================
+// Use this template when testing the same behavior across multiple data inputs.
+//
+// Placeholders:
+//   {{COMPONENT_NAME}}      — Target component name (e.g., UserCard)
+//   {{HOOK_NAME}}           — Target hook name (e.g., useFormatCurrency)
+//   {{FUNCTION_NAME}}       — Target utility function name
+//   {{SOURCE_FILE}}         — Path to the source file under test
+//   {{FIXTURE_FILE}}        — Path to the fixture data file (JSON)
+//   {{CHANGE_DESCRIPTION}}  — Description of the change being tested
+//   {{REQUIREMENT_ID}}      — Requirement/ticket ID
+// =============================================================================
+
+import { render, screen } from '@testing-library/react';
+// For Vitest, uncomment:
+// import { describe, test, expect } from 'vitest';
+
+// Import the component/function under test
+// import { {{COMPONENT_NAME}} } from '{{SOURCE_FILE}}';
+// import { {{FUNCTION_NAME}} } from '{{SOURCE_FILE}}';
+
+// Option 1: Load fixture data from JSON file
+// import fixtureData from '{{FIXTURE_FILE}}';
+
+// Option 2: Define test data inline
+// const testData = [
+//   { input: ..., expected: ... },
+//   { input: ..., expected: ... },
+// ];
+
+// @requirement {{REQUIREMENT_ID}}
+describe('Regression (data-driven): {{COMPONENT_NAME}} after {{CHANGE_DESCRIPTION}}', () => {
+
+  // =========================================================================
+  // Variant A: Component rendering with different prop sets
+  // =========================================================================
+
+  describe('rendering with fixture data', () => {
+    // Using test.each with inline data
+    test.each([
+      // [description, props, expectedText]
+      ['normal user', { name: 'Alice', role: 'user' }, 'Alice'],
+      ['admin user', { name: 'Bob', role: 'admin' }, 'Admin: Bob'],
+      ['empty name', { name: '', role: 'user' }, 'Unknown User'],
+      ['null props', { name: null, role: null }, 'Unknown User'],
+    ])('still renders correctly for %s', (description, props, expectedText) => {
+      // render(<{{COMPONENT_NAME}} {...props} />);
+      // expect(screen.getByText(expectedText)).toBeInTheDocument();
+    });
+  });
+
+  // =========================================================================
+  // Variant B: Utility function with inline test.each
+  // =========================================================================
+
+  describe('function output verification', () => {
+    test.each([
+      // [input, expected]
+      [1234.56, '$1,234.56'],
+      [0, '$0.00'],
+      [-100, '-$100.00'],
+      [null, '$0.00'],
+      [undefined, '$0.00'],
+    ])('{{FUNCTION_NAME}}(%s) should still produce %s', (input, expected) => {
+      // expect({{FUNCTION_NAME}}(input)).toBe(expected);
+    });
+  });
+
+  // =========================================================================
+  // Variant C: Fixture file-driven test
+  // =========================================================================
+
+  describe('fixture-driven assertions', () => {
+    // test.each(fixtureData)('should handle case: $description', (fixture) => {
+    //   render(<{{COMPONENT_NAME}} data={fixture.input} />);
+    //   expect(screen.getByText(fixture.expected)).toBeInTheDocument();
+    // });
+  });
+
+  // =========================================================================
+  // Variant D: Custom hook with varied inputs
+  // =========================================================================
+
+  describe('hook behavior across inputs', () => {
+    // test.each([
+    //   [{ input: 'scenario1' }, { expectedOutput: 'result1' }],
+    //   [{ input: 'scenario2' }, { expectedOutput: 'result2' }],
+    // ])('{{HOOK_NAME}} still produces correct output for %j', (hookInput, expected) => {
+    //   const { result } = renderHook(() => {{HOOK_NAME}}(hookInput.input));
+    //   expect(result.current).toEqual(expected.expectedOutput);
+    // });
+  });
+});

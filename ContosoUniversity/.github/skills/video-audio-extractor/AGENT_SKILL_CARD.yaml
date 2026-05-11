@@ -1,0 +1,91 @@
+# ──────────────────────────────────────────────
+# AGENT SKILL CARD — video-audio-extractor
+# ──────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: video-audio-extractor
+version: "1.0"
+author: functional-test-automation
+license: MIT
+category: testing
+domain: video-processing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Extracts audio tracks from video files (MP4/AVI/MKV/MOV) and generates
+  timestamped text transcripts using ffmpeg and whisper. Also accepts
+  user-provided transcript files (TXT/SRT/VTT) as alternative input.
+tags:
+  - video
+  - audio
+  - transcript
+  - ffmpeg
+  - whisper
+  - functional-testing
+keywords:
+  - audio extraction
+  - video transcription
+  - speech-to-text
+  - narration
+  - voiceover
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: video_path
+      type: file_path
+      description: Path to video file (MP4/AVI/MKV/MOV). Required unless transcript_path provided.
+      formats: [mp4, avi, mkv, mov]
+    - name: output_dir
+      type: directory_path
+      description: Output directory for audio.wav and transcript.json
+  optional:
+    - name: transcript_path
+      type: file_path
+      description: Path to user-provided transcript (TXT/SRT/VTT). Skips extraction if provided.
+      formats: [txt, srt, vtt]
+    - name: whisper_model
+      type: string
+      description: Whisper model size for transcription
+      default: base
+      allowed_values: [tiny, base, small, medium, large]
+    - name: language
+      type: string
+      description: Language hint for whisper (ISO 639-1 code)
+      default: auto-detect
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: transcript.json
+      type: json
+      description: Timestamped transcript segments with start/end times and text
+  secondary:
+    - name: audio.wav
+      type: audio
+      description: Extracted audio track (16kHz mono WAV). Not produced when transcript_path is provided.
+
+# ── Dependencies ──
+dependencies:
+  system:
+    - name: ffmpeg
+      install: "Download from https://ffmpeg.org/download.html or brew install ffmpeg"
+    - name: ffprobe
+      install: "Included with ffmpeg installation"
+  python:
+    - name: openai-whisper
+      install: "pip install openai-whisper"
+    - name: torch
+      install: "Installed automatically with openai-whisper"
+
+# ── Pipeline Position ──
+pipeline:
+  upstream:
+    - video-frame-extract  # Extracts frames from same video
+  downstream:
+    - video-journey-analyzer  # Consumes transcript for narration-visual correlation
+    - functional-scenario-merger  # Merges enriched video scenarios
+platform:
+  - generic
+artifact_type: skill

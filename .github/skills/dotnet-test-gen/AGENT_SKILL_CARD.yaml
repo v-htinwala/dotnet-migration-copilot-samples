@@ -1,0 +1,107 @@
+# ============================================================================
+# AGENT_SKILL_CARD.yaml - dotnet-test-gen
+# ============================================================================
+# Comprehensive agent configuration following AGENT_CARD_SCHEMA.yaml template
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SECTION 1: Core Metadata
+# ----------------------------------------------------------------------------
+name: "dotnet-test-gen"
+version: "1.0.0"
+description: |
+  Generate comprehensive unit tests for .NET / ASP.NET Core projects using
+  xUnit, NUnit, or MSTest. Auto-detects test framework, mocking library
+  (Moq or NSubstitute), and project structure. Produces C# test files with
+  WebApplicationFactory for integration slices, FluentAssertions for
+  readability, and Coverlet for coverage. Covers controllers, services,
+  repositories (EF Core), middleware, background services, minimal APIs,
+  and utility classes.
+author: "specification-project"
+created_date: "2026-04-24"
+last_updated: "2026-04-24"
+platform:
+  - generic
+artifact_type: skill
+
+# ----------------------------------------------------------------------------
+# SECTION 2: Categorization & Discovery
+# ----------------------------------------------------------------------------
+category: "generator"
+domain: "dotnet-testing"
+tags:
+  - dotnet
+  - aspnet-core
+  - csharp
+  - xunit
+  - nunit
+  - mstest
+  - moq
+  - unit-tests
+  - test-generation
+
+keywords:
+  - "generate .NET tests"
+  - "C# unit tests"
+  - "xUnit test generation"
+  - "ASP.NET Core test scaffolding"
+  - "controller test generation"
+
+# ----------------------------------------------------------------------------
+# SECTION 3: Input Requirements
+# ----------------------------------------------------------------------------
+inputs:
+  required:
+    - name: "project_path"
+      type: "path"
+      description: ".NET project root containing .sln or .csproj"
+
+  optional:
+    - name: "test_framework"
+      type: "string"
+      description: "xUnit, NUnit, or MSTest (auto-detected from project)"
+    - name: "target_files"
+      type: "list"
+      description: "Specific C# files or directories to generate tests for"
+    - name: "coverage_gaps"
+      type: "boolean"
+      description: "Focus on coverage gap filling (default: false)"
+    - name: "mocking_library"
+      type: "string"
+      description: "Moq or NSubstitute (auto-detected from project)"
+
+  context_requirements:
+    - ".NET 8+ SDK installed"
+    - "Solution or project file present"
+    - "xUnit, NUnit, or MSTest test project configured"
+
+# ----------------------------------------------------------------------------
+# SECTION 4: Output Artifacts
+# ----------------------------------------------------------------------------
+outputs:
+  primary:
+    - name: "test_files"
+      type: "files"
+      format: "csharp"
+      path: "**/*Tests.cs"
+      description: "Unit test files mirroring source project structure"
+
+  secondary:
+    - name: "test_summary"
+      type: "markdown"
+      format: "report"
+      path: "test-generation-report.md"
+      description: "Summary of generated tests and coverage analysis"
+
+# ----------------------------------------------------------------------------
+# SECTION 5: Dependencies & Relationships
+# ----------------------------------------------------------------------------
+dependencies:
+  required_skills: []
+
+  optional_skills:
+    - name: "csharp-regression-testcase-generation"
+      purpose: "Regression-focused test generation for .NET"
+
+  tools:
+    - "Bash(dotnet:*)"

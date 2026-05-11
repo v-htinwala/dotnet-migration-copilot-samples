@@ -1,0 +1,82 @@
+# ──────────────────────────────────────────────
+# AGENT SKILL CARD — functional-scenario-merger
+# ──────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: functional-scenario-merger
+version: "1.0"
+author: functional-test-automation
+license: MIT
+category: testing
+domain: functional-testing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Merges functional test scenario candidates from video, URL, and codebase
+  sources into a unified feature map with union of discovered fields,
+  confidence scoring, and conflict flagging.
+tags:
+  - merger
+  - scenario
+  - deduplication
+  - feature-map
+  - functional-testing
+keywords:
+  - scenario merge
+  - feature mapping
+  - multi-source
+  - confidence scoring
+  - conflict detection
+  - union merge
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: output_dir
+      type: directory_path
+      description: Output directory for merged artifacts
+  optional:
+    - name: video_candidates
+      type: file_path
+      description: Path to scenario-candidates.jsonl from video-journey-analyzer
+    - name: url_candidates
+      type: file_path
+      description: Path to scenario-candidates.jsonl from url-functional-explorer
+    - name: codebase_candidates
+      type: file_path
+      description: Path to scenario-candidates.jsonl from codebase-functional-analyzer
+  constraints:
+    - At least one candidate file (video, url, or codebase) must be provided
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: merged-scenarios.jsonl
+      type: jsonl
+      description: Unified scenario set with union of fields from all sources
+    - name: feature-map.json
+      type: json
+      description: Feature inventory for human checkpoint review
+  secondary:
+    - name: merge-report.json
+      type: json
+      description: Merge statistics — duplicates, conflicts, source counts
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python: []
+  notes: No external dependencies. Purely file-based merge logic.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream:
+    - video-journey-analyzer       # Provides video scenario candidates
+    - url-functional-explorer      # Provides URL scenario candidates
+    - codebase-functional-analyzer # Provides codebase scenario candidates
+  downstream:
+    - functional-test-generator    # Consumes merged-scenarios.jsonl
+platform:
+  - generic
+artifact_type: skill

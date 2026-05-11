@@ -1,0 +1,97 @@
+# ──────────────────────────────────────────────────────
+# AGENT SKILL CARD — video-functional-journey-analyzer
+# ──────────────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: video-functional-journey-analyzer
+version: "1.0"
+author: functional-test-automation
+license: MIT
+category: testing
+domain: video-processing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Analyzes extracted video frames using multimodal capability to produce
+  functional test scenario candidates with technical detail. Extracts exact
+  field names, validation indicators, error messages, and API patterns via
+  OCR (enabled by default). Outputs scenario candidates with discovered_fields,
+  discovered_validations, and discovered_endpoints for the functional pipeline.
+tags:
+  - video-analysis
+  - multimodal
+  - functional-testing
+  - ocr
+  - transcript
+  - scenario-candidates
+  - technical-detail
+keywords:
+  - video frames
+  - scene analysis
+  - functional test scenarios
+  - OCR enrichment
+  - field extraction
+  - validation detection
+  - technical identifiers
+  - form field analysis
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: frames_dir
+      type: directory_path
+      description: Directory containing extracted frames (PNG) from video-functional-frame-extract
+    - name: manifest_path
+      type: file_path
+      description: Path to manifest.json from video-functional-frame-extract
+  optional:
+    - name: output_dir
+      type: directory_path
+      default: functional-tests/intermediate/video
+      description: Output directory for journey artifacts
+    - name: ocr_enabled
+      type: boolean
+      default: true
+      description: >
+        Enable OCR text extraction from frames. Default ON for functional
+        pipeline — extracts exact field names, validation text, error messages.
+    - name: transcript_path
+      type: file_path
+      description: >
+        Path to transcript.json from video-audio-extractor. When provided,
+        correlates timestamped narration segments with scenes and extracts
+        technical hints from narrator commentary.
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: journeys.jsonl
+      type: jsonl
+      description: Structured functional workflows with scene references and technical detail
+    - name: scenario-candidates.jsonl
+      type: jsonl
+      description: Functional test scenario candidates tagged source "video" with discovered_fields, discovered_validations, discovered_endpoints
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python: []
+  skills:
+    - video-functional-frame-extract  # Must run first to produce frames/ and manifest.json
+  optional_skills:
+    - video-audio-extractor  # Provides transcript.json for narration correlation
+  notes: >
+    No external dependencies beyond the model's multimodal capability. OCR mode
+    leverages the same multimodal capability with focused text extraction prompts.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream:
+    - video-functional-frame-extract  # Provides frames/ and manifest.json
+    - video-audio-extractor           # Provides transcript.json (optional)
+  downstream:
+    - functional-scenario-merger      # Consumes scenario-candidates.jsonl
+platform:
+  - generic
+artifact_type: skill

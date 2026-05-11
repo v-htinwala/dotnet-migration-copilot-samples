@@ -1,0 +1,90 @@
+# =============================================================================
+# Regression Scenarios Example — Angular
+# =============================================================================
+# Define regression scenarios to ensure critical business flows are tested
+# after code changes. Each scenario targets specific source files and defines
+# expected behaviors that must be preserved.
+#
+# Place this file in the project root or specify its path via the
+# `regression_scenarios` user input or `.regression-config.json`.
+# =============================================================================
+
+scenarios:
+
+  - name: PaymentProcessingIntegrity
+    description: >
+      Ensure payment processing still works correctly after payment service
+      refactoring. The payment flow must validate card details, call the
+      payment API, update the order status, and show a confirmation message.
+    target_files:
+      - "src/app/payment/**"
+      - "src/app/services/payment.service.ts"
+      - "src/app/services/order.service.ts"
+    expected_behaviors:
+      - "PaymentService.processPayment calls the payment API with correct payload"
+      - "PaymentService.processPayment returns success Observable for valid card"
+      - "PaymentService.processPayment returns error Observable for invalid card"
+      - "PaymentComponent shows confirmation message on successful payment"
+      - "PaymentService.refundPayment calls refund API and updates order status"
+    requirement_ids:
+      - "REQ-PAY-001"
+      - "REQ-PAY-002"
+    priority: critical
+
+  - name: AuthGuardBackwardCompat
+    description: >
+      Verify that the AuthGuard still correctly protects routes after the
+      authentication service refactoring. Unauthenticated users must be
+      redirected to the login page, and authenticated users must access
+      protected routes.
+    target_files:
+      - "src/app/guards/auth.guard.ts"
+      - "src/app/services/auth.service.ts"
+      - "src/app/interceptors/token.interceptor.ts"
+    expected_behaviors:
+      - "AuthGuard allows access for authenticated users (returns true)"
+      - "AuthGuard redirects unauthenticated users to /login (returns UrlTree)"
+      - "TokenInterceptor still adds Authorization header to outgoing requests"
+      - "TokenInterceptor still skips auth header for public API endpoints"
+      - "AuthService.isAuthenticated returns correct boolean based on token validity"
+    requirement_ids:
+      - "REQ-AUTH-101"
+    priority: critical
+
+  - name: UserRegistrationFlow
+    description: >
+      Ensure the user registration form maintains backward compatibility
+      after validation changes. Existing validation rules must still apply,
+      and the form submission must call the correct API endpoint.
+    target_files:
+      - "src/app/components/registration/**"
+      - "src/app/services/user.service.ts"
+      - "src/app/validators/**"
+    expected_behaviors:
+      - "Registration form validates email format (rejects invalid, accepts valid)"
+      - "Registration form validates password strength (min length, special chars)"
+      - "Registration form validates password confirmation match"
+      - "UserService.register calls POST /api/users with form data"
+      - "Registration component shows success message after successful registration"
+      - "Registration component shows validation errors for invalid input"
+    requirement_ids:
+      - "REQ-USR-201"
+      - "REQ-USR-202"
+    priority: high
+
+  - name: APIResponseContractStability
+    description: >
+      Verify that all HTTP services maintain their response parsing contract
+      (field names, types, error handling) after the DTO/interface refactoring.
+    target_files:
+      - "src/app/services/**"
+      - "src/app/models/**"
+      - "src/app/interfaces/**"
+    expected_behaviors:
+      - "All service GET methods parse response bodies with correct field mappings"
+      - "All service methods handle 4xx/5xx errors with appropriate error messages"
+      - "Paginated responses parse totalElements, totalPages, content fields"
+      - "Date fields are correctly parsed from ISO string format"
+    requirement_ids:
+      - "REQ-API-301"
+    priority: medium

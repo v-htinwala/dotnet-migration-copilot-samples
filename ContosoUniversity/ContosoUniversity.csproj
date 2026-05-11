@@ -1,350 +1,333 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>
-    </ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8F1F2C91-8D72-4F8B-9A4A-3B2C5D6E7F8A}</ProjectGuid>
-    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ContosoUniversity</RootNamespace>
-    <AssemblyName>ContosoUniversity</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress />
-    <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode />
-    <UseGlobalApplicationHostFile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyTitle>ContosoUniversity</AssemblyTitle>
+    <Product>ContosoUniversity</Product>
+    <Copyright>Copyright ©  2024</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Routing" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Messaging" />
-    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.Web.Infrastructure.2.0.1\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-    </Reference>
-    <Reference Include="System.Net.Http.WebRequest">
-    </Reference>
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Optimization">
-      <HintPath>packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WebGrease">
-      <Private>True</Private>
-      <HintPath>packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
-    </Reference>
-    <Reference Include="Antlr3.Runtime">
-      <Private>True</Private>
-      <HintPath>packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore">
-      <HintPath>packages\Microsoft.EntityFrameworkCore.3.1.32\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Abstractions">
-      <HintPath>packages\Microsoft.EntityFrameworkCore.Abstractions.3.1.32\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.SqlServer">
-      <HintPath>packages\Microsoft.EntityFrameworkCore.SqlServer.3.1.32\lib\netstandard2.0\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Relational">
-      <HintPath>packages\Microsoft.EntityFrameworkCore.Relational.3.1.32\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.SqlClient">
-      <HintPath>packages\Microsoft.Data.SqlClient.2.1.4\lib\net46\Microsoft.Data.SqlClient.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces">
-      <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\netstandard2.0\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions">
-      <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-      <HintPath>packages\Microsoft.Extensions.DependencyInjection.Abstractions.3.1.32\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection">
-      <HintPath>packages\Microsoft.Extensions.DependencyInjection.3.1.32\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Caching.Abstractions">
-      <HintPath>packages\Microsoft.Extensions.Caching.Abstractions.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Caching.Memory">
-      <HintPath>packages\Microsoft.Extensions.Caching.Memory.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Caching.Memory.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration">
-      <HintPath>packages\Microsoft.Extensions.Configuration.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
-      <HintPath>packages\Microsoft.Extensions.Configuration.Abstractions.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Binder">
-      <HintPath>packages\Microsoft.Extensions.Configuration.Binder.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging">
-      <HintPath>packages\Microsoft.Extensions.Logging.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
-      <HintPath>packages\Microsoft.Extensions.Logging.Abstractions.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Options">
-      <HintPath>packages\Microsoft.Extensions.Options.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Primitives">
-      <HintPath>packages\Microsoft.Extensions.Primitives.3.1.32\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Diagnostics.DiagnosticSource">
-      <HintPath>packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>packages\System.Collections.Immutable.1.7.1\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.ComponentModel.Annotations">
-      <HintPath>packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Identity.Client">
-      <HintPath>packages\Microsoft.Identity.Client.4.21.1\lib\net461\Microsoft.Identity.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Content Include=".github\skills\angular-regression-testcase-generation\assets\test-templates\data-driven-test-template.txt" />
+    <Content Include=".github\skills\angular-regression-testcase-generation\assets\test-templates\integration-test-template.txt" />
+    <Content Include=".github\skills\angular-regression-testcase-generation\assets\test-templates\regression-test-template.txt" />
+    <Content Include=".github\skills\csharp-regression-testcase-generation\assets\test-templates\data-driven-test-template.txt" />
+    <Content Include=".github\skills\csharp-regression-testcase-generation\assets\test-templates\integration-test-template.txt" />
+    <Content Include=".github\skills\csharp-regression-testcase-generation\assets\test-templates\regression-test-template.txt" />
+    <Content Include=".github\skills\java-regression-testcase-generation\assets\test-templates\data-driven-test-template.txt" />
+    <Content Include=".github\skills\java-regression-testcase-generation\assets\test-templates\integration-test-template.txt" />
+    <Content Include=".github\skills\java-regression-testcase-generation\assets\test-templates\regression-test-template.txt" />
+    <Content Include=".github\skills\javascript-typescript-regression-testcase-generation\assets\test-templates\data-driven-test-template.txt" />
+    <Content Include=".github\skills\javascript-typescript-regression-testcase-generation\assets\test-templates\integration-test-template.txt" />
+    <Content Include=".github\skills\javascript-typescript-regression-testcase-generation\assets\test-templates\regression-test-template.txt" />
+    <Content Include=".github\skills\react-playwright-regression-testcase-generation\assets\test-templates\component-test-template.txt" />
+    <Content Include=".github\skills\react-playwright-regression-testcase-generation\assets\test-templates\data-driven-test-template.txt" />
+    <Content Include=".github\skills\react-playwright-regression-testcase-generation\assets\test-templates\e2e-test-template.txt" />
+    <Content Include=".github\skills\react-regression-testcase-generation\assets\test-templates\data-driven-test-template.txt" />
+    <Content Include=".github\skills\react-regression-testcase-generation\assets\test-templates\integration-test-template.txt" />
+    <Content Include=".github\skills\react-regression-testcase-generation\assets\test-templates\regression-test-template.txt" />
+    <Content Include=".github\skills\uat-test-playwright-generator\assets\sample-suite-summary.json" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <PackageReference Include="Azure.Identity" Version="1.21.0" />
+    <PackageReference Include="bootstrap" Version="5.3.3" />
+    <PackageReference Include="jQuery" Version="3.7.1" />
+    <PackageReference Include="jQuery.Validation" Version="1.21.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
+    <PackageReference Include="Microsoft.Data.SqlClient.SNI.runtime" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="8.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.23" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="10.0.3" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.83.1" />
+    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Validation" Version="4.0.0" />
+    <PackageReference Include="Modernizr" Version="2.6.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="10.0.3" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
+    <PackageReference Include="WebGrease" Version="1.5.2" />
+    <PackageReference Include="Antlr4" Version="4.6.6" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.2" />
+    <PackageReference Include="MSMQ.Messaging" Version="1.0.4" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\NotificationsController.cs" />
-    <Compile Include="Controllers\StudentsController.cs" />
-    <Compile Include="Controllers\CoursesController.cs" />
-    <Compile Include="Controllers\InstructorsController.cs" />
-    <Compile Include="Controllers\DepartmentsController.cs" />
-    <Compile Include="Data\SchoolContext.cs" />
-    <Compile Include="Data\DbInitializer.cs" />
-    <Compile Include="Data\SchoolContextFactory.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Course.cs" />
-    <Compile Include="Models\CourseAssignment.cs" />
-    <Compile Include="Models\Department.cs" />
-    <Compile Include="Models\Enrollment.cs" />
-    <Compile Include="Models\ErrorViewModel.cs" />
-    <Compile Include="Models\Instructor.cs" />
-    <Compile Include="Models\Notification.cs" />
-    <Compile Include="Models\OfficeAssignment.cs" />
-    <Compile Include="Models\Person.cs" />
-    <Compile Include="Models\Student.cs" />
-    <Compile Include="Models\SchoolViewModels\AssignedCourseData.cs" />
-    <Compile Include="Models\SchoolViewModels\EnrollmentDateGroup.cs" />
-    <Compile Include="Models\SchoolViewModels\InstructorIndexData.cs" />
-    <Compile Include="PaginatedList.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\NotificationService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Site.css" />
-    <Content Include="favicon.ico" />
-    <Content Include="Global.asax" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="ROLE_SETUP_GUIDE.md" />
+    <None Include=".github\agents\change-analyzer.agent.md" />
+    <None Include=".github\agents\functional-review-loop-controller.agent.md" />
+    <None Include=".github\agents\functional-test-orchestrator.agent.md" />
+    <None Include=".github\agents\regression-orchestrator.agent.md" />
+    <None Include=".github\agents\regression-test-generator.agent.md" />
+    <None Include=".github\agents\regression-verifier.agent.md" />
+    <None Include=".github\agents\review-loop-controller.agent.md" />
+    <None Include=".github\agents\risk-scorer.agent.md" />
+    <None Include=".github\agents\test-selector.agent.md" />
+    <None Include=".github\agents\uat-test-orchestrator.agent.md" />
+    <None Include=".github\agents\unit-test-compiler-angular.agent.md" />
+    <None Include=".github\agents\unit-test-compiler-dotnet.agent.md" />
+    <None Include=".github\agents\unit-test-compiler-express.agent.md" />
+    <None Include=".github\agents\unit-test-compiler-java-spock.agent.md" />
+    <None Include=".github\agents\unit-test-compiler-java-spring.agent.md" />
+    <None Include=".github\agents\unit-test-compiler-nextjs.agent.md" />
+    <None Include=".github\agents\unit-test-coverage-angular.agent.md" />
+    <None Include=".github\agents\unit-test-coverage-dotnet.agent.md" />
+    <None Include=".github\agents\unit-test-coverage-express.agent.md" />
+    <None Include=".github\agents\unit-test-coverage-java-spock.agent.md" />
+    <None Include=".github\agents\unit-test-coverage-java-spring.agent.md" />
+    <None Include=".github\agents\unit-test-coverage-nextjs.agent.md" />
+    <None Include=".github\agents\unit-test-generator-angular.agent.md" />
+    <None Include=".github\agents\unit-test-generator-dotnet.agent.md" />
+    <None Include=".github\agents\unit-test-generator-express.agent.md" />
+    <None Include=".github\agents\unit-test-generator-java-spock.agent.md" />
+    <None Include=".github\agents\unit-test-generator-java-spring.agent.md" />
+    <None Include=".github\agents\unit-test-generator-nextjs.agent.md" />
+    <None Include=".github\agents\unit-test-orchestrator.agent.md" />
+    <None Include=".github\agents\unit-test-scanner-angular.agent.md" />
+    <None Include=".github\agents\unit-test-scanner-dotnet.agent.md" />
+    <None Include=".github\agents\unit-test-scanner-express.agent.md" />
+    <None Include=".github\agents\unit-test-scanner-java-spock.agent.md" />
+    <None Include=".github\agents\unit-test-scanner-java-spring.agent.md" />
+    <None Include=".github\agents\unit-test-scanner-nextjs.agent.md" />
+    <None Include=".github\agents\unit-test-verifier-angular.agent.md" />
+    <None Include=".github\agents\unit-test-verifier-dotnet.agent.md" />
+    <None Include=".github\agents\unit-test-verifier-express.agent.md" />
+    <None Include=".github\agents\unit-test-verifier-java-spock.agent.md" />
+    <None Include=".github\agents\unit-test-verifier-java-spring.agent.md" />
+    <None Include=".github\agents\unit-test-verifier-nextjs.agent.md" />
+    <None Include=".github\copilot-instructions.md" />
+    <None Include=".github\GITIGNORE-STRUCTURE.md" />
+    <None Include=".github\skills\angular-regression-testcase-generation\assets\regression-scenarios.example.yml" />
+    <None Include=".github\skills\angular-regression-testcase-generation\references\qualification-criteria.md" />
+    <None Include=".github\skills\angular-regression-testcase-generation\references\regression-patterns.md" />
+    <None Include=".github\skills\angular-regression-testcase-generation\scripts\analyze-changes.py" />
+    <None Include=".github\skills\angular-regression-testcase-generation\scripts\build-dependency-graph.py" />
+    <None Include=".github\skills\angular-regression-testcase-generation\scripts\calculate-risk-scores.py" />
+    <None Include=".github\skills\angular-regression-testcase-generation\scripts\check-coverage.py" />
+    <None Include=".github\skills\angular-regression-testcase-generation\scripts\list-existing-tests.py" />
+    <None Include=".github\skills\angular-regression-testcase-generation\scripts\run-regression-tests.py" />
+    <None Include=".github\skills\angular-regression-testcase-generation\scripts\select-tests.py" />
+    <None Include=".github\skills\angular-regression-testcase-generation\SKILL.md" />
+    <None Include=".github\skills\angular-test-gen\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\angular-test-gen\references\angular-layer-testing.md" />
+    <None Include=".github\skills\angular-test-gen\references\angular-mocking-guide.md" />
+    <None Include=".github\skills\angular-test-gen\references\angular-testbed-patterns.md" />
+    <None Include=".github\skills\angular-test-gen\references\istanbul-coverage-patterns.md" />
+    <None Include=".github\skills\angular-test-gen\references\jasmine-karma-patterns.md" />
+    <None Include=".github\skills\angular-test-gen\SKILL.md" />
+    <None Include=".github\skills\bdd-gherkin-generator\references\output-paths.md" />
+    <None Include=".github\skills\bdd-gherkin-generator\references\scenario-patterns.md" />
+    <None Include=".github\skills\bdd-gherkin-generator\references\stack-detection.md" />
+    <None Include=".github\skills\bdd-gherkin-generator\SKILL.md" />
+    <None Include=".github\skills\bdd-gherkin-generator\templates\feature.template" />
+    <None Include=".github\skills\codebase-architecture-map\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\codebase-functional-analyzer\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\codebase-functional-analyzer\references\framework-parsers.md" />
+    <None Include=".github\skills\codebase-functional-analyzer\references\output-schemas.md" />
+    <None Include=".github\skills\codebase-functional-analyzer\SKILL.md" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\assets\regression-scenarios.example.yml" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\references\qualification-criteria.md" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\references\regression-patterns.md" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\scripts\analyze-changes.py" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\scripts\build-dependency-graph.py" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\scripts\calculate-risk-scores.py" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\scripts\check-coverage.py" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\scripts\list-existing-tests.py" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\scripts\run-regression-tests.py" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\scripts\select-tests.py" />
+    <None Include=".github\skills\csharp-regression-testcase-generation\SKILL.md" />
+    <None Include=".github\skills\data-model-analysis\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\data-model-analysis\scripts\scan_entities.py" />
+    <None Include=".github\skills\data-model-analysis\SKILL.md" />
+    <None Include=".github\skills\dotnet-test-gen\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\dotnet-test-gen\references\aspnet-testing-patterns.md" />
+    <None Include=".github\skills\dotnet-test-gen\references\coverlet-coverage-patterns.md" />
+    <None Include=".github\skills\dotnet-test-gen\references\dotnet-layer-testing.md" />
+    <None Include=".github\skills\dotnet-test-gen\references\dotnet-mocking-guide.md" />
+    <None Include=".github\skills\dotnet-test-gen\references\xunit-nunit-mstest-patterns.md" />
+    <None Include=".github\skills\dotnet-test-gen\SKILL.md" />
+    <None Include=".github\skills\express-test-gen\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\express-test-gen\references\express-layer-testing.md" />
+    <None Include=".github\skills\express-test-gen\references\express-mocking-guide.md" />
+    <None Include=".github\skills\express-test-gen\references\istanbul-c8-coverage-patterns.md" />
+    <None Include=".github\skills\express-test-gen\references\jest-mocha-vitest-patterns.md" />
+    <None Include=".github\skills\express-test-gen\references\supertest-patterns.md" />
+    <None Include=".github\skills\express-test-gen\SKILL.md" />
+    <None Include=".github\skills\functional-excel-workbook-generator\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\functional-excel-workbook-generator\references\batching-guide.md" />
+    <None Include=".github\skills\functional-excel-workbook-generator\references\functional-test-excel-config.md" />
+    <None Include=".github\skills\functional-excel-workbook-generator\SKILL.md" />
+    <None Include=".github\skills\functional-qualification-gate\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\functional-qualification-gate\SKILL.md" />
+    <None Include=".github\skills\functional-scenario-merger\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\functional-scenario-merger\references\confidence-scoring.md" />
+    <None Include=".github\skills\functional-scenario-merger\references\merging-algorithm.md" />
+    <None Include=".github\skills\functional-scenario-merger\SKILL.md" />
+    <None Include=".github\skills\functional-test-generator\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\functional-test-generator\references\schema-reference.md" />
+    <None Include=".github\skills\functional-test-generator\references\test-category-rules.md" />
+    <None Include=".github\skills\functional-test-generator\references\test-data-patterns.md" />
+    <None Include=".github\skills\functional-test-generator\SKILL.md" />
+    <None Include=".github\skills\functional-test-reviewer\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\functional-test-reviewer\SKILL.md" />
+    <None Include=".github\skills\java-regression-testcase-generation\assets\regression-scenarios.example.yml" />
+    <None Include=".github\skills\java-regression-testcase-generation\references\qualification-criteria.md" />
+    <None Include=".github\skills\java-regression-testcase-generation\references\regression-patterns.md" />
+    <None Include=".github\skills\java-regression-testcase-generation\scripts\analyze-changes.py" />
+    <None Include=".github\skills\java-regression-testcase-generation\scripts\build-dependency-graph.py" />
+    <None Include=".github\skills\java-regression-testcase-generation\scripts\calculate-risk-scores.py" />
+    <None Include=".github\skills\java-regression-testcase-generation\scripts\check-coverage.py" />
+    <None Include=".github\skills\java-regression-testcase-generation\scripts\list-existing-tests.py" />
+    <None Include=".github\skills\java-regression-testcase-generation\scripts\run-regression-tests.py" />
+    <None Include=".github\skills\java-regression-testcase-generation\scripts\select-tests.py" />
+    <None Include=".github\skills\java-regression-testcase-generation\SKILL.md" />
+    <None Include=".github\skills\java-spock-test-gen\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\java-spock-test-gen\references\jacoco-coverage-patterns.md" />
+    <None Include=".github\skills\java-spock-test-gen\references\spock-core-patterns.md" />
+    <None Include=".github\skills\java-spock-test-gen\references\spock-mocking-guide.md" />
+    <None Include=".github\skills\java-spock-test-gen\references\spock-spring-patterns.md" />
+    <None Include=".github\skills\java-spock-test-gen\references\spring-layer-testing.md" />
+    <None Include=".github\skills\java-spock-test-gen\SKILL.md" />
+    <None Include=".github\skills\java-spring-unit-testing\references\anti-patterns.md" />
+    <None Include=".github\skills\java-spring-unit-testing\references\http-client-testing.md" />
+    <None Include=".github\skills\java-spring-unit-testing\references\patterns-by-layer.md" />
+    <None Include=".github\skills\java-spring-unit-testing\SKILL.md" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\assets\regression-scenarios.example.yml" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\references\qualification-criteria.md" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\references\regression-patterns.md" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\scripts\analyze-changes.py" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\scripts\build-dependency-graph.py" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\scripts\calculate-risk-scores.py" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\scripts\check-coverage.py" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\scripts\list-existing-tests.py" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\scripts\run-regression-tests.py" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\scripts\select-tests.py" />
+    <None Include=".github\skills\javascript-typescript-regression-testcase-generation\SKILL.md" />
+    <None Include=".github\skills\nextjs-test-gen\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\nextjs-test-gen\references\jest-patterns.md" />
+    <None Include=".github\skills\nextjs-test-gen\references\nextjs-mocking-guide.md" />
+    <None Include=".github\skills\nextjs-test-gen\references\react-testing-patterns.md" />
+    <None Include=".github\skills\nextjs-test-gen\references\server-component-testing.md" />
+    <None Include=".github\skills\nextjs-test-gen\references\vitest-patterns.md" />
+    <None Include=".github\skills\nextjs-test-gen\SKILL.md" />
+    <None Include=".github\skills\playwright-cli-regression-analyzer\references\flow-identification-patterns.md" />
+    <None Include=".github\skills\playwright-cli-regression-analyzer\references\risk-scoring-criteria.md" />
+    <None Include=".github\skills\playwright-cli-regression-analyzer\scripts\identify-flows.py" />
+    <None Include=".github\skills\playwright-cli-regression-analyzer\scripts\score-regression-risk.py" />
+    <None Include=".github\skills\playwright-cli-regression-analyzer\SKILL.md" />
+    <None Include=".github\skills\playwright-cli-regression-scenario-generator\assets\regression-scenarios.example.yml" />
+    <None Include=".github\skills\playwright-cli-regression-scenario-generator\references\scenario-templates.md" />
+    <None Include=".github\skills\playwright-cli-regression-scenario-generator\scripts\generate-scenarios.py" />
+    <None Include=".github\skills\playwright-cli-regression-scenario-generator\SKILL.md" />
+    <None Include=".github\skills\playwright-cli-web-discovery\references\exploration-patterns.md" />
+    <None Include=".github\skills\playwright-cli-web-discovery\references\output-schemas.md" />
+    <None Include=".github\skills\playwright-cli-web-discovery\scripts\build-site-map.py" />
+    <None Include=".github\skills\playwright-cli-web-discovery\scripts\extract-api-surface.py" />
+    <None Include=".github\skills\playwright-cli-web-discovery\scripts\parse-snapshot.py" />
+    <None Include=".github\skills\playwright-cli-web-discovery\SKILL.md" />
+    <None Include=".github\skills\qa-validate-bdd-regression\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\qa-validate-bdd-regression\references\edge-case-catalog.md" />
+    <None Include=".github\skills\qa-validate-bdd-regression\references\findings-schema.md" />
+    <None Include=".github\skills\qa-validate-bdd-regression\references\mapping-strategies.md" />
+    <None Include=".github\skills\qa-validate-bdd-regression\SKILL.md" />
+    <None Include=".github\skills\qa-validate-bdd-regression\templates\validation-report.template.md" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\assets\regression-scenarios.example.yml" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\references\playwright-regression-patterns.md" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\references\qualification-criteria.md" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\scripts\analyze-changes.py" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\scripts\build-dependency-graph.py" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\scripts\calculate-risk-scores.py" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\scripts\check-coverage.py" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\scripts\list-existing-tests.py" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\scripts\run-regression-tests.py" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\scripts\select-tests.py" />
+    <None Include=".github\skills\react-playwright-regression-testcase-generation\SKILL.md" />
+    <None Include=".github\skills\react-regression-testcase-generation\assets\regression-scenarios.example.yml" />
+    <None Include=".github\skills\react-regression-testcase-generation\references\qualification-criteria.md" />
+    <None Include=".github\skills\react-regression-testcase-generation\references\regression-patterns.md" />
+    <None Include=".github\skills\react-regression-testcase-generation\scripts\analyze-changes.py" />
+    <None Include=".github\skills\react-regression-testcase-generation\scripts\build-dependency-graph.py" />
+    <None Include=".github\skills\react-regression-testcase-generation\scripts\calculate-risk-scores.py" />
+    <None Include=".github\skills\react-regression-testcase-generation\scripts\check-coverage.py" />
+    <None Include=".github\skills\react-regression-testcase-generation\scripts\list-existing-tests.py" />
+    <None Include=".github\skills\react-regression-testcase-generation\scripts\run-regression-tests.py" />
+    <None Include=".github\skills\react-regression-testcase-generation\scripts\select-tests.py" />
+    <None Include=".github\skills\react-regression-testcase-generation\SKILL.md" />
+    <None Include=".github\skills\scenario-generator\SKILL.md" />
+    <None Include=".github\skills\tech-stack-detector\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\tech-stack-detector\references\framework-catalog.md" />
+    <None Include=".github\skills\tech-stack-detector\SKILL.md" />
+    <None Include=".github\skills\uat-excel-workbook-generator\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\uat-excel-workbook-generator\references\batching-guide.md" />
+    <None Include=".github\skills\uat-excel-workbook-generator\references\excel-templates.md" />
+    <None Include=".github\skills\uat-excel-workbook-generator\references\formatting-guide.md" />
+    <None Include=".github\skills\uat-excel-workbook-generator\scripts\batched_excel.py" />
+    <None Include=".github\skills\uat-excel-workbook-generator\scripts\generate_excel.py" />
+    <None Include=".github\skills\uat-excel-workbook-generator\scripts\jsonl_to_excel.py" />
+    <None Include=".github\skills\uat-excel-workbook-generator\scripts\merge_excel.py" />
+    <None Include=".github\skills\uat-excel-workbook-generator\SKILL.md" />
+    <None Include=".github\skills\uat-qualification-gate\SKILL.md" />
+    <None Include=".github\skills\uat-test-case-generator\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\uat-test-case-generator\SKILL.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\assets\sample-execution-results.jsonl" />
+    <None Include=".github\skills\uat-test-playwright-generator\assets\sample-test-cases.jsonl" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\anti-patterns.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\batching-guide.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\feature-discovery-patterns.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\journey-input-guide.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\phase2-exploration-workflow.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\phase2a-subagent-mode.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\phase2b-streaming-mode.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\playwright-cli-quick-ref.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\test-case-template.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\test-patterns.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\uat-qualification.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\references\workflow-examples.md" />
+    <None Include=".github\skills\uat-test-playwright-generator\scripts\jsonl_to_excel.py" />
+    <None Include=".github\skills\uat-test-playwright-generator\SKILL.md" />
+    <None Include=".github\skills\uat-test-reviewer\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\uat-test-reviewer\SKILL.md" />
+    <None Include=".github\skills\url-functional-explorer\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\url-functional-explorer\references\auth-detection-patterns.md" />
+    <None Include=".github\skills\url-functional-explorer\references\exploration-strategies.md" />
+    <None Include=".github\skills\url-functional-explorer\references\smart-sampling-rules.md" />
+    <None Include=".github\skills\url-functional-explorer\SKILL.md" />
+    <None Include=".github\skills\video-audio-extractor\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\video-audio-extractor\references\supported-formats.md" />
+    <None Include=".github\skills\video-audio-extractor\scripts\extract_audio.py" />
+    <None Include=".github\skills\video-audio-extractor\SKILL.md" />
+    <None Include=".github\skills\video-functional-frame-extract\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\video-functional-frame-extract\references\REFERENCE.md" />
+    <None Include=".github\skills\video-functional-frame-extract\scripts\extract_frames.py" />
+    <None Include=".github\skills\video-functional-frame-extract\SKILL.md" />
+    <None Include=".github\skills\video-functional-journey-analyzer\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\video-functional-journey-analyzer\SKILL.md" />
+    <None Include=".github\skills\video-regression-frame-extract\references\REFERENCE.md" />
+    <None Include=".github\skills\video-regression-frame-extract\scripts\extract_frames.py" />
+    <None Include=".github\skills\video-regression-frame-extract\SKILL.md" />
+    <None Include=".github\skills\video-regression-journey-analyzer\SKILL.md" />
+    <None Include=".github\skills\video-uat-frame-extract\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\video-uat-frame-extract\references\REFERENCE.md" />
+    <None Include=".github\skills\video-uat-frame-extract\scripts\extract_frames.py" />
+    <None Include=".github\skills\video-uat-frame-extract\SKILL.md" />
+    <None Include=".github\skills\video-uat-journey-analyzer\AGENT_SKILL_CARD.yaml" />
+    <None Include=".github\skills\video-uat-journey-analyzer\SKILL.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.js" />
-    <Content Include="Scripts\jquery-3.4.1.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Uploads\TeachingMaterials\course_1045_2b7f6522-b007-4c5d-9304-57b3ef4a182c.jpg" />
-    <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Students\Index.cshtml" />
-    <Content Include="Views\Students\Details.cshtml" />
-    <Content Include="Views\Students\Create.cshtml" />
-    <Content Include="Views\Students\Edit.cshtml" />
-    <Content Include="Views\Students\Delete.cshtml" />
-    <Content Include="Views\Courses\Index.cshtml" />
-    <Content Include="Views\Courses\Details.cshtml" />
-    <Content Include="Views\Courses\Create.cshtml" />
-    <Content Include="Views\Courses\Edit.cshtml" />
-    <Content Include="Views\Courses\Delete.cshtml" />
-    <Content Include="Views\Instructors\Index.cshtml" />
-    <Content Include="Views\Instructors\Details.cshtml" />
-    <Content Include="Views\Instructors\Create.cshtml" />
-    <Content Include="Views\Instructors\Edit.cshtml" />
-    <Content Include="Views\Instructors\Delete.cshtml" />
-    <Content Include="Views\Departments\Index.cshtml" />
-    <Content Include="Views\Departments\Details.cshtml" />
-    <Content Include="Views\Departments\Create.cshtml" />
-    <Content Include="Views\Departments\Edit.cshtml" />
-    <Content Include="Views\Departments\Delete.cshtml" />
-    <Content Include="Uploads\TeachingMaterials\.gitkeep" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
     <None Include="Project_Readme.txt" />
-    <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
-  <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
-    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
-  </Target>
-  <Target Name="CopySQLClientNativeBinaries" AfterTargets="AfterBuild">
-    <!-- Copy SNI native DLLs to bin directory with expected filenames -->
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\packages\Microsoft.Data.SqlClient.SNI.runtime.2.1.1\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll" DestinationFiles="$(OutputPath)Microsoft.Data.SqlClient.SNI.x64.dll" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\packages\Microsoft.Data.SqlClient.SNI.runtime.2.1.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll" DestinationFiles="$(OutputPath)Microsoft.Data.SqlClient.SNI.x86.dll" SkipUnchangedFiles="true" />
-    <!-- Also copy to subdirectories for compatibility -->
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\packages\Microsoft.Data.SqlClient.SNI.runtime.2.1.1\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll" DestinationFolder="$(OutputPath)x64\" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\packages\Microsoft.Data.SqlClient.SNI.runtime.2.1.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll" DestinationFolder="$(OutputPath)x86\" SkipUnchangedFiles="true" />
-  </Target>
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-        <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>58801</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44300/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-        </WebProjectProperties>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
 </Project>

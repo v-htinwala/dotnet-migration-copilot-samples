@@ -1,0 +1,169 @@
+// =============================================================================
+// Jest/Vitest Integration Regression Test Templates
+// =============================================================================
+// Use these templates when test_level is "integration" or "both".
+// Integration tests use *.integration.test.ts suffix.
+//
+// This file contains THREE template variants — use the one matching the
+// JS/TS component type under test.
+// =============================================================================
+
+
+// =============================================================================
+// VARIANT 1: Supertest — Express/Fastify API Integration Regression
+// =============================================================================
+// Use for: Route handlers, REST API endpoints, middleware
+// Dependencies: supertest
+// =============================================================================
+
+/**
+ * @regression {{CHANGE_DESCRIPTION}}
+ * {{OPTIONAL_REQUIREMENT_TAG}} @requirement {{REQUIREMENT_ID}}
+ */
+
+import request from 'supertest';
+// import { createApp } from '{{APP_FACTORY_PATH}}';
+
+describe('Regression: {{MODULE_NAME}} integration — {{CHANGE_DESCRIPTION}}', () => {
+  // const app = createApp();
+
+  // =========================================================================
+  // Endpoint Behavior Tests
+  // =========================================================================
+
+  describe('{{ENDPOINT_METHOD}} {{ENDPOINT_PATH}} — behavior preservation', () => {
+    test('returns expected status for valid request', async () => {
+      // const response = await request(app)
+      //   .get('{{ENDPOINT_PATH}}')
+      //   .expect(200);
+      //
+      // expect(response.body).toHaveProperty('id');
+      // expect(response.body).toHaveProperty('name');
+    });
+
+    test('returns 404 for non-existent resource', async () => {
+      // await request(app)
+      //   .get('{{ENDPOINT_PATH}}/999')
+      //   .expect(404);
+    });
+
+    test('returns 400 for invalid request body', async () => {
+      // await request(app)
+      //   .post('{{ENDPOINT_PATH}}')
+      //   .send({ field: '' })
+      //   .expect(400);
+    });
+  });
+
+  // =========================================================================
+  // Response Structure Tests
+  // =========================================================================
+
+  describe('{{ENDPOINT_PATH}} — response structure', () => {
+    test('response body still contains all required fields', async () => {
+      // const response = await request(app)
+      //   .get('{{ENDPOINT_PATH}}/1')
+      //   .expect(200);
+      //
+      // expect(response.body).toHaveProperty('id');
+      // expect(response.body).toHaveProperty('email');
+      // expect(response.body).toHaveProperty('createdAt');
+    });
+  });
+
+  // =========================================================================
+  // Auth/Middleware Regression
+  // =========================================================================
+
+  describe('{{ENDPOINT_PATH}} — auth regression', () => {
+    test('returns 401 without auth token', async () => {
+      // await request(app)
+      //   .get('{{ENDPOINT_PATH}}')
+      //   .expect(401);
+    });
+
+    test('returns 200 with valid auth token', async () => {
+      // await request(app)
+      //   .get('{{ENDPOINT_PATH}}')
+      //   .set('Authorization', 'Bearer valid-token')
+      //   .expect(200);
+    });
+  });
+});
+
+
+// =============================================================================
+// VARIANT 2: MSW (Mock Service Worker) — External API Integration Regression
+// =============================================================================
+// Use for: API clients, external service integrations
+// Dependencies: msw
+// =============================================================================
+
+// import { setupServer } from 'msw/node';
+// import { http, HttpResponse } from 'msw';
+// import { {{MODULE_NAME}} } from '{{MODULE_PATH}}';
+//
+// const server = setupServer(
+//   http.get('{{EXTERNAL_API_URL}}', () =>
+//     HttpResponse.json({ items: [{ id: 1, name: 'Test' }] })
+//   ),
+// );
+//
+// beforeAll(() => server.listen());
+// afterEach(() => server.resetHandlers());
+// afterAll(() => server.close());
+//
+// describe('Regression: {{MODULE_NAME}} external API integration', () => {
+//   test('fetchData returns expected structure', async () => {
+//     const result = await {{MODULE_INSTANCE}}.fetchData();
+//     expect(result.items).toHaveLength(1);
+//     expect(result.items[0]).toHaveProperty('name');
+//   });
+//
+//   test('fetchData handles server error gracefully', async () => {
+//     server.use(
+//       http.get('{{EXTERNAL_API_URL}}', () =>
+//         HttpResponse.json({ error: 'Internal' }, { status: 500 })
+//       ),
+//     );
+//     await expect({{MODULE_INSTANCE}}.fetchData()).rejects.toThrow();
+//   });
+// });
+
+
+// =============================================================================
+// VARIANT 3: Testcontainers — Real Database Integration Regression
+// =============================================================================
+// Use for: Repository/data access layers, complex queries
+// Dependencies: @testcontainers/postgresql (or similar)
+// =============================================================================
+
+// import { PostgreSqlContainer } from '@testcontainers/postgresql';
+// import { Pool } from 'pg';
+// import { {{MODULE_NAME}} } from '{{MODULE_PATH}}';
+//
+// describe('Regression: {{MODULE_NAME}} (Testcontainers)', () => {
+//   let container: any;
+//   let pool: Pool;
+//
+//   beforeAll(async () => {
+//     container = await new PostgreSqlContainer('postgres:15').start();
+//     pool = new Pool({ connectionString: container.getConnectionUri() });
+//     // Run migrations
+//   }, 60000);
+//
+//   afterAll(async () => {
+//     await pool.end();
+//     await container.stop();
+//   });
+//
+//   test('{{IMPACTED_METHOD}} returns expected results from real database', async () => {
+//     await pool.query(
+//       "INSERT INTO users (email, name) VALUES ('test@example.com', 'Test')"
+//     );
+//     const repo = new {{MODULE_NAME}}(pool);
+//     const result = await repo.{{IMPACTED_METHOD}}('test@example.com');
+//     expect(result).toBeDefined();
+//     expect(result?.name).toBe('Test');
+//   });
+// });

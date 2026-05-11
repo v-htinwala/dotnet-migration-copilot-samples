@@ -1,0 +1,162 @@
+// =============================================================================
+// xUnit Data-Driven Regression Test Template
+// =============================================================================
+// Use this template when user-provided test data (fixtures, SQL seeds, golden
+// files) is available. Replace {{PLACEHOLDER}} variables with actual values.
+// =============================================================================
+
+using Xunit;
+using Moq;
+using System.Text.Json;
+using {{SOURCE_NAMESPACE}};
+
+namespace {{TEST_NAMESPACE}};
+
+/// <summary>
+/// Data-driven regression tests for <see cref="{{CLASS_NAME}}"/> — {{CHANGE_DESCRIPTION}}
+/// </summary>
+[Trait("Category", "Regression")]
+// {{OPTIONAL_REQUIREMENT_TAG}} [Trait("Requirement", "{{REQUIREMENT_ID}}")]
+public class {{CLASS_NAME}}DataDrivenTests
+{
+    private readonly Mock<{{DEPENDENCY_INTERFACE_1}}> _{{DEPENDENCY_NAME_1}};
+    private readonly {{CLASS_NAME}} _sut;
+    private readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
+    public {{CLASS_NAME}}DataDrivenTests()
+    {
+        _{{DEPENDENCY_NAME_1}} = new Mock<{{DEPENDENCY_INTERFACE_1}}>();
+        _sut = new {{CLASS_NAME}}(_{{DEPENDENCY_NAME_1}}.Object);
+    }
+
+    // =========================================================================
+    // JSON Fixture-Driven Tests
+    // =========================================================================
+
+    [Trait("Category", "Regression")]
+    public class {{IMPACTED_METHOD}}FixtureTests : {{CLASS_NAME}}DataDrivenTests
+    {
+        private {{ENTITY_TYPE}} _testEntity = null!;
+
+        public {{IMPACTED_METHOD}}FixtureTests()
+        {
+            // Load test entity from user-provided JSON fixture
+            // var json = File.ReadAllText("{{FIXTURE_PATH}}");
+            // _testEntity = JsonSerializer.Deserialize<{{ENTITY_TYPE}}>(json, _jsonOptions)!;
+        }
+
+        [Fact(DisplayName = "With fixture data still returns expected result")]
+        public async Task WithFixtureData_ReturnsExpected()
+        {
+            // Arrange — mock dependencies as needed
+            // _{{DEPENDENCY_NAME_1}}
+            //     .Setup(d => d.Method(It.IsAny<ArgType>()))
+            //     .ReturnsAsync(expectedValue);
+
+            // Act
+            // var result = await _sut.{{IMPACTED_METHOD}}(_testEntity);
+
+            // Assert — verify same behavior as before
+            // Assert.NotNull(result);
+        }
+    }
+
+    // =========================================================================
+    // CSV File-Driven Parameterized Tests (MemberData)
+    // =========================================================================
+
+    [Trait("Category", "Regression")]
+    public class {{IMPACTED_METHOD}}CsvTests : {{CLASS_NAME}}DataDrivenTests
+    {
+        public static IEnumerable<object[]> LoadCsvFixture()
+        {
+            // Load CSV fixture data — skip header row
+            // var lines = File.ReadAllLines("{{CSV_FIXTURE_PATH}}").Skip(1);
+            // foreach (var line in lines)
+            // {
+            //     var parts = line.Split(',');
+            //     yield return new object[] { parts[0], int.Parse(parts[1]), parts[2] };
+            // }
+            yield break;
+        }
+
+        [Theory]
+        [MemberData(nameof(LoadCsvFixture))]
+        [Trait("Category", "Regression")]
+        public async Task CsvFixture_ProducesConsistentResults(
+            // CSV column parameters — match to fixture CSV columns
+            // string inputParam1, int inputParam2, string expectedResult
+        )
+        {
+            // Arrange
+            // _{{DEPENDENCY_NAME_1}}
+            //     .Setup(d => d.Method(It.IsAny<ArgType>()))
+            //     .ReturnsAsync(value);
+
+            // Act
+            // var result = await _sut.{{IMPACTED_METHOD}}(inputParam1, inputParam2);
+
+            // Assert
+            // Assert.Equal(expectedResult, result);
+        }
+    }
+
+    // =========================================================================
+    // Golden-File Assertion Tests
+    // =========================================================================
+
+    [Trait("Category", "Regression")]
+    public class {{IMPACTED_METHOD}}GoldenFileTests : {{CLASS_NAME}}DataDrivenTests
+    {
+        [Fact(DisplayName = "Output still matches golden file")]
+        public async Task GoldenFile_MatchesExpected()
+        {
+            // Arrange — load input data
+            // var json = File.ReadAllText("{{FIXTURE_PATH}}");
+            // var input = JsonSerializer.Deserialize<{{ENTITY_TYPE}}>(json, _jsonOptions)!;
+            // _{{DEPENDENCY_NAME_1}}
+            //     .Setup(d => d.Method(It.IsAny<ArgType>()))
+            //     .ReturnsAsync(value);
+
+            // Act
+            // var result = await _sut.{{IMPACTED_METHOD}}(input);
+            // var actualJson = JsonSerializer.Serialize(result,
+            //     new JsonSerializerOptions { WriteIndented = true });
+
+            // Assert — compare against golden file
+            // var expectedJson = await File.ReadAllTextAsync("{{EXPECTED_OUTPUT_PATH}}");
+            // Assert.Equal(
+            //     JsonDocument.Parse(expectedJson).RootElement.ToString(),
+            //     JsonDocument.Parse(actualJson).RootElement.ToString());
+        }
+    }
+
+    // =========================================================================
+    // Batch Fixture Tests (Multiple Entities)
+    // =========================================================================
+
+    [Trait("Category", "Regression")]
+    public class {{IMPACTED_METHOD}}BatchTests : {{CLASS_NAME}}DataDrivenTests
+    {
+        public static IEnumerable<object[]> LoadBatchFixtures()
+        {
+            // var json = File.ReadAllText("{{BATCH_FIXTURE_PATH}}");
+            // var entities = JsonSerializer.Deserialize<List<{{ENTITY_TYPE}}>>(json,
+            //     new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            // return entities.Select(e => new object[] { e });
+            yield break;
+        }
+
+        // [Theory]
+        // [MemberData(nameof(LoadBatchFixtures))]
+        // [Trait("Category", "Regression")]
+        // public async Task BatchFixture_ProcessesEachEntityCorrectly({{ENTITY_TYPE}} entity)
+        // {
+        //     var result = await _sut.{{IMPACTED_METHOD}}(entity);
+        //     Assert.NotNull(result);
+        // }
+    }
+}

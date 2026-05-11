@@ -1,0 +1,192 @@
+// =============================================================================
+// Integration Regression Test Template — React (Jest/Vitest + RTL + MSW)
+// =============================================================================
+// Use this template for integration-level regression tests that verify
+// cross-cutting behavior across components, APIs, routing, and state.
+//
+// Three variants:
+//   1. MSW Handler-Based API Integration
+//   2. React Router (MemoryRouter) Integration
+//   3. Full App/Page-Level Rendering with Providers
+//
+// Placeholders:
+//   {{COMPONENT_NAME}}      — Target component name
+//   {{PAGE_NAME}}           — Target page component name
+//   {{SOURCE_FILE}}         — Path to the source file under test
+//   {{API_ENDPOINT}}        — API endpoint path (e.g., /api/users)
+//   {{STORE_REDUCER}}       — Redux reducer import path
+//   {{CHANGE_DESCRIPTION}}  — Description of the change being tested
+//   {{REQUIREMENT_ID}}      — Requirement/ticket ID
+// =============================================================================
+
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+// For Vitest, uncomment:
+// import { describe, test, expect, vi, beforeAll, afterAll, afterEach, beforeEach } from 'vitest';
+
+// ---- Variant 1: MSW Handler-Based API Integration ----
+
+// @requirement {{REQUIREMENT_ID}}
+describe('Integration Regression: {{COMPONENT_NAME}} API Integration', () => {
+  const user = userEvent.setup();
+
+  // ---- MSW Handlers (default success responses) ----
+  const handlers = [
+    http.get('{{API_ENDPOINT}}', () => {
+      return HttpResponse.json([
+        { id: 1, name: 'Alice', email: 'alice@test.com' },
+        { id: 2, name: 'Bob', email: 'bob@test.com' },
+      ]);
+    }),
+
+    http.post('{{API_ENDPOINT}}', async ({ request }) => {
+      const body = await request.json();
+      return HttpResponse.json({ id: 3, ...body }, { status: 201 });
+    }),
+
+    http.put('{{API_ENDPOINT}}/:id', async ({ request, params }) => {
+      const body = await request.json();
+      return HttpResponse.json({ id: params.id, ...body });
+    }),
+
+    http.delete('{{API_ENDPOINT}}/:id', ({ params }) => {
+      return new HttpResponse(null, { status: 204 });
+    }),
+  ];
+
+  const server = setupServer(...handlers);
+
+  beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }));
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
+
+  // ---- Tests ----
+
+  test('[{{REQUIREMENT_ID}}] still fetches and renders data from API', async () => {
+    // render(<{{COMPONENT_NAME}} />);
+
+    // await waitFor(() => {
+    //   expect(screen.getByText('Alice')).toBeInTheDocument();
+    //   expect(screen.getByText('Bob')).toBeInTheDocument();
+    // });
+  });
+
+  test('[{{REQUIREMENT_ID}}] still handles API server error', async () => {
+    server.use(
+      http.get('{{API_ENDPOINT}}', () => {
+        return new HttpResponse(null, { status: 500 });
+      }),
+    );
+
+    // render(<{{COMPONENT_NAME}} />);
+
+    // await waitFor(() => {
+    //   expect(screen.getByText(/error/i)).toBeInTheDocument();
+    // });
+  });
+
+  test('[{{REQUIREMENT_ID}}] still submits data to API on form submit', async () => {
+    // let capturedBody: any;
+    // server.use(
+    //   http.post('{{API_ENDPOINT}}', async ({ request }) => {
+    //     capturedBody = await request.json();
+    //     return HttpResponse.json({ id: 3, ...capturedBody }, { status: 201 });
+    //   }),
+    // );
+
+    // render(<{{COMPONENT_NAME}} />);
+    // await user.type(screen.getByLabelText(/name/i), 'Charlie');
+    // await user.click(screen.getByRole('button', { name: /submit/i }));
+
+    // await waitFor(() => {
+    //   expect(capturedBody).toEqual(expect.objectContaining({ name: 'Charlie' }));
+    // });
+  });
+});
+
+// ---- Variant 2: React Router (MemoryRouter) Integration ----
+
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+
+// @requirement {{REQUIREMENT_ID}}
+describe('Integration Regression: {{PAGE_NAME}} Routing', () => {
+
+  const renderWithRouter = (route: string, ui?: React.ReactElement) => {
+    return render(
+      <MemoryRouter initialEntries={[route]}>
+        <Routes>
+          {/* Define routes matching the app structure */}
+          {/* <Route path="/items" element={<ItemListPage />} /> */}
+          {/* <Route path="/items/:id" element={<ItemDetailPage />} /> */}
+          {/* <Route path="/login" element={<LoginPage />} /> */}
+          {/* <Route path="*" element={<NotFoundPage />} /> */}
+        </Routes>
+      </MemoryRouter>
+    );
+  };
+
+  test('[{{REQUIREMENT_ID}}] still renders correct page for route', () => {
+    // renderWithRouter('/items');
+    // expect(screen.getByText('Item List')).toBeInTheDocument();
+  });
+
+  test('[{{REQUIREMENT_ID}}] still parses route parameters correctly', () => {
+    // renderWithRouter('/items/123');
+    // expect(screen.getByText(/item 123/i)).toBeInTheDocument();
+  });
+
+  test('[{{REQUIREMENT_ID}}] still redirects unauthenticated users', () => {
+    // renderWithRouter('/dashboard');
+    // expect(screen.getByText(/login/i)).toBeInTheDocument();
+  });
+
+  test('[{{REQUIREMENT_ID}}] still shows 404 for unknown routes', () => {
+    // renderWithRouter('/nonexistent');
+    // expect(screen.getByText(/not found/i)).toBeInTheDocument();
+  });
+});
+
+// ---- Variant 3: Full App/Page-Level Rendering with Providers ----
+
+// import { configureStore } from '@reduxjs/toolkit';
+// import { Provider } from 'react-redux';
+// import { reducer as {{STORE_REDUCER}} } from '{{SOURCE_FILE}}';
+
+// @requirement {{REQUIREMENT_ID}}
+describe('Integration Regression: Full Page Rendering', () => {
+
+  // const createTestStore = (preloadedState = {}) =>
+  //   configureStore({
+  //     reducer: { main: {{STORE_REDUCER}} },
+  //     preloadedState,
+  //   });
+
+  // const renderFullPage = (route = '/', preloadedState = {}) => {
+  //   const store = createTestStore(preloadedState);
+  //   return render(
+  //     <Provider store={store}>
+  //       <MemoryRouter initialEntries={[route]}>
+  //         <App />
+  //       </MemoryRouter>
+  //     </Provider>
+  //   );
+  // };
+
+  test('[{{REQUIREMENT_ID}}] still renders the full page with all providers', () => {
+    // renderFullPage('/');
+    // expect(screen.getByText('Welcome')).toBeInTheDocument();
+  });
+
+  test('[{{REQUIREMENT_ID}}] still renders page with preloaded state', () => {
+    // renderFullPage('/dashboard', {
+    //   main: {
+    //     user: { name: 'Alice', role: 'admin' },
+    //     authenticated: true,
+    //   },
+    // });
+    // expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    // expect(screen.getByText('Alice')).toBeInTheDocument();
+  });
+});

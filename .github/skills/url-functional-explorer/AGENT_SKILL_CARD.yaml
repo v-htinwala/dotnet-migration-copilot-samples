@@ -1,0 +1,103 @@
+# ──────────────────────────────────────────────
+# AGENT SKILL CARD — url-functional-explorer
+# ──────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: url-functional-explorer
+version: "1.0"
+author: functional-test-automation
+license: MIT
+category: testing
+domain: functional-testing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Explores a live web application using playwright-cli to discover features,
+  forms, interactions, and behaviors. SPA-aware with DOM-state discovery.
+  Supports read-only, user-guided, and shadow exploration modes.
+tags:
+  - url
+  - playwright
+  - web-exploration
+  - forms
+  - spa
+  - functional-testing
+keywords:
+  - live URL
+  - web application
+  - form discovery
+  - navigation mapping
+  - interaction inventory
+  - DOM state
+  - smart sampling
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: app_url
+      type: url
+      description: Live application URL (base URL)
+    - name: exploration_mode
+      type: string
+      description: "Exploration mode: read-only, user-guided, or shadow"
+      allowed_values: [read-only, user-guided, shadow]
+    - name: output_dir
+      type: directory_path
+      description: Output directory for all exploration artifacts
+  optional:
+    - name: existing_discovery
+      type: file_path
+      description: Path to existing discovery artifacts (component-tree.json from codebase analysis)
+    - name: max_pages
+      type: number
+      description: Maximum number of pages/states to explore
+      default: 50
+    - name: timeout_per_page
+      type: number
+      description: Timeout in milliseconds per page exploration
+      default: 30000
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: site-map.json
+      type: json
+      description: Discovered routes and navigation structure
+    - name: interaction-inventory.json
+      type: json
+      description: Forms, buttons, links, inputs per page
+    - name: scenario-candidates.jsonl
+      type: jsonl
+      description: Functional test scenario candidates tagged source "url"
+  secondary:
+    - name: screenshots/
+      type: directory
+      description: PNG screenshots per discovered page/state
+    - name: snapshots/
+      type: directory
+      description: Accessibility tree snapshots per page/state (YAML)
+
+# ── Dependencies ──
+dependencies:
+  system:
+    - name: playwright-cli
+      install: "npm install -g @playwright/cli@latest"
+    - name: Node.js
+      install: "Node.js 18+ required"
+  python: []
+  notes: >
+    Requires playwright-cli installed globally or via npx (@playwright/cli@latest).
+    Uses named sessions (-s=<name>) for session isolation. All browser interaction
+    is done through playwright-cli commands via Bash tool.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream: []
+  downstream:
+    - functional-scenario-merger  # Consumes scenario-candidates.jsonl
+  parallel:
+    - codebase-functional-analyzer  # Component tree helps SPA correlation
+platform:
+  - generic
+artifact_type: skill

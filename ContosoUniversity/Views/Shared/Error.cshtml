@@ -1,4 +1,4 @@
-@model System.Web.Mvc.HandleErrorInfo
+@model Exception
 
 @{
     ViewBag.Title = "Error";
@@ -7,15 +7,13 @@
 <h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
 
-@if (Model != null && HttpContext.Current.IsDebuggingEnabled)
+@if (Model != null)
 {
     <p>
-        <strong>Exception Details:</strong> @Model.Exception.Message
+        <strong>Exception Details:</strong> @Model.Message
     </p>
     <p>
-        <strong>Controller:</strong> @Model.ControllerName
-    </p>
-    <p>
-        <strong>Action:</strong> @Model.ActionName
+        <strong>Stack Trace:</strong>
+        <pre>@Model.StackTrace</pre>
     </p>
 }

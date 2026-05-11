@@ -1,0 +1,170 @@
+// =============================================================================
+// JUnit 5 + Mockito Regression Test Template
+// =============================================================================
+// Replace {{CLASS_NAME}}, {{PACKAGE}}, {{DEPENDENCY_*}}, {{METHOD_*}},
+// {{CHANGE_DESCRIPTION}}, {{IMPACTED_METHOD}}, {{REQUIREMENT_ID}},
+// {{FIXTURE_PATH}}, {{SQL_SEED_PATH}}, {{SCENARIO_NAME}},
+// {{SCENARIO_DESCRIPTION}} placeholders with actual values.
+// Placeholders in {{OPTIONAL_*}} blocks are omitted when not applicable.
+// =============================================================================
+
+package {{PACKAGE}};
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+@Tag("regression")
+// {{OPTIONAL_REQUIREMENT_TAG}} @Tag("{{REQUIREMENT_ID}}")
+@DisplayName("Regression: {{CLASS_NAME}} — {{CHANGE_DESCRIPTION}}")
+class {{CLASS_NAME}}Test {
+
+    // --- Mocks for constructor-injected dependencies ---
+    @Mock
+    private {{DEPENDENCY_TYPE_1}} {{DEPENDENCY_NAME_1}};
+
+    @Mock
+    private {{DEPENDENCY_TYPE_2}} {{DEPENDENCY_NAME_2}};
+
+    @InjectMocks
+    private {{CLASS_NAME}} {{CLASS_INSTANCE}};
+
+    @BeforeEach
+    void setUp() {
+        // Initialize common test data
+        // {{OPTIONAL_FIXTURE_LOADING}}
+        // ObjectMapper mapper = new ObjectMapper();
+        // testEntity = mapper.readValue(
+        //     getClass().getResourceAsStream("{{FIXTURE_PATH}}"),
+        //     {{ENTITY_TYPE}}.class
+        // );
+    }
+
+    // =========================================================================
+    // Behavior Preservation Tests — {{IMPACTED_METHOD}}
+    // =========================================================================
+
+    @Nested
+    @DisplayName("{{IMPACTED_METHOD}} — behavior preservation")
+    class {{IMPACTED_METHOD}}BehaviorTests {
+
+        @Test
+        @DisplayName("with valid input still returns expected result")
+        void test{{IMPACTED_METHOD}}_withValidInput_returnsExpectedResult() {
+            // Arrange — same setup as before the change
+            // when({{DEPENDENCY_NAME_1}}.method(any())).thenReturn(expectedValue);
+
+            // Act
+            // var result = {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(input);
+
+            // Assert — verify same behavior as before
+            // assertNotNull(result);
+            // assertEquals(expected, result);
+        }
+
+        @Test
+        @DisplayName("with null input still throws exception")
+        void test{{IMPACTED_METHOD}}_withNullInput_throwsException() {
+            // assertThrows(IllegalArgumentException.class,
+            //     () -> {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(null));
+        }
+    }
+
+    // =========================================================================
+    // Integration Point Regression — dependency interactions
+    // =========================================================================
+
+    @Nested
+    @DisplayName("{{IMPACTED_METHOD}} — dependency interactions")
+    class {{IMPACTED_METHOD}}InteractionTests {
+
+        @Test
+        @DisplayName("still calls dependency with correct arguments")
+        void test{{IMPACTED_METHOD}}_callsDependencyCorrectly() {
+            // Arrange
+            // when({{DEPENDENCY_NAME_1}}.method(any())).thenReturn(value);
+
+            // Act
+            // {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(input);
+
+            // Assert — verify dependency interactions unchanged
+            // verify({{DEPENDENCY_NAME_1}}, times(1)).method(any());
+            // ArgumentCaptor<ArgType> captor = ArgumentCaptor.forClass(ArgType.class);
+            // verify({{DEPENDENCY_NAME_1}}).method(captor.capture());
+            // assertEquals(expectedArg, captor.getValue());
+        }
+
+        @Test
+        @DisplayName("when dependency fails still propagates error correctly")
+        void test{{IMPACTED_METHOD}}_whenDependencyFails_propagatesError() {
+            // when({{DEPENDENCY_NAME_1}}.method(any()))
+            //     .thenThrow(new RuntimeException("dependency failed"));
+            // assertThrows(ServiceException.class,
+            //     () -> {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(validInput));
+        }
+    }
+
+    // =========================================================================
+    // Backward Compatibility Tests
+    // =========================================================================
+
+    @Nested
+    @DisplayName("{{IMPACTED_METHOD}} — backward compatibility")
+    class {{IMPACTED_METHOD}}BackwardCompatTests {
+
+        // @ParameterizedTest
+        // @MethodSource("provideRegressionInputs")
+        // @DisplayName("produces consistent results across known inputs")
+        // void test{{IMPACTED_METHOD}}_regressionInputs(InputType input, ExpectedType expected) {
+        //     assertEquals(expected, {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(input));
+        // }
+        //
+        // static Stream<Arguments> provideRegressionInputs() {
+        //     return Stream.of(
+        //         Arguments.of(input1, expected1),
+        //         Arguments.of(input2, expected2)
+        //     );
+        // }
+    }
+
+    // =========================================================================
+    // Scenario-Driven Regression Tests (when scenarios are provided)
+    // =========================================================================
+
+    // {{OPTIONAL_SCENARIO_SECTION}}
+    // @Nested
+    // @Tag("{{REQUIREMENT_ID}}")
+    // @DisplayName("Scenario: {{SCENARIO_NAME}} [{{REQUIREMENT_ID}}]")
+    // class {{SCENARIO_NAME}}Scenario {
+    //
+    //     @Test
+    //     @DisplayName("{{SCENARIO_DESCRIPTION}}")
+    //     void test{{SCENARIO_NAME}}_behaviorPreserved() {
+    //         // Arrange — setup for scenario
+    //         // Act — invoke the scenario flow
+    //         // Assert — verify expected behaviors listed in scenario
+    //     }
+    // }
+}

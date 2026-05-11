@@ -1,0 +1,105 @@
+# ──────────────────────────────────────────────────
+# AGENT SKILL CARD — functional-qualification-gate
+# ──────────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: functional-qualification-gate
+version: "1.0"
+author: functional-test-automation
+license: MIT
+category: testing
+domain: functional-testing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Applies a 6-criteria Functional Test Qualification Gate to merged scenario
+  candidates: testable I/O, determinism, appropriate scope, observable results,
+  specific function coverage, and appropriate technical detail. Filters by
+  confidence threshold, assigns weighted priorities, and applies complexity
+  tier filtering (quick/standard/comprehensive).
+tags:
+  - qualification
+  - filter
+  - priority
+  - functional-testing
+  - confidence
+  - complexity-tier
+keywords:
+  - qualification gate
+  - functional test filter
+  - priority assignment
+  - confidence threshold
+  - complexity tier
+  - scenario qualification
+  - testability check
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: scenarios_path
+      type: file_path
+      description: Path to merged-scenarios.jsonl from functional-scenario-merger
+    - name: complexity_tier
+      type: enum
+      values: [quick, standard, comprehensive]
+      default: standard
+      description: Controls priority filter — quick=P1, standard=P1+P2, comprehensive=P1-P4
+    - name: output_dir
+      type: directory_path
+      description: Output directory for qualified scenarios and report
+  optional:
+    - name: confidence_threshold
+      type: float
+      default: 0.20
+      description: Minimum confidence score to pass gate (0.0-1.0)
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: qualified-scenarios.jsonl
+      type: jsonl
+      description: Scenarios that pass the 6-criteria gate plus complexity tier filter
+  secondary:
+    - name: qualification-report.json
+      type: json
+      description: Per-scenario gate results, priority distribution, removal reasons
+
+# ── Quality Rules ──
+quality:
+  rules:
+    - level: critical
+      rule: Scenarios below confidence threshold are removed
+    - level: critical
+      rule: Scenarios failing 5-6 criteria are removed
+    - level: error
+      rule: Scenarios failing 3-4 criteria are downgraded to P4
+    - level: warning
+      rule: Scenarios failing 1-2 criteria are enriched before proceeding
+    - level: critical
+      rule: Infrastructure and ops scenarios are always removed
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python: []
+  notes: No external dependencies. Purely file-based qualification logic.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream:
+    - functional-scenario-merger    # Provides merged-scenarios.jsonl
+  downstream:
+    - functional-test-generator     # Consumes qualified-scenarios.jsonl
+    - functional-test-reviewer      # Uses qualified scenarios as coverage baseline
+  orchestrator:
+    - functional-test-orchestrator  # Invokes this skill after merge checkpoint
+
+# ── Workflow Stage ──
+workflow:
+  stage: testing
+  order: 1.5
+  position: Between scenario merger (1.0) and test generator (2.0)
+platform:
+  - generic
+artifact_type: skill
