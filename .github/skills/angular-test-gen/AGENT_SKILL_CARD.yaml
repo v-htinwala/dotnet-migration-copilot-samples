@@ -1,0 +1,106 @@
+# ============================================================================
+# AGENT_SKILL_CARD.yaml - angular-test-gen
+# ============================================================================
+# Comprehensive agent configuration following AGENT_CARD_SCHEMA.yaml template
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SECTION 1: Core Metadata
+# ----------------------------------------------------------------------------
+name: "angular-test-gen"
+version: "1.0.0"
+description: |
+  Generate comprehensive unit tests for Angular projects using Jasmine/Karma
+  or Jest. Auto-detects test framework, Angular version, and project structure.
+  Produces TypeScript spec files with TestBed configuration, component harnesses,
+  HttpClientTestingModule, and RouterTestingModule. Covers components, services,
+  pipes, directives, guards, resolvers, interceptors, and utility classes.
+  Integrates with Istanbul/Karma or Jest for coverage.
+author: "specification-project"
+created_date: "2026-04-24"
+last_updated: "2026-04-24"
+platform:
+  - generic
+artifact_type: skill
+
+# ----------------------------------------------------------------------------
+# SECTION 2: Categorization & Discovery
+# ----------------------------------------------------------------------------
+category: "generator"
+domain: "angular-testing"
+tags:
+  - angular
+  - typescript
+  - jasmine
+  - karma
+  - jest
+  - testing
+  - unit-tests
+  - test-generation
+
+keywords:
+  - "generate Angular tests"
+  - "Angular unit tests"
+  - "Jasmine spec generation"
+  - "Jest Angular tests"
+  - "component test generation"
+  - "TestBed configuration"
+
+# ----------------------------------------------------------------------------
+# SECTION 3: Input Requirements
+# ----------------------------------------------------------------------------
+inputs:
+  required:
+    - name: "project_path"
+      type: "path"
+      description: "Angular project root containing angular.json"
+
+  optional:
+    - name: "test_framework"
+      type: "string"
+      description: "Jasmine/Karma or Jest (auto-detected from project config)"
+    - name: "target_files"
+      type: "list"
+      description: "Specific files or directories to generate tests for"
+    - name: "coverage_gaps"
+      type: "boolean"
+      description: "Focus on coverage gap filling (default: false)"
+    - name: "angular_version"
+      type: "string"
+      description: "Angular version (auto-detected from package.json)"
+
+  context_requirements:
+    - "Node.js 18+ installed"
+    - "Angular 16+ project with angular.json"
+    - "Jasmine/Karma or Jest configured"
+
+# ----------------------------------------------------------------------------
+# SECTION 4: Output Artifacts
+# ----------------------------------------------------------------------------
+outputs:
+  primary:
+    - name: "spec_files"
+      type: "files"
+      format: "typescript"
+      path: "**/*.spec.ts"
+      description: "Co-located spec files for each source file"
+
+  secondary:
+    - name: "test_summary"
+      type: "markdown"
+      format: "report"
+      path: "test-generation-report.md"
+      description: "Summary of generated tests and coverage analysis"
+
+# ----------------------------------------------------------------------------
+# SECTION 5: Dependencies & Relationships
+# ----------------------------------------------------------------------------
+dependencies:
+  required_skills: []
+
+  optional_skills:
+    - name: "angular-regression-testcase-generation"
+      purpose: "Regression-focused test generation for Angular"
+
+  tools:
+    - "Bash(npx:*)"

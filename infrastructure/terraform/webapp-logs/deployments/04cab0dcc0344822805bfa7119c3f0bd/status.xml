@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<deployment>
+  <id>04cab0dcc0344822805bfa7119c3f0bd</id>
+  <author>N/A</author>
+  <deployer>GITHUB_ZIP_DEPLOY</deployer>
+  <authorEmail>N/A</authorEmail>
+  <message>{"type":"deployment","sha":"1f0fdef0c4df4e6c65db29b0f6e297cbfa231c0d","repoName":"v-htinwala/dotnet-migration-copilot-samples","actor":"v-htinwala","slotName":"production","commitMessage":"DB initialization error logging"}</message>
+  <progress></progress>
+  <status>Success</status>
+  <statusText></statusText>
+  <lastSuccessEndTime>2026-05-07T07:27:15.3170663Z</lastSuccessEndTime>
+  <receivedTime>2026-05-07T07:27:12.0670434Z</receivedTime>
+  <startTime>2026-05-07T07:27:12.1920442Z</startTime>
+  <endTime>2026-05-07T07:27:15.3170663Z</endTime>
+  <complete>True</complete>
+  <is_temp>False</is_temp>
+  <is_readonly>True</is_readonly>
+  <project_type>BASIC</project_type>
+  <vsproject_id></vsproject_id>
+</deployment>

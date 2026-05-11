@@ -1,0 +1,92 @@
+# =============================================================================
+# Regression Scenarios Example — React
+# =============================================================================
+# Define regression scenarios to ensure critical business flows are tested
+# after code changes. Each scenario targets specific source files and defines
+# expected behaviors that must be preserved.
+#
+# Place this file in the project root or specify its path via the
+# `regression_scenarios` user input or `.regression-config.json`.
+# =============================================================================
+
+scenarios:
+
+  - name: ShoppingCartIntegrity
+    description: >
+      Ensure the shopping cart still works correctly after the cart context
+      refactoring. Adding items, updating quantities, removing items, and
+      calculating totals must all be preserved.
+    target_files:
+      - "src/features/cart/**"
+      - "src/context/CartContext.tsx"
+      - "src/hooks/useCart.ts"
+    expected_behaviors:
+      - "CartContext.addItem adds an item to the cart state"
+      - "CartContext.removeItem removes an item from the cart state"
+      - "CartContext.updateQuantity updates the quantity of an item"
+      - "CartContext.total calculates the correct total price"
+      - "CartComponent renders the cart items from context"
+      - "CartComponent shows empty cart message when cart is empty"
+    requirement_ids:
+      - "REQ-CART-001"
+      - "REQ-CART-002"
+    priority: critical
+
+  - name: AuthenticationFlow
+    description: >
+      Verify that the authentication flow still correctly handles login,
+      logout, token refresh, and protected route access after the auth
+      hook refactoring.
+    target_files:
+      - "src/hooks/useAuth.ts"
+      - "src/context/AuthContext.tsx"
+      - "src/components/ProtectedRoute.tsx"
+      - "src/api/auth.ts"
+    expected_behaviors:
+      - "useAuth.login calls the auth API with credentials and stores token"
+      - "useAuth.logout clears the token and redirects to login page"
+      - "ProtectedRoute redirects unauthenticated users to /login"
+      - "ProtectedRoute allows authenticated users to access protected content"
+      - "Token refresh automatically refreshes expired tokens"
+    requirement_ids:
+      - "REQ-AUTH-101"
+    priority: critical
+
+  - name: UserRegistrationForm
+    description: >
+      Ensure the user registration form maintains backward compatibility
+      after validation logic changes. All existing validation rules must
+      still apply, and the form submission must call the correct API endpoint.
+    target_files:
+      - "src/features/registration/**"
+      - "src/components/RegistrationForm.tsx"
+      - "src/hooks/useFormValidation.ts"
+    expected_behaviors:
+      - "RegistrationForm validates email format (rejects invalid, accepts valid)"
+      - "RegistrationForm validates password strength (min length, special chars)"
+      - "RegistrationForm validates password confirmation match"
+      - "RegistrationForm calls POST /api/users with form data on submit"
+      - "RegistrationForm shows success message after successful registration"
+      - "RegistrationForm shows validation errors for invalid input"
+    requirement_ids:
+      - "REQ-USR-201"
+      - "REQ-USR-202"
+    priority: high
+
+  - name: APIResponseContractStability
+    description: >
+      Verify that all API client functions maintain their response parsing
+      contract (field names, types, error handling) after the API layer
+      refactoring.
+    target_files:
+      - "src/api/**"
+      - "src/hooks/useApi.ts"
+      - "src/types/**"
+    expected_behaviors:
+      - "All API GET functions parse response bodies with correct field mappings"
+      - "All API functions handle 4xx/5xx errors with appropriate error messages"
+      - "Paginated responses parse totalElements, totalPages, data fields"
+      - "Date fields are correctly parsed from ISO string format"
+    requirement_ids:
+      - "REQ-API-301"
+    priority: medium

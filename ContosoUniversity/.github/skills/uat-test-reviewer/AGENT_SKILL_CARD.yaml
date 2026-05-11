@@ -1,0 +1,264 @@
+﻿# ============================================================================
+# AGENT_SKILL_CARD.yaml - uat-test-reviewer
+# ============================================================================
+# Comprehensive agent configuration following AGENT_CARD_SCHEMA.yaml template
+# Reviews UAT test cases, performs gap analysis, and generates missing tests
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SECTION 1: Core Metadata
+# ----------------------------------------------------------------------------
+name: "uat-test-reviewer"
+version: "2.0.0"
+description: |
+  Reviews existing UAT test cases from Excel input, compares against a web
+  application codebase (frontend and backend) to identify critical test
+  coverage gaps, generates missing test cases to fill those gaps, and produces
+  a comprehensive Excel workbook with all tests plus a feature-based coverage
+  percentage dashboard. Uses subagent delegation and terminal scripts to
+  prevent context exhaustion.
+author: "enterprise-tools"
+created_date: "2026-01-15"
+last_updated: "2026-02-13"
+platform:
+  - generic
+artifact_type: skill
+
+# ----------------------------------------------------------------------------
+# SECTION 2: Categorization & Discovery
+# ----------------------------------------------------------------------------
+category: "reviewer"
+domain: "UAT Testing"
+tags:
+  - uat
+  - test-review
+  - gap-analysis
+  - coverage-assessment
+  - acceptance-testing
+  - excel
+
+keywords:
+  - "review UAT test cases"
+  - "test coverage gaps"
+  - "UAT gap analysis"
+  - "test completeness audit"
+  - "coverage percentage dashboard"
+  - "fill test gaps"
+
+# ----------------------------------------------------------------------------
+# SECTION 3: Input Requirements
+# ----------------------------------------------------------------------------
+inputs:
+  required:
+    - name: "existing_tests_excel"
+      type: "file"
+      description: "Excel file (.xlsx) with existing UAT test cases (any column layout)"
+    - name: "codebase_path"
+      type: "path"
+      description: "Path to the application codebase (local directory)"
+
+  optional:
+    - name: "business_requirements"
+      type: "file"
+      description: "Business requirements, user stories, or acceptance criteria document. When provided, coverage is evaluated against stated business requirements — the primary benchmark for UAT. Gaps are flagged as 'requirement not covered' with Critical severity."
+    - name: "severity_filter"
+      type: "string"
+      description: "Minimum gap severity to generate tests for (default: all)"
+
+  context_requirements:
+    - "Existing UAT test cases in Excel format"
+    - "Application codebase with frontend and backend code"
+    - "Business requirements or acceptance criteria (recommended for UAT coverage)"
+    - "Python 3.8+ and openpyxl for Excel processing"
+
+# ----------------------------------------------------------------------------
+# SECTION 4: Output Artifacts
+# ----------------------------------------------------------------------------
+outputs:
+  primary:
+    - name: "review_excel_workbook"
+      type: "file"
+      format: "xlsx"
+      path: "uat-output/{timestamp}/UAT-Review-Report.xlsx"
+      description: "Comprehensive Excel with All Test Cases, per-feature sheets, Coverage Dashboard, and Gap Analysis Summary"
+
+  secondary:
+    - name: "existing_tests_jsonl"
+      type: "file"
+      format: "JSONL"
+      path: "uat-output/{timestamp}/existing_tests.jsonl"
+      description: "Parsed existing tests in standardized 15-field JSONL schema"
+    - name: "feature_map"
+      type: "json"
+      format: "JSON"
+      path: "uat-output/{timestamp}/feature_map.json"
+      description: "Merged frontend and backend feature map"
+    - name: "coverage_report"
+      type: "json"
+      format: "JSON"
+      path: "uat-output/{timestamp}/coverage_report.json"
+      description: "Coverage analysis with gap identification"
+
+# ----------------------------------------------------------------------------
+# SECTION 5: Dependencies & Relationships
+# ----------------------------------------------------------------------------
+dependencies:
+  required_skills: []
+
+  optional_skills:
+    - name: "uat-test-case-generator"
+      purpose: "Initial UAT test generation before review"
+    - name: "excel-workbook-generator"
+      purpose: "Excel workbook generation utilities"
+
+  tools:
+    - "runSubagent"
+    - "runCommands/runInTerminal"
+    - "edit"
+    - "search"
+
+packages:
+  - "Python 3.8+"
+  - "openpyxl"
+
+# ----------------------------------------------------------------------------
+# SECTION 6: Workflow Relationships
+# ----------------------------------------------------------------------------
+workflow:
+  predecessors:
+    - skill: "uat-test-case-generator"
+      provides: "Initial UAT test cases Excel for review"
+
+  successors: []
+
+  parallel_skills: []
+
+  workflow_stage: "testing"
+  workflow_order: 2.0
+
+# ----------------------------------------------------------------------------
+# SECTION 7: Execution Metadata
+# ----------------------------------------------------------------------------
+execution:
+  estimated_duration: "20-60 minutes"
+  complexity: "high"
+  resource_requirements:
+    memory: "high"
+    api_calls: "high (parallel subagents for discovery and batch generation)"
+
+  retry_policy:
+    max_retries: 1
+    retry_on:
+      - "context_timeout"
+
+  timeout: "90 minutes"
+
+# ----------------------------------------------------------------------------
+# SECTION 8: Quality & Validation
+# ----------------------------------------------------------------------------
+quality:
+  validation_rules:
+    - rule: "Existing tests preserved"
+      severity: "critical"
+      description: "Original test cases must not be modified or removed"
+    - rule: "Gaps classified by severity"
+      severity: "error"
+      description: "Each coverage gap must have a severity classification"
+    - rule: "Generated tests are true UAT"
+      severity: "critical"
+      description: "New tests must validate from business user perspective, not technical"
+
+  success_criteria:
+    - "All existing test cases ingested and preserved"
+    - "Feature map covers frontend and backend"
+    - "Coverage percentage calculated per feature and per business requirement"
+    - "Gap test cases generated for critical missing areas"
+    - "When business requirements provided, all stated requirements have mapped test cases"
+
+  output_validation:
+    - check: "excel_generated_with_dashboard"
+      description: "Excel workbook contains Coverage Dashboard with percentage metrics"
+
+# ----------------------------------------------------------------------------
+# SECTION 9: Documentation & Learning
+# ----------------------------------------------------------------------------
+documentation:
+  detailed_methodology: "methodology.md"
+  examples: "examples.md"
+
+  usage_examples:
+    - scenario: "Review and fill gaps in existing UAT suite"
+      input: "Excel with existing test cases and application codebase path"
+      output: "Comprehensive Excel with original + generated tests and coverage dashboard"
+
+  best_practices:
+    - practice: "Never accumulate codebase content in orchestrator context"
+      rationale: "Subagents handle file reading to prevent token exhaustion"
+    - practice: "Write intermediate files after every phase"
+      rationale: "Enables resume and debugging of multi-phase pipeline"
+    - practice: "Validate generated tests are true UAT"
+      rationale: "Tests must answer 'did we build the right thing?' from user perspective"
+    - practice: "Evaluate coverage against business requirements first, codebase second"
+      rationale: "UAT validates business needs are met — business requirements are the primary benchmark, codebase is supplementary"
+
+# ----------------------------------------------------------------------------
+# SECTION 10: Use Cases & Target Audience
+# ----------------------------------------------------------------------------
+use_cases:
+  primary:
+    - use_case: "Audit and improve existing UAT test suite"
+      description: "Compare test cases against business requirements and codebase to find gaps and generate missing tests"
+      user_types:
+        - "qa_lead"
+        - "product_owner"
+        - "business_analyst"
+        - "qa_engineer"
+
+  target_audience:
+    - role: "Product Owner"
+      benefit: "Verify all business requirements have corresponding acceptance test cases"
+    - role: "Business Analyst"
+      benefit: "Requirements traceability — every requirement mapped to test coverage"
+    - role: "QA Lead"
+      benefit: "Coverage visibility with percentage dashboard and prioritized gap filling"
+    - role: "QA Engineer"
+      benefit: "Automated generation of missing test cases for untested features"
+
+# ----------------------------------------------------------------------------
+# SECTION 11: Metadata & Governance
+# ----------------------------------------------------------------------------
+governance:
+  owner: "GenAI CoE"
+  review_cycle: "quarterly"
+
+  change_log:
+    - version: "1.0.0"
+      date: "2026-02-13"
+      changes:
+        - "Initial AGENT_SKILL_CARD.yaml creation"
+
+# ----------------------------------------------------------------------------
+# SECTION 12: Analytics & Usage
+# ----------------------------------------------------------------------------
+analytics:
+  track_metrics:
+    - metric: "gaps_identified"
+      description: "Number of coverage gaps discovered"
+    - metric: "gap_tests_generated"
+      description: "Number of new test cases generated to fill gaps"
+    - metric: "coverage_percentage"
+      description: "Overall and per-feature coverage percentage"
+
+  success_indicators:
+    - indicator: "coverage_improvement"
+      target: "Coverage increases after gap tests are added"
+
+# ----------------------------------------------------------------------------
+# SECTION 14: Trigger Phrases
+# ----------------------------------------------------------------------------
+trigger_phrases:
+  - "review UAT test cases"
+  - "perform test coverage gap analysis"
+  - "audit test completeness"
+  - "estimate UAT coverage"
+  - "fill test coverage gaps"

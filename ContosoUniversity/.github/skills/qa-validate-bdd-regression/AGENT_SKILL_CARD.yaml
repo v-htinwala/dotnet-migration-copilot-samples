@@ -1,0 +1,259 @@
+# ============================================================================
+# AGENT_SKILL_CARD.yaml - qa-validate-bdd-regression
+# ============================================================================
+# Validates BDD Gherkin scenarios against regression test case definitions
+# across five dimensions: coverage, consistency, correctness, traceability,
+# and completeness. Produces structured validation reports.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SECTION 1: Core Metadata
+# ----------------------------------------------------------------------------
+name: "qa-validate-bdd-regression"
+version: "1.0.0"
+description: |
+  Validates BDD Gherkin scenarios (.feature files) against regression test case
+  definitions (YAML/JSON). Performs five-dimensional analysis: coverage
+  (forward/backward), consistency (behavioral alignment), correctness (edge case
+  gaps and conflicts), traceability (BDD ↔ regression ↔ requirement IDs ↔
+  target files), and completeness (pipeline/component/critical-path coverage).
+  Produces structured markdown and/or JSON validation reports with gap analysis,
+  traceability matrices, and prioritized recommendations.
+author: "GenAI CoE"
+created_date: "2026-04-20"
+last_updated: "2026-04-20"
+platform:
+  - generic
+artifact_type: skill
+
+# ----------------------------------------------------------------------------
+# SECTION 2: Categorization & Discovery
+# ----------------------------------------------------------------------------
+category: "analyzer"
+domain: "quality-assurance"
+tags:
+  - bdd
+  - gherkin
+  - regression
+  - validation
+  - traceability
+  - coverage
+  - gap-analysis
+  - test-alignment
+  - feature-file
+  - scenario-validation
+  - quality-assurance
+
+keywords:
+  - "validate BDD against regression"
+  - "check BDD coverage"
+  - "BDD regression alignment"
+  - "traceability matrix"
+  - "BDD gap analysis"
+  - "validate feature files"
+  - "feature file validation"
+  - "regression scenario coverage"
+  - "BDD consistency check"
+  - "test coverage matrix"
+
+# ----------------------------------------------------------------------------
+# SECTION 3: Input Requirements
+# ----------------------------------------------------------------------------
+inputs:
+  required:
+    - name: "feature_files_path"
+      type: "directory"
+      description: "Directory containing .feature files (recursive scan)"
+      default: "src/test/resources/features/"
+
+    - name: "regression_scenarios_path"
+      type: "file"
+      description: "YAML or JSON file defining regression test scenarios"
+      default: "discovery-output/regression-scenarios.yml"
+
+  optional:
+    - name: "source_code_root"
+      type: "directory"
+      description: "Root directory for verifying target file existence"
+      default: "src/main/java/"
+
+    - name: "output_directory"
+      type: "directory"
+      description: "Where to write validation report artifacts"
+      default: "assessment-output/{run-id}/qa-validate-bdd-regression/"
+
+    - name: "output_formats"
+      type: "string"
+      description: "Comma-separated: markdown, json, or both"
+      default: "markdown"
+
+    - name: "validation_dimensions"
+      type: "string"
+      description: "Comma-separated: coverage, consistency, correctness, traceability, completeness, or all"
+      default: "all"
+
+    - name: "run_id"
+      type: "string"
+      description: "Unique identifier for assessment run"
+      default: "date-based (YYYYMMDD)"
+
+  context_requirements:
+    - "BDD .feature files must exist in the specified directory"
+    - "Regression scenarios file must be valid YAML or JSON"
+    - "Source code root must exist for traceability verification"
+
+# ----------------------------------------------------------------------------
+# SECTION 4: Output Artifacts
+# ----------------------------------------------------------------------------
+outputs:
+  primary:
+    - name: "validation_report_md"
+      type: "markdown"
+      format: "md"
+      path: "assessment-output/{run-id}/qa-validate-bdd-regression/validation-report.md"
+      description: "Human-readable validation report with matrices, findings, and recommendations"
+
+    - name: "validation_report_json"
+      type: "json"
+      format: "json"
+      path: "assessment-output/{run-id}/qa-validate-bdd-regression/validation-report.json"
+      description: "Machine-readable findings conforming to findings schema"
+
+  intermediate:
+    - name: "bdd_inventory"
+      type: "json"
+      path: "assessment-output/{run-id}/qa-validate-bdd-regression/bdd-inventory.json"
+      description: "Normalized inventory of all BDD feature files"
+
+    - name: "regression_inventory"
+      type: "json"
+      path: "assessment-output/{run-id}/qa-validate-bdd-regression/regression-inventory.json"
+      description: "Normalized inventory of all regression scenarios"
+
+    - name: "mapping_index"
+      type: "json"
+      path: "assessment-output/{run-id}/qa-validate-bdd-regression/mapping-index.json"
+      description: "Bidirectional mapping of BDD features to regression scenarios"
+
+    - name: "coverage_analysis"
+      type: "json"
+      path: "assessment-output/{run-id}/qa-validate-bdd-regression/coverage-analysis.json"
+      description: "Forward/backward coverage metrics"
+
+    - name: "consistency_findings"
+      type: "json"
+      path: "assessment-output/{run-id}/qa-validate-bdd-regression/consistency-findings.json"
+      description: "Behavioral alignment and edge case audit results"
+
+    - name: "traceability_matrix"
+      type: "json"
+      path: "assessment-output/{run-id}/qa-validate-bdd-regression/traceability-matrix.json"
+      description: "End-to-end traceability chain data"
+
+    - name: "completeness_assessment"
+      type: "json"
+      path: "assessment-output/{run-id}/qa-validate-bdd-regression/completeness-assessment.json"
+      description: "Component, pipeline, and critical path coverage metrics"
+
+# ----------------------------------------------------------------------------
+# SECTION 5: Workflow Phases
+# ----------------------------------------------------------------------------
+workflow:
+  phases:
+    - name: "Discovery & Inventory"
+      description: "Scan feature files, parse regression scenarios, build mapping index"
+      steps:
+        - "Recursively scan feature files directory for .feature files"
+        - "Parse each feature file extracting metadata, scenarios, tags, keywords"
+        - "Parse regression scenarios from YAML/JSON"
+        - "Build bidirectional mapping index using 4 matching strategies"
+      outputs: ["bdd-inventory.json", "regression-inventory.json", "mapping-index.json"]
+
+    - name: "Coverage Analysis"
+      description: "Compute forward/backward coverage and behavior coverage"
+      steps:
+        - "Check each BDD feature maps to at least one regression scenario"
+        - "Check each regression scenario has BDD feature coverage"
+        - "Check each regression expected behavior has a BDD scenario"
+      outputs: ["coverage-analysis.json"]
+
+    - name: "Consistency & Correctness Audit"
+      description: "Identify behavioral conflicts, edge case gaps, naming issues"
+      steps:
+        - "Compare BDD vs regression expected behaviors for alignment"
+        - "Build edge case coverage matrix"
+        - "Check naming consistency"
+      outputs: ["consistency-findings.json"]
+
+    - name: "Traceability Verification"
+      description: "Validate BDD → Regression → Files → Requirements chains"
+      steps:
+        - "Verify bidirectional traceability chains"
+        - "Verify target files exist in source tree"
+        - "Validate requirement IDs are mapped and non-orphaned"
+      outputs: ["traceability-matrix.json"]
+
+    - name: "Completeness Assessment"
+      description: "Evaluate component, pipeline, and critical path coverage"
+      steps:
+        - "Inventory and check component coverage"
+        - "Verify pipeline/flow coverage"
+        - "Analyze critical data paths"
+        - "Classify test depth per feature"
+      outputs: ["completeness-assessment.json"]
+
+    - name: "Report Generation"
+      description: "Produce final validation report with metrics and recommendations"
+      steps:
+        - "Compute summary metrics"
+        - "Generate markdown report using template"
+        - "Generate JSON report if requested"
+        - "Prioritize and rank gaps"
+      outputs: ["validation-report.md", "validation-report.json"]
+
+# ----------------------------------------------------------------------------
+# SECTION 6: Safety Rules
+# ----------------------------------------------------------------------------
+safety:
+  read_only: true
+  rules:
+    - "NEVER modify .feature files, regression scenario files, or source code"
+    - "Generate validation reports only — do not create or alter tests"
+    - "No false positives — only flag genuine gaps and conflicts"
+    - "Preserve project structure — do not reorganize or rename files"
+
+# ----------------------------------------------------------------------------
+# SECTION 7: Dependencies
+# ----------------------------------------------------------------------------
+dependencies:
+  skills: []
+  agents: []
+  tools:
+    - "read_file"
+    - "file_search"
+    - "grep_search"
+    - "list_dir"
+    - "create_file"
+  external: []
+
+# ----------------------------------------------------------------------------
+# SECTION 8: Quality Criteria
+# ----------------------------------------------------------------------------
+quality:
+  success_criteria:
+    - "All BDD features inventoried — count matches filesystem scan"
+    - "All regression scenarios parsed — count matches source file"
+    - "Mapping index is bidirectional — every mapping has forward and backward entry"
+    - "Coverage metrics accurate — spot-check 5 mappings"
+    - "No false positive conflicts — every conflict is genuine"
+    - "Traceability chains complete — endpoints verified"
+    - "Report has all 7 required sections"
+    - "Findings conform to schema"
+    - "Gap priorities correctly scored"
+
+  verification:
+    - "Re-check uncovered features using relaxed matching before finalizing"
+    - "Verify behavioral conflicts are genuine contradictions not wording differences"
+    - "Confirm all referenced files exist at stated paths"
+    - "Spot-check percentage calculations"
+    - "Ensure report has all required sections"

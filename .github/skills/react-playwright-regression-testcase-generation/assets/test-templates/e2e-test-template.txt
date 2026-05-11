@@ -1,0 +1,188 @@
+// =============================================================================
+// E2E Regression Test Template — React (Playwright)
+// =============================================================================
+// Use this template for end-to-end regression tests that verify page-level
+// behavior through real browser interaction.
+//
+// Placeholders:
+//   {{COMPONENT_NAME}}      — Target component/page name (e.g., UserProfile)
+//   {{PAGE_ROUTE}}          — Page URL path (e.g., /users/profile)
+//   {{SOURCE_FILE}}         — Path to the source file under test
+//   {{API_ENDPOINT}}        — API endpoint path (e.g., /api/users)
+//   {{CHANGE_DESCRIPTION}}  — Brief description of the change (e.g., "PR #123")
+//   {{REQUIREMENT_ID}}      — Requirement/ticket ID (e.g., REQ-USER-001)
+//   {{BASE_URL}}            — Application base URL (e.g., http://localhost:3000)
+// =============================================================================
+
+import { test, expect } from '@playwright/test';
+
+// @requirement {{REQUIREMENT_ID}}
+test.describe('Regression: {{COMPONENT_NAME}} after {{CHANGE_DESCRIPTION}}', () => {
+
+  test.beforeEach(async ({ page }) => {
+    // Navigate to the page under test
+    await page.goto('{{PAGE_ROUTE}}');
+  });
+
+  // =========================================================================
+  // Section 1: Behavior Preservation Tests
+  //   Verify that existing behaviors are unchanged after the modification.
+  // =========================================================================
+
+  test.describe('rendering behavior', () => {
+    test('[{{REQUIREMENT_ID}}] still renders expected content after changes', async ({ page }) => {
+      // ASSERT — verify key elements are visible
+      // await expect(page.getByRole('heading', { name: /title/i })).toBeVisible();
+      // await expect(page.getByText('Expected content')).toBeVisible();
+      // await expect(page.getByRole('button', { name: /submit/i })).toBeEnabled();
+    });
+
+    test('[{{REQUIREMENT_ID}}] still renders correctly with empty state', async ({ page }) => {
+      // ARRANGE — mock API to return empty data
+      // await page.route('**/{{API_ENDPOINT}}', async (route) => {
+      //   await route.fulfill({ status: 200, json: [] });
+      // });
+
+      // ACT — reload to trigger empty state
+      // await page.reload();
+
+      // ASSERT
+      // await expect(page.getByText(/no data/i)).toBeVisible();
+    });
+  });
+
+  // =========================================================================
+  // Section 2: User Interaction Tests
+  //   Verify user interactions still trigger correct behaviors.
+  // =========================================================================
+
+  test.describe('user interactions', () => {
+    test('[{{REQUIREMENT_ID}}] still handles form submission correctly', async ({ page }) => {
+      // ARRANGE — intercept the API call
+      // const responsePromise = page.waitForResponse('**/{{API_ENDPOINT}}');
+
+      // ACT — fill form and submit
+      // await page.getByLabel(/name/i).fill('Alice');
+      // await page.getByLabel(/email/i).fill('alice@test.com');
+      // await page.getByRole('button', { name: /submit/i }).click();
+
+      // ASSERT — verify API was called and UI updated
+      // const response = await responsePromise;
+      // expect(response.status()).toBe(200);
+      // await expect(page.getByText(/success/i)).toBeVisible();
+    });
+
+    test('[{{REQUIREMENT_ID}}] still navigates correctly on button click', async ({ page }) => {
+      // ACT
+      // await page.getByRole('link', { name: /details/i }).click();
+
+      // ASSERT
+      // await expect(page).toHaveURL(/\/details\//);
+      // await expect(page.getByRole('heading', { name: /detail/i })).toBeVisible();
+    });
+  });
+
+  // =========================================================================
+  // Section 3: API Integration Tests
+  //   Verify interactions with backend APIs remain correct.
+  // =========================================================================
+
+  test.describe('API integration', () => {
+    test('[{{REQUIREMENT_ID}}] still fetches data from API on page load', async ({ page }) => {
+      // ARRANGE — mock the API endpoint
+      // await page.route('**/{{API_ENDPOINT}}', async (route) => {
+      //   await route.fulfill({
+      //     status: 200,
+      //     json: [
+      //       { id: 1, name: 'Alice' },
+      //       { id: 2, name: 'Bob' },
+      //     ],
+      //   });
+      // });
+
+      // ACT — reload to trigger data fetch
+      // await page.reload();
+
+      // ASSERT — verify data rendered
+      // await expect(page.getByText('Alice')).toBeVisible();
+      // await expect(page.getByText('Bob')).toBeVisible();
+    });
+
+    test('[{{REQUIREMENT_ID}}] still handles API errors gracefully', async ({ page }) => {
+      // ARRANGE — mock the API to return error
+      // await page.route('**/{{API_ENDPOINT}}', async (route) => {
+      //   await route.fulfill({ status: 500, json: { error: 'Server error' } });
+      // });
+
+      // ACT
+      // await page.reload();
+
+      // ASSERT
+      // await expect(page.getByText(/error/i)).toBeVisible();
+      // await expect(page.getByRole('button', { name: /retry/i })).toBeVisible();
+    });
+
+    test('[{{REQUIREMENT_ID}}] still sends correct request payload', async ({ page }) => {
+      // ARRANGE — intercept and verify request body
+      // let capturedBody: any;
+      // await page.route('**/{{API_ENDPOINT}}', async (route) => {
+      //   capturedBody = route.request().postDataJSON();
+      //   await route.fulfill({ status: 201, json: { id: 1, ...capturedBody } });
+      // });
+
+      // ACT — trigger the API call (e.g., submit form)
+      // await page.getByLabel(/name/i).fill('Charlie');
+      // await page.getByRole('button', { name: /save/i }).click();
+
+      // ASSERT
+      // expect(capturedBody).toEqual(expect.objectContaining({ name: 'Charlie' }));
+    });
+  });
+
+  // =========================================================================
+  // Section 4: Error Handling Tests
+  //   Verify exception/error handling still works correctly.
+  // =========================================================================
+
+  test.describe('error handling', () => {
+    test('[{{REQUIREMENT_ID}}] still shows validation errors for invalid input', async ({ page }) => {
+      // ACT — submit form with invalid data
+      // await page.getByLabel(/email/i).fill('not-an-email');
+      // await page.getByRole('button', { name: /submit/i }).click();
+
+      // ASSERT
+      // await expect(page.getByText(/invalid email/i)).toBeVisible();
+    });
+
+    test('[{{REQUIREMENT_ID}}] still handles network timeout', async ({ page }) => {
+      // ARRANGE — simulate slow/timeout response
+      // await page.route('**/{{API_ENDPOINT}}', async (route) => {
+      //   await new Promise((r) => setTimeout(r, 30000)); // will timeout
+      //   await route.fulfill({ status: 200, json: {} });
+      // });
+
+      // ACT
+      // await page.reload();
+
+      // ASSERT
+      // await expect(page.getByText(/timeout|try again/i)).toBeVisible({ timeout: 15000 });
+    });
+  });
+
+  // =========================================================================
+  // Section 5: Visual Regression (optional)
+  //   Verify visual appearance hasn't changed unexpectedly.
+  // =========================================================================
+
+  test.describe('visual regression', () => {
+    test('[{{REQUIREMENT_ID}}] page appearance matches snapshot', async ({ page }) => {
+      // Wait for page to fully load
+      // await page.waitForLoadState('networkidle');
+
+      // ASSERT — visual comparison
+      // await expect(page).toHaveScreenshot('{{COMPONENT_NAME}}-default.png', {
+      //   maxDiffPixelRatio: 0.01,
+      // });
+    });
+  });
+});

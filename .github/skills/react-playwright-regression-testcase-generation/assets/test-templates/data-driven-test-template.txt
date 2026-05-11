@@ -1,0 +1,242 @@
+// =============================================================================
+// Data-Driven Regression Test Template — React (Playwright)
+// =============================================================================
+// Use this template when testing the same behavior across multiple data inputs,
+// routes, viewports, or browsers using Playwright's parameterization patterns.
+//
+// Placeholders:
+//   {{COMPONENT_NAME}}      — Target component/page name (e.g., UserCard)
+//   {{PAGE_ROUTE}}          — Page URL path (e.g., /users)
+//   {{SOURCE_FILE}}         — Path to the source file under test
+//   {{API_ENDPOINT}}        — API endpoint path (e.g., /api/users)
+//   {{FIXTURE_FILE}}        — Path to the fixture data file (JSON)
+//   {{CHANGE_DESCRIPTION}}  — Description of the change being tested
+//   {{REQUIREMENT_ID}}      — Requirement/ticket ID
+// =============================================================================
+
+import { test, expect } from '@playwright/test';
+
+// Option 1: Load fixture data from JSON file
+// import fixtureData from '{{FIXTURE_FILE}}';
+
+// @requirement {{REQUIREMENT_ID}}
+test.describe('Regression (data-driven): {{COMPONENT_NAME}} after {{CHANGE_DESCRIPTION}}', () => {
+
+  // =========================================================================
+  // Variant A: Parameterized E2E test with inline data (for...of loop)
+  // =========================================================================
+
+  test.describe('page rendering with varied data', () => {
+    const testCases = [
+      {
+        name: 'normal user data',
+        mockData: [
+          { id: 1, name: 'Alice', role: 'user' },
+          { id: 2, name: 'Bob', role: 'admin' },
+        ],
+        expectedTexts: ['Alice', 'Bob'],
+      },
+      {
+        name: 'empty data set',
+        mockData: [],
+        expectedTexts: ['No data available'],
+      },
+      {
+        name: 'single item',
+        mockData: [{ id: 1, name: 'Charlie', role: 'user' }],
+        expectedTexts: ['Charlie'],
+      },
+    ];
+
+    for (const tc of testCases) {
+      test(`[{{REQUIREMENT_ID}}] still renders correctly for: ${tc.name}`, async ({ page }) => {
+        // ARRANGE — mock API with test case data
+        // await page.route('**/{{API_ENDPOINT}}', async (route) => {
+        //   await route.fulfill({ status: 200, json: tc.mockData });
+        // });
+
+        // ACT
+        // await page.goto('{{PAGE_ROUTE}}');
+
+        // ASSERT
+        // for (const text of tc.expectedTexts) {
+        //   await expect(page.getByText(text)).toBeVisible();
+        // }
+      });
+    }
+  });
+
+  // =========================================================================
+  // Variant B: Multi-viewport responsive testing
+  // =========================================================================
+
+  test.describe('responsive behavior across viewports', () => {
+    const viewports = [
+      { name: 'mobile', width: 375, height: 812 },
+      { name: 'tablet', width: 768, height: 1024 },
+      { name: 'desktop', width: 1440, height: 900 },
+    ];
+
+    for (const vp of viewports) {
+      test(`[{{REQUIREMENT_ID}}] still renders correctly on ${vp.name} (${vp.width}x${vp.height})`, async ({ page }) => {
+        // ARRANGE
+        // await page.setViewportSize({ width: vp.width, height: vp.height });
+
+        // ACT
+        // await page.goto('{{PAGE_ROUTE}}');
+
+        // ASSERT
+        // await expect(page.getByRole('navigation')).toBeVisible();
+        // On mobile, sidebar should be hidden
+        // if (vp.width < 768) {
+        //   await expect(page.getByRole('complementary')).toBeHidden();
+        // } else {
+        //   await expect(page.getByRole('complementary')).toBeVisible();
+        // }
+
+        // Optional: visual regression per viewport
+        // await expect(page).toHaveScreenshot(`{{COMPONENT_NAME}}-${vp.name}.png`);
+      });
+    }
+  });
+
+  // =========================================================================
+  // Variant C: Multi-route smoke test
+  // =========================================================================
+
+  test.describe('route smoke tests', () => {
+    const routes = [
+      { path: '/', expectedHeading: 'Home' },
+      { path: '/dashboard', expectedHeading: 'Dashboard' },
+      { path: '/settings', expectedHeading: 'Settings' },
+      { path: '/profile', expectedHeading: 'Profile' },
+    ];
+
+    for (const route of routes) {
+      test(`[{{REQUIREMENT_ID}}] ${route.path} still loads and shows heading`, async ({ page }) => {
+        // ACT
+        // await page.goto(route.path);
+
+        // ASSERT
+        // await expect(page.getByRole('heading', { name: new RegExp(route.expectedHeading, 'i') })).toBeVisible();
+        // Verify no console errors
+        // const errors: string[] = [];
+        // page.on('console', (msg) => { if (msg.type() === 'error') errors.push(msg.text()); });
+        // await page.waitForLoadState('networkidle');
+        // expect(errors).toHaveLength(0);
+      });
+    }
+  });
+
+  // =========================================================================
+  // Variant D: API response contract testing
+  // =========================================================================
+
+  test.describe('API response contract verification', () => {
+    const endpoints = [
+      {
+        name: 'list endpoint',
+        url: '**/{{API_ENDPOINT}}',
+        method: 'GET',
+        expectedFields: ['id', 'name', 'email'],
+      },
+      {
+        name: 'detail endpoint',
+        url: '**/{{API_ENDPOINT}}/1',
+        method: 'GET',
+        expectedFields: ['id', 'name', 'email', 'role', 'createdAt'],
+      },
+    ];
+
+    for (const ep of endpoints) {
+      test(`[{{REQUIREMENT_ID}}] ${ep.name} still returns expected fields`, async ({ page }) => {
+        // ARRANGE
+        // let responseBody: any;
+        // page.on('response', async (response) => {
+        //   if (response.url().includes(ep.url.replace('**/', ''))) {
+        //     responseBody = await response.json();
+        //   }
+        // });
+
+        // ACT
+        // await page.goto('{{PAGE_ROUTE}}');
+        // await page.waitForResponse(ep.url);
+
+        // ASSERT
+        // const item = Array.isArray(responseBody) ? responseBody[0] : responseBody;
+        // for (const field of ep.expectedFields) {
+        //   expect(item).toHaveProperty(field);
+        // }
+      });
+    }
+  });
+
+  // =========================================================================
+  // Variant E: Form validation with varied inputs
+  // =========================================================================
+
+  test.describe('form validation across inputs', () => {
+    const validationCases = [
+      {
+        name: 'empty email',
+        field: 'Email',
+        value: '',
+        expectedError: 'Email is required',
+      },
+      {
+        name: 'invalid email format',
+        field: 'Email',
+        value: 'not-an-email',
+        expectedError: 'Invalid email format',
+      },
+      {
+        name: 'short password',
+        field: 'Password',
+        value: '123',
+        expectedError: 'Password must be at least 8 characters',
+      },
+      {
+        name: 'valid email',
+        field: 'Email',
+        value: 'valid@test.com',
+        expectedError: null,
+      },
+    ];
+
+    for (const vc of validationCases) {
+      test(`[{{REQUIREMENT_ID}}] still validates: ${vc.name}`, async ({ page }) => {
+        // ACT
+        // await page.goto('{{PAGE_ROUTE}}');
+        // await page.getByLabel(new RegExp(vc.field, 'i')).fill(vc.value);
+        // await page.getByLabel(new RegExp(vc.field, 'i')).blur();
+
+        // ASSERT
+        // if (vc.expectedError) {
+        //   await expect(page.getByText(vc.expectedError)).toBeVisible();
+        // } else {
+        //   // No error message should be visible for valid input
+        //   await expect(page.locator('.error-message')).toBeHidden();
+        // }
+      });
+    }
+  });
+
+  // =========================================================================
+  // Variant F: Fixture file-driven test
+  // =========================================================================
+
+  // test.describe('fixture-driven assertions', () => {
+  //   // Load test fixtures from JSON file
+  //   // const fixtures = require('{{FIXTURE_FILE}}');
+  //   //
+  //   // for (const fixture of fixtures) {
+  //   //   test(`should handle case: ${fixture.description}`, async ({ page }) => {
+  //   //     await page.route('**/{{API_ENDPOINT}}', async (route) => {
+  //   //       await route.fulfill({ status: 200, json: fixture.apiResponse });
+  //   //     });
+  //   //     await page.goto('{{PAGE_ROUTE}}');
+  //   //     await expect(page.getByText(fixture.expectedText)).toBeVisible();
+  //   //   });
+  //   // }
+  // });
+});

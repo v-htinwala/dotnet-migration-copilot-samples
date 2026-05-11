@@ -1,0 +1,88 @@
+# ──────────────────────────────────────────────────────
+# AGENT SKILL CARD — uat-excel-workbook-generator
+# ──────────────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: uat-excel-workbook-generator
+version: "1.0"
+author: uat-automation
+license: MIT
+category: testing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Generates professional Excel workbooks for UAT test cases using the canonical
+  20-field schema. Produces multi-sheet workbook with Summary Dashboard,
+  All Test Cases (20 columns), per-journey sheets (grouped by journey_id),
+  Traceability Matrix, and Dropdown Values. Consumes UAT JSONL with
+  UAT-{MOD}-{SEQ} IDs. Business-oriented dashboard with coverage area and
+  journey breakdowns. Auto-hides empty optional columns for stakeholder clarity.
+tags:
+  - excel
+  - xlsx
+  - uat-testing
+  - 20-field-schema
+  - journey-grouping
+  - traceability-matrix
+  - business-metrics
+  - test-reporting
+keywords:
+  - UAT test Excel
+  - 20-field workbook
+  - journey-based sheets
+  - traceability matrix
+  - UAT test reporting
+  - business stakeholder workbook
+  - acceptance test workbook
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: test_cases
+      type: file_path
+      description: Path to JSONL file (20-field schema) from uat-test-case-generator
+  optional:
+    - name: output_dir
+      type: directory_path
+      default: uat-output/
+      description: Output directory for generated workbook
+    - name: app_name
+      type: string
+      description: Application name for filename and dashboard title
+    - name: batch_chars
+      type: integer
+      default: 8000
+      description: Max characters per batch for incremental saves
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: UAT_Test_Cases_{AppName}_{Date}.xlsx
+      type: file
+      format: xlsx
+      description: >
+        Multi-sheet workbook with Summary Dashboard, All Test Cases (20 columns),
+        per-journey sheets, Traceability Matrix, and Dropdown Values
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python:
+    - openpyxl
+  skills:
+    - uat-test-case-generator  # Produces UAT test JSONL
+  optional_skills:
+    - uat-test-reviewer  # May produce gap-fill tests
+  notes: >
+    Requires openpyxl for Excel generation. Scripts included for JSONL-to-Excel
+    conversion with batching, merge, and incremental save support.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream:
+    - uat-test-case-generator   # Provides UAT test JSONL (20-field)
+    - uat-test-reviewer         # May add gap-fill tests
+  downstream:
+    - uat-test-reviewer         # Reviews generated workbook
+  workflow_stage: output-generation

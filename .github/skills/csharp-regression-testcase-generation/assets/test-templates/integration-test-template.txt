@@ -1,0 +1,216 @@
+// =============================================================================
+// ASP.NET Core Integration Regression Test Templates
+// =============================================================================
+// Use these templates when test_level is "integration" or "both".
+// Integration tests use *IntegrationTests.cs suffix and are placed in
+// *.IntegrationTests test projects.
+//
+// This file contains THREE template variants — use the one matching the
+// ASP.NET Core component type under test.
+// =============================================================================
+
+
+// =============================================================================
+// VARIANT 1: WebApplicationFactory — Controller Integration Regression
+// =============================================================================
+// Use for: Controllers, Minimal API endpoints
+// Dependencies: Microsoft.AspNetCore.Mvc.Testing
+// =============================================================================
+
+using System.Net;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
+
+namespace {{TEST_NAMESPACE}};
+
+/// <summary>
+/// Integration regression tests for <see cref="{{CLASS_NAME}}"/> — {{CHANGE_DESCRIPTION}}
+/// </summary>
+[Trait("Category", "Regression")]
+// {{OPTIONAL_REQUIREMENT_TAG}} [Trait("Requirement", "{{REQUIREMENT_ID}}")]
+public class {{CLASS_NAME}}IntegrationTests
+    : IClassFixture<WebApplicationFactory<Program>>
+{
+    private readonly HttpClient _client;
+
+    public {{CLASS_NAME}}IntegrationTests(WebApplicationFactory<Program> factory)
+    {
+        _client = factory.WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureTestServices(services =>
+            {
+                // Replace real dependencies with test doubles
+                // services.AddScoped<{{DEPENDENCY_INTERFACE_1}}>(sp =>
+                //     new InMemory{{DEPENDENCY_NAME_1}}());
+            });
+        }).CreateClient();
+    }
+
+    // Nested class for endpoint behavior tests
+    [Trait("Category", "Regression")]
+    public class EndpointBehaviorTests : {{CLASS_NAME}}IntegrationTests
+    {
+        public EndpointBehaviorTests(WebApplicationFactory<Program> factory)
+            : base(factory) { }
+
+        [Fact(DisplayName = "{{ENDPOINT_METHOD}} {{ENDPOINT_PATH}} still returns expected status")]
+        public async Task Endpoint_ValidRequest_ReturnsExpectedStatus()
+        {
+            // var response = await _client.GetAsync("{{ENDPOINT_PATH}}");
+            // Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            // var content = await response.Content.ReadFromJsonAsync<{{RESPONSE_TYPE}}>();
+            // Assert.NotNull(content);
+        }
+
+        [Fact(DisplayName = "{{ENDPOINT_PATH}} still returns 404 for non-existent resource")]
+        public async Task Endpoint_NotFound_Returns404()
+        {
+            // var response = await _client.GetAsync("{{ENDPOINT_PATH}}/999");
+            // Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact(DisplayName = "{{ENDPOINT_PATH}} still validates request body")]
+        public async Task Endpoint_InvalidBody_Returns400()
+        {
+            // var content = new StringContent(
+            //     "{\"field\": \"\"}", Encoding.UTF8, "application/json");
+            // var response = await _client.PostAsync("{{ENDPOINT_PATH}}", content);
+            // Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+    }
+
+    // Nested class for response structure tests
+    [Trait("Category", "Regression")]
+    public class ResponseStructureTests : {{CLASS_NAME}}IntegrationTests
+    {
+        public ResponseStructureTests(WebApplicationFactory<Program> factory)
+            : base(factory) { }
+
+        [Fact(DisplayName = "Response body still contains all required fields")]
+        public async Task Endpoint_ResponseStructure_Preserved()
+        {
+            // var response = await _client.GetAsync("{{ENDPOINT_PATH}}/1");
+            // response.EnsureSuccessStatusCode();
+            // var json = await response.Content.ReadAsStringAsync();
+            // var doc = JsonDocument.Parse(json);
+            // Assert.True(doc.RootElement.TryGetProperty("id", out _));
+            // Assert.True(doc.RootElement.TryGetProperty("name", out _));
+        }
+    }
+}
+
+
+// =============================================================================
+// VARIANT 2: EF Core InMemory — Repository Integration Regression
+// =============================================================================
+// Use for: Repositories, DbContext operations, query methods
+// Dependencies: Microsoft.EntityFrameworkCore.InMemory
+// =============================================================================
+
+// using Microsoft.EntityFrameworkCore;
+// using Xunit;
+//
+// namespace {{TEST_NAMESPACE}};
+//
+// [Trait("Category", "Regression")]
+// // {{OPTIONAL_REQUIREMENT_TAG}} [Trait("Requirement", "{{REQUIREMENT_ID}}")]
+// public class {{CLASS_NAME}}IntegrationTests : IDisposable
+// {
+//     private readonly {{DB_CONTEXT_TYPE}} _context;
+//     private readonly {{CLASS_NAME}} _sut;
+//
+//     public {{CLASS_NAME}}IntegrationTests()
+//     {
+//         var options = new DbContextOptionsBuilder<{{DB_CONTEXT_TYPE}}>()
+//             .UseInMemoryDatabase(Guid.NewGuid().ToString())
+//             .Options;
+//         _context = new {{DB_CONTEXT_TYPE}}(options);
+//         _sut = new {{CLASS_NAME}}(_context);
+//
+//         // Seed test data
+//         // _context.{{ENTITY_SET}}.Add(new {{ENTITY_TYPE}} { ... });
+//         // _context.SaveChanges();
+//     }
+//
+//     [Trait("Category", "Regression")]
+//     public class QueryBehaviorTests : {{CLASS_NAME}}IntegrationTests
+//     {
+//         [Fact(DisplayName = "{{IMPACTED_METHOD}} still returns expected results")]
+//         public async Task Query_StandardInput_ReturnsExpected()
+//         {
+//             // var result = await _sut.{{IMPACTED_METHOD}}(queryParam);
+//             // Assert.NotEmpty(result);
+//         }
+//
+//         [Fact(DisplayName = "{{IMPACTED_METHOD}} still returns empty for no-match")]
+//         public async Task Query_NoMatch_ReturnsEmpty()
+//         {
+//             // var result = await _sut.{{IMPACTED_METHOD}}("nonexistent");
+//             // Assert.Empty(result);
+//         }
+//     }
+//
+//     public void Dispose() => _context.Dispose();
+// }
+
+
+// =============================================================================
+// VARIANT 3: Testcontainers — Real Database Integration Regression
+// =============================================================================
+// Use for: Full DB integration, stored procedures, complex queries
+// Dependencies: Testcontainers, Testcontainers.PostgreSql (or .MsSql)
+// =============================================================================
+
+// using Microsoft.Extensions.DependencyInjection;
+// using Microsoft.Extensions.Hosting;
+// using Microsoft.EntityFrameworkCore;
+// using Testcontainers.PostgreSql;
+// using Xunit;
+//
+// namespace {{TEST_NAMESPACE}};
+//
+// [Trait("Category", "Regression")]
+// public class {{CLASS_NAME}}ContainerTests : IAsyncLifetime
+// {
+//     private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
+//         .WithImage("postgres:15")
+//         .WithDatabase("testdb")
+//         .WithUsername("test")
+//         .WithPassword("test")
+//         .Build();
+//
+//     private IServiceProvider _services = null!;
+//
+//     public async Task InitializeAsync()
+//     {
+//         await _postgres.StartAsync();
+//         var host = Host.CreateDefaultBuilder()
+//             .ConfigureServices(services =>
+//             {
+//                 services.AddDbContext<{{DB_CONTEXT_TYPE}}>(opts =>
+//                     opts.UseNpgsql(_postgres.GetConnectionString()));
+//                 services.AddScoped<{{DEPENDENCY_INTERFACE_1}}, {{CLASS_NAME}}>();
+//             }).Build();
+//         _services = host.Services;
+//
+//         // Run migrations
+//         // using var scope = _services.CreateScope();
+//         // var ctx = scope.ServiceProvider.GetRequiredService<{{DB_CONTEXT_TYPE}}>();
+//         // await ctx.Database.MigrateAsync();
+//     }
+//
+//     [Fact(DisplayName = "{{IMPACTED_METHOD}} persists data to real database")]
+//     public async Task Operation_RealDb_PersistsData()
+//     {
+//         // using var scope = _services.CreateScope();
+//         // var service = scope.ServiceProvider.GetRequiredService<{{DEPENDENCY_INTERFACE_1}}>();
+//         // var result = await service.{{IMPACTED_METHOD}}(input);
+//         // Assert.NotNull(result);
+//     }
+//
+//     public async Task DisposeAsync() => await _postgres.DisposeAsync();
+// }

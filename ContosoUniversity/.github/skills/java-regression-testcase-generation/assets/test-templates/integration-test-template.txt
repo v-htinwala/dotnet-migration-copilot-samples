@@ -1,0 +1,249 @@
+// =============================================================================
+// Spring Boot Integration Regression Test Templates
+// =============================================================================
+// Use these templates when test_level is "integration" or "both".
+// Integration tests use *IT.java suffix and are run via Maven Failsafe or
+// Gradle integrationTest task.
+//
+// This file contains THREE template variants — use the one matching the
+// Spring component type under test.
+// =============================================================================
+
+
+// =============================================================================
+// VARIANT 1: @WebMvcTest — Controller Integration Regression
+// =============================================================================
+// Use for: @RestController, @Controller
+// Dependencies: spring-boot-starter-test (included by default)
+// =============================================================================
+
+package {{PACKAGE}};
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.bean.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+@WebMvcTest({{CLASS_NAME}}.class)
+@Tag("regression")
+// {{OPTIONAL_REQUIREMENT_TAG}} @Tag("{{REQUIREMENT_ID}}")
+@DisplayName("Regression: {{CLASS_NAME}} integration — {{CHANGE_DESCRIPTION}}")
+class {{CLASS_NAME}}IT {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private {{DEPENDENCY_TYPE_1}} {{DEPENDENCY_NAME_1}};
+
+    @MockBean
+    private {{DEPENDENCY_TYPE_2}} {{DEPENDENCY_NAME_2}};
+
+    @Nested
+    @DisplayName("{{ENDPOINT_METHOD}} {{ENDPOINT_PATH}} — behavior preservation")
+    class EndpointBehaviorTests {
+
+        @Test
+        @DisplayName("still returns expected status code for valid request")
+        void testEndpoint_validRequest_returnsExpectedStatus() throws Exception {
+            // Arrange — mock service layer
+            // when({{DEPENDENCY_NAME_1}}.method(any())).thenReturn(expectedValue);
+
+            // Act & Assert
+            // mockMvc.perform(get("{{ENDPOINT_PATH}}")
+            //         .contentType(MediaType.APPLICATION_JSON))
+            //     .andExpect(status().isOk())
+            //     .andExpect(jsonPath("$.field").value(expectedValue));
+        }
+
+        @Test
+        @DisplayName("still returns 404 for non-existent resource")
+        void testEndpoint_notFound_returns404() throws Exception {
+            // when({{DEPENDENCY_NAME_1}}.findById(anyLong())).thenReturn(Optional.empty());
+
+            // mockMvc.perform(get("{{ENDPOINT_PATH}}/999"))
+            //     .andExpect(status().isNotFound());
+        }
+
+        @Test
+        @DisplayName("still validates request body")
+        void testEndpoint_invalidBody_returns400() throws Exception {
+            // mockMvc.perform(post("{{ENDPOINT_PATH}}")
+            //         .contentType(MediaType.APPLICATION_JSON)
+            //         .content("{\"field\": \"\"}"))
+            //     .andExpect(status().isBadRequest());
+        }
+    }
+
+    @Nested
+    @DisplayName("{{ENDPOINT_METHOD}} {{ENDPOINT_PATH}} — response structure")
+    class ResponseStructureTests {
+
+        @Test
+        @DisplayName("response body still contains all required fields")
+        void testEndpoint_responseStructure_preserved() throws Exception {
+            // when({{DEPENDENCY_NAME_1}}.method(any())).thenReturn(testEntity);
+
+            // mockMvc.perform(get("{{ENDPOINT_PATH}}/1"))
+            //     .andExpect(jsonPath("$.id").exists())
+            //     .andExpect(jsonPath("$.name").exists())
+            //     .andExpect(jsonPath("$.email").exists());
+        }
+    }
+}
+
+
+// =============================================================================
+// VARIANT 2: @DataJpaTest — Repository Integration Regression
+// =============================================================================
+// Use for: @Repository, JPA repositories, custom query methods
+// Dependencies: spring-boot-starter-test, spring-boot-starter-data-jpa
+// Optional: Testcontainers for real database testing
+// =============================================================================
+
+// package {{PACKAGE}};
+
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.DisplayName;
+// import org.junit.jupiter.api.Nested;
+// import org.junit.jupiter.api.Tag;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+// import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+// import org.springframework.test.context.jdbc.Sql;
+
+// import static org.junit.jupiter.api.Assertions.*;
+
+// @DataJpaTest
+// @Tag("regression")
+// // {{OPTIONAL_REQUIREMENT_TAG}} @Tag("{{REQUIREMENT_ID}}")
+// @DisplayName("Regression: {{CLASS_NAME}} queries — {{CHANGE_DESCRIPTION}}")
+// class {{CLASS_NAME}}IT {
+//
+//     @Autowired
+//     private TestEntityManager entityManager;
+//
+//     @Autowired
+//     private {{CLASS_NAME}} {{CLASS_INSTANCE}};
+//
+//     @BeforeEach
+//     void setUp() {
+//         // Seed test data via entity manager or @Sql
+//         // {{ENTITY_TYPE}} entity = new {{ENTITY_TYPE}}();
+//         // entity.setField("value");
+//         // entityManager.persistAndFlush(entity);
+//     }
+//
+//     @Nested
+//     @DisplayName("{{IMPACTED_METHOD}} — query behavior preservation")
+//     class QueryBehaviorTests {
+//
+//         @Test
+//         @DisplayName("still returns expected results for standard query")
+//         void test{{IMPACTED_METHOD}}_standardQuery_returnsExpected() {
+//             // var result = {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(queryParam);
+//             // assertFalse(result.isEmpty());
+//         }
+//
+//         @Test
+//         @DisplayName("still returns empty for no-match query")
+//         void test{{IMPACTED_METHOD}}_noMatch_returnsEmpty() {
+//             // var result = {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}("nonexistent");
+//             // assertTrue(result.isEmpty());
+//         }
+//     }
+//
+//     @Nested
+//     @Sql({"classpath:{{SQL_SEED_PATH}}"})
+//     @DisplayName("{{IMPACTED_METHOD}} — SQL-seeded regression tests")
+//     class SqlSeededTests {
+//
+//         @Test
+//         @DisplayName("with seeded data still returns correct count")
+//         void test{{IMPACTED_METHOD}}_seededData_correctCount() {
+//             // var result = {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(queryParam);
+//             // assertEquals(expectedCount, result.size());
+//         }
+//     }
+// }
+
+
+// =============================================================================
+// VARIANT 3: @SpringBootTest + Testcontainers — Full Integration Regression
+// =============================================================================
+// Use for: Full application context, cross-service, real DB, configuration changes
+// Dependencies: spring-boot-starter-test, testcontainers, testcontainers-postgresql
+// =============================================================================
+
+// package {{PACKAGE}};
+
+// import org.junit.jupiter.api.DisplayName;
+// import org.junit.jupiter.api.Tag;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.context.ApplicationContext;
+// import org.springframework.test.context.DynamicPropertyRegistry;
+// import org.springframework.test.context.DynamicPropertySource;
+// import org.springframework.test.web.servlet.MockMvc;
+// import org.testcontainers.containers.PostgreSQLContainer;
+// import org.testcontainers.junit.jupiter.Container;
+// import org.testcontainers.junit.jupiter.Testcontainers;
+
+// import static org.junit.jupiter.api.Assertions.*;
+
+// @SpringBootTest
+// @Testcontainers
+// @AutoConfigureMockMvc
+// @Tag("regression")
+// // {{OPTIONAL_REQUIREMENT_TAG}} @Tag("{{REQUIREMENT_ID}}")
+// @DisplayName("Regression: {{CLASS_NAME}} full integration — {{CHANGE_DESCRIPTION}}")
+// class {{CLASS_NAME}}IT {
+//
+//     @Container
+//     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15")
+//         .withDatabaseName("testdb")
+//         .withUsername("test")
+//         .withPassword("test");
+//
+//     @DynamicPropertySource
+//     static void configureProperties(DynamicPropertyRegistry registry) {
+//         registry.add("spring.datasource.url", postgres::getJdbcUrl);
+//         registry.add("spring.datasource.username", postgres::getUsername);
+//         registry.add("spring.datasource.password", postgres::getPassword);
+//     }
+//
+//     @Autowired
+//     private ApplicationContext context;
+//
+//     @Autowired
+//     private MockMvc mockMvc;
+//
+//     @Autowired
+//     private {{CLASS_NAME}} {{CLASS_INSTANCE}};
+//
+//     @Test
+//     @DisplayName("Application context loads successfully after changes")
+//     void testContextLoads() {
+//         assertNotNull(context);
+//     }
+//
+//     @Test
+//     @DisplayName("{{IMPACTED_METHOD}} works end-to-end with real database")
+//     void test{{IMPACTED_METHOD}}_endToEnd_succeeds() {
+//         // var result = {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(input);
+//         // assertNotNull(result);
+//     }
+// }

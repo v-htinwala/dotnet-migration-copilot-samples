@@ -1,0 +1,238 @@
+﻿# ============================================================================
+# AGENT_SKILL_CARD.yaml - nextjs-test-gen
+# ============================================================================
+# Comprehensive agent configuration following AGENT_CARD_SCHEMA.yaml template
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SECTION 1: Core Metadata
+# ----------------------------------------------------------------------------
+name: "nextjs-test-gen"
+version: "1.0.0"
+description: |
+  Generate comprehensive unit tests for Next.js 16 and React 19 codebases.
+  Auto-detects Vitest or Jest, App Router or Pages Router, and produces
+  co-located test files with full mocking of Next.js internals. Covers React
+  Server Components, Client Components, Server Actions, API Route Handlers,
+  custom hooks, and utility modules.
+author: "specification-project"
+created_date: "2026-01-15"
+last_updated: "2026-02-13"
+platform:
+  - generic
+artifact_type: skill
+
+# ----------------------------------------------------------------------------
+# SECTION 2: Categorization & Discovery
+# ----------------------------------------------------------------------------
+category: "generator"
+domain: "nextjs-testing"
+tags:
+  - nextjs
+  - react
+  - testing
+  - vitest
+  - jest
+  - unit-tests
+  - test-generation
+
+keywords:
+  - "generate Next.js tests"
+  - "React unit tests"
+  - "Vitest test generation"
+  - "Jest test scaffolding"
+  - "component test generation"
+
+# ----------------------------------------------------------------------------
+# SECTION 3: Input Requirements
+# ----------------------------------------------------------------------------
+inputs:
+  required:
+    - name: "project_path"
+      type: "path"
+      description: "Next.js project root containing package.json"
+
+  optional:
+    - name: "test_framework"
+      type: "string"
+      description: "Vitest or Jest (auto-detected from project config)"
+    - name: "target_files"
+      type: "list"
+      description: "Specific files or directories to generate tests for"
+    - name: "coverage_gaps"
+      type: "boolean"
+      description: "Focus on coverage gap filling (default: false)"
+
+  context_requirements:
+    - "Node.js 18+ installed"
+    - "Next.js 13+ project with App Router or Pages Router"
+    - "Vitest or Jest configured"
+
+# ----------------------------------------------------------------------------
+# SECTION 4: Output Artifacts
+# ----------------------------------------------------------------------------
+outputs:
+  primary:
+    - name: "test_files"
+      type: "files"
+      format: "typescript"
+      path: "**/*.test.ts(x)"
+      description: "Co-located unit test files for each source file"
+
+  secondary:
+    - name: "test_summary"
+      type: "markdown"
+      format: "report"
+      path: "test-generation-report.md"
+      description: "Summary of generated tests and coverage analysis"
+
+# ----------------------------------------------------------------------------
+# SECTION 5: Dependencies & Relationships
+# ----------------------------------------------------------------------------
+dependencies:
+  required_skills: []
+
+  optional_skills:
+    - name: "react-regression-testcase-generation"
+      purpose: "Regression-focused test generation for React"
+
+  tools:
+    - "Bash(npx:*)"
+    - "Bash(npm:*)"
+
+packages:
+  - "vitest or jest"
+  - "@testing-library/react"
+  - "@testing-library/jest-dom"
+
+# ----------------------------------------------------------------------------
+# SECTION 6: Workflow Relationships
+# ----------------------------------------------------------------------------
+workflow:
+  predecessors: []
+
+  successors:
+    - skill: "regression-test-runner"
+      receives: "Generated test files"
+
+  parallel_skills: []
+
+  workflow_stage: "testing"
+  workflow_order: 1.0
+
+# ----------------------------------------------------------------------------
+# SECTION 7: Execution Metadata
+# ----------------------------------------------------------------------------
+execution:
+  estimated_duration: "5-20 minutes"
+  complexity: "high"
+  resource_requirements:
+    memory: "medium"
+    api_calls: "none"
+
+  retry_policy:
+    max_retries: 1
+    retry_on:
+      - "compilation_error"
+
+  timeout: "30 minutes"
+
+# ----------------------------------------------------------------------------
+# SECTION 8: Quality & Validation
+# ----------------------------------------------------------------------------
+quality:
+  validation_rules:
+    - rule: "No source files modified"
+      severity: "critical"
+      description: "Only test files may be created or modified"
+
+    - rule: "Tests compile and pass"
+      severity: "error"
+      description: "Generated tests must compile and pass"
+
+    - rule: "Correct framework imports"
+      severity: "error"
+      description: "Import syntax must match detected framework (Vitest vs Jest)"
+
+  success_criteria:
+    - "All target files classified by category"
+    - "Test files generated with proper mocking"
+    - "Framework auto-detection successful"
+    - "Tests follow RTL best practices"
+
+  output_validation:
+    - check: "tests_compile"
+      description: "All generated test files compile successfully"
+
+# ----------------------------------------------------------------------------
+# SECTION 9: Documentation & Learning
+# ----------------------------------------------------------------------------
+documentation:
+  detailed_methodology: "methodology.md"
+  examples: "examples.md"
+
+  usage_examples:
+    - scenario: "Generate unit tests for Next.js 16 app"
+      input: "Next.js project path"
+      output: "Co-located test files with full mocking"
+
+  best_practices:
+    - practice: "Auto-detect test framework"
+      rationale: "Prefer Vitest for better ESM support with Next.js 16"
+
+    - practice: "Classify files before generating tests"
+      rationale: "Each file category requires different test patterns"
+
+# ----------------------------------------------------------------------------
+# SECTION 10: Use Cases & Target Audience
+# ----------------------------------------------------------------------------
+use_cases:
+  primary:
+    - use_case: "Next.js unit test scaffolding"
+      description: "Generate comprehensive unit tests for a Next.js codebase"
+      user_types:
+        - "frontend_developer"
+        - "fullstack_developer"
+
+  target_audience:
+    - role: "Frontend Developer"
+      benefit: "Automated test generation with proper Next.js mocking"
+    - role: "QA Engineer"
+      benefit: "Coverage improvement for React/Next.js projects"
+
+# ----------------------------------------------------------------------------
+# SECTION 11: Metadata & Governance
+# ----------------------------------------------------------------------------
+governance:
+  owner: "GenAI CoE"
+  review_cycle: "quarterly"
+
+  change_log:
+    - version: "1.0.0"
+      date: "2026-02-13"
+      changes:
+        - "Initial AGENT_SKILL_CARD.yaml creation"
+
+# ----------------------------------------------------------------------------
+# SECTION 12: Analytics & Usage
+# ----------------------------------------------------------------------------
+analytics:
+  track_metrics:
+    - metric: "tests_generated"
+      description: "Number of test files generated"
+    - metric: "file_categories_detected"
+      description: "Breakdown of RSC, Client, Hook, etc. classifications"
+
+  success_indicators:
+    - indicator: "tests_pass"
+      target: "All generated tests pass"
+
+# ----------------------------------------------------------------------------
+# SECTION 14: Trigger Phrases
+# ----------------------------------------------------------------------------
+trigger_phrases:
+  - "generate unit tests for Next.js"
+  - "create React component tests"
+  - "scaffold Vitest tests for Next.js"
+  - "generate Jest tests for React"
+  - "improve test coverage for Next.js project"

@@ -1,0 +1,297 @@
+﻿# ============================================================================
+# AGENT_SKILL_CARD.yaml - uat-test-case-generator
+# ============================================================================
+# Comprehensive agent configuration following AGENT_CARD_SCHEMA.yaml template
+# Generates UAT test cases for business users and testers
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SECTION 1: Core Metadata
+# ----------------------------------------------------------------------------
+name: "uat-test-case-generator"
+version: "11.0.0"
+description: |
+  Generates UAT test cases for business users and UAT testers. Validates that
+  the system meets real-world business needs from the end-user perspective.
+  Discovers application features, analyses business requirements, identifies
+  user workflows, classifies tests by priority and type, and produces Excel
+  test artifacts with business-focused test steps. Follows a 4-phase workflow:
+  Requirements Analysis -> Feature Discovery -> Test Case Generation -> Excel
+  Consolidation. Supports subagent and streaming processing modes. Outputs
+  canonical 20-field JSONL schema with extended traceability fields:
+  journey_id, video_timestamp, screenshot_path, api_endpoint, component_path.
+  Accepts pre-qualified scenarios from uat-qualification-gate as input.
+author: "enterprise-tools"
+created_date: "2026-01-15"
+last_updated: "2026-02-13"
+platform:
+  - generic
+artifact_type: skill
+
+# ----------------------------------------------------------------------------
+# SECTION 2: Categorization & Discovery
+# ----------------------------------------------------------------------------
+category: "generator"
+domain: "UAT Testing"
+tags:
+  - uat
+  - test-generation
+  - acceptance-testing
+  - business-testing
+  - excel
+  - business-validation
+
+keywords:
+  - "generate UAT"
+  - "test cases"
+  - "acceptance tests"
+  - "acceptance testing"
+  - "UAT documentation"
+  - "business user testing"
+
+# ----------------------------------------------------------------------------
+# SECTION 3: Input Requirements
+# ----------------------------------------------------------------------------
+inputs:
+  required:
+    - name: "codebase_path"
+      type: "path"
+      description: "Path to the application codebase to discover features from"
+
+  optional:
+    - name: "requirements_docs"
+      type: "path"
+      description: "Path to business requirements, user stories, or acceptance criteria"
+    - name: "processing_mode"
+      type: "string"
+      description: "subagent (recommended) or streaming (fallback)"
+    - name: "priority_filter"
+      type: "string"
+      description: "Filter features by priority: P1-Critical, P2-High, P3-Medium, P4-Low"
+    - name: "scenarios_jsonl"
+      type: "file"
+      description: "Pre-qualified scenarios JSONL from uat-qualification-gate (canonical 20-field schema). When provided, skip feature discovery and generate test cases directly from these scenarios."
+
+  context_requirements:
+    - "Application codebase with identifiable user-facing features"
+    - "Business requirements or user stories (recommended)"
+    - "Python 3.8+ and openpyxl for Excel generation"
+
+# ----------------------------------------------------------------------------
+# SECTION 4: Output Artifacts
+# ----------------------------------------------------------------------------
+outputs:
+  primary:
+    - name: "uat_test_cases_excel"
+      type: "file"
+      format: "xlsx"
+      path: "uat-output/{timestamp}/UAT-Test-Cases.xlsx"
+      description: "Excel workbook with test cases, per-feature sheets, and summary dashboard"
+
+  secondary:
+    - name: "feature_map"
+      type: "json"
+      format: "JSON"
+      path: "uat-output/{timestamp}/feature_map.json"
+      description: "Discovered features with priority and test type classification"
+    - name: "test_cases_jsonl"
+      type: "file"
+      format: "JSONL"
+      path: "uat-output/{timestamp}/test_cases.jsonl"
+      description: "All test cases in canonical 20-field JSONL schema"
+
+# ----------------------------------------------------------------------------
+# SECTION 5: Dependencies & Relationships
+# ----------------------------------------------------------------------------
+dependencies:
+  required_skills: []
+
+  optional_skills:
+    - name: "excel-workbook-generator"
+      purpose: "Excel workbook generation utilities"
+
+  tools:
+    - "runSubagent"
+    - "runCommands/runInTerminal"
+    - "edit"
+    - "search"
+
+packages:
+  - "Python 3.8+"
+  - "openpyxl"
+
+# ----------------------------------------------------------------------------
+# SECTION 6: Workflow Relationships
+# ----------------------------------------------------------------------------
+workflow:
+  predecessors:
+    - skill: "uat-qualification-gate"
+      provides: "Pre-qualified scenarios in canonical 20-field JSONL (optional)"
+
+  successors:
+    - skill: "uat-test-reviewer"
+      receives: "Generated UAT test cases Excel for review and gap analysis"
+    - skill: "excel-workbook-generator"
+      receives: "Test cases JSONL for Excel workbook generation"
+
+  parallel_skills: []
+
+  workflow_stage: "testing"
+  workflow_order: 1.0
+
+# ----------------------------------------------------------------------------
+# SECTION 13: Canonical 20-Field JSONL Schema
+# ----------------------------------------------------------------------------
+# Output JSONL records MUST conform to this schema (v1.0).
+# Fields marked (NEW) were added in v11.0.0 for orchestrator pipeline support.
+#
+# Core identification:
+#   test_id, test_name, feature, journey_id (NEW)
+#
+# Classification:
+#   test_type, coverage_area, priority, user_role
+#
+# Test content:
+#   preconditions, test_steps, expected_result, test_data, business_objective
+#
+# Source traceability:
+#   source, source_evidence, requirement_id
+#
+# Extended traceability (NEW):
+#   video_timestamp, screenshot_path, api_endpoint, component_path
+#
+# When scenarios_jsonl input is provided, preserve all 20 fields from the
+# input and enrich with generated test content (steps, data, assertions).
+# Tag output with schema_version: "1.0"
+
+# ----------------------------------------------------------------------------
+# SECTION 7: Execution Metadata
+# ----------------------------------------------------------------------------
+execution:
+  estimated_duration: "15-60 minutes"
+  complexity: "high"
+  resource_requirements:
+    memory: "high"
+    api_calls: "high (subagent invocations per feature batch)"
+
+  retry_policy:
+    max_retries: 1
+    retry_on:
+      - "context_timeout"
+
+  timeout: "90 minutes"
+
+# ----------------------------------------------------------------------------
+# SECTION 8: Quality & Validation
+# ----------------------------------------------------------------------------
+quality:
+  validation_rules:
+    - rule: "Tests written in business language"
+      severity: "critical"
+      description: "Test cases must use plain business language, NOT technical jargon"
+    - rule: "UAT qualification criteria met"
+      severity: "critical"
+      description: "Each test must validate business requirements from user perspective"
+    - rule: "Priority classification assigned"
+      severity: "error"
+      description: "Every feature must have P1-P4 priority classification"
+
+  success_criteria:
+    - "All user-facing features discovered and classified"
+    - "Test cases cover critical business workflows (P1/P2)"
+    - "Excel workbook generated with summary dashboard"
+    - "Tests executable by non-developer business users"
+
+  output_validation:
+    - check: "excel_generated"
+      description: "Excel workbook created with all required sheets"
+
+# ----------------------------------------------------------------------------
+# SECTION 9: Documentation & Learning
+# ----------------------------------------------------------------------------
+documentation:
+  detailed_methodology: "methodology.md"
+  examples: "examples.md"
+
+  usage_examples:
+    - scenario: "Generate UAT test cases for a web application"
+      input: "Application codebase path and optional requirements docs"
+      output: "Excel workbook with prioritized UAT test cases and dashboard"
+
+  best_practices:
+    - practice: "Start with Phase 0 requirements analysis"
+      rationale: "Understanding business context before feature discovery produces better tests"
+    - practice: "Use subagent mode for large applications"
+      rationale: "Prevents context timeout by isolating each feature in separate context"
+    - practice: "Focus on 'what users do' not 'how the system works'"
+      rationale: "UAT validates business value, not technical implementation"
+
+# ----------------------------------------------------------------------------
+# SECTION 10: Use Cases & Target Audience
+# ----------------------------------------------------------------------------
+use_cases:
+  primary:
+    - use_case: "Generate UAT test suite for acceptance testing"
+      description: "Discover features and generate business-focused test cases for UAT testers"
+      user_types:
+        - "qa_engineer"
+        - "business_analyst"
+        - "product_owner"
+
+  target_audience:
+    - role: "QA Engineer"
+      benefit: "Automated UAT test case generation with priority classification"
+    - role: "Business Analyst"
+      benefit: "Business-language test cases that validate user requirements"
+
+# ----------------------------------------------------------------------------
+# SECTION 11: Metadata & Governance
+# ----------------------------------------------------------------------------
+governance:
+  owner: "GenAI CoE"
+  review_cycle: "quarterly"
+
+  change_log:
+    - version: "11.1.0"
+      date: "2026-02-25"
+      changes:
+        - "Remove 'functional' terminology from description, tags, keywords, and trigger phrases"
+        - "Clarify UAT purpose: validate business needs from end-user perspective"
+        - "Align with Scope.md UAT definition: business perspective, business requirements, high-level workflows"
+    - version: "11.0.0"
+      date: "2026-02-24"
+      changes:
+        - "Upgrade to canonical 20-field JSONL schema"
+        - "Add 5 new traceability fields: journey_id, video_timestamp, screenshot_path, api_endpoint, component_path"
+        - "Add scenarios_jsonl optional input for pre-qualified scenarios"
+        - "Add schema_version tag to output"
+    - version: "10.0.0"
+      date: "2026-02-13"
+      changes:
+        - "Initial AGENT_SKILL_CARD.yaml creation"
+
+# ----------------------------------------------------------------------------
+# SECTION 12: Analytics & Usage
+# ----------------------------------------------------------------------------
+analytics:
+  track_metrics:
+    - metric: "features_discovered"
+      description: "Number of user-facing features identified"
+    - metric: "test_cases_generated"
+      description: "Total UAT test cases produced"
+    - metric: "priority_distribution"
+      description: "Breakdown of test cases by priority (P1-P4)"
+
+  success_indicators:
+    - indicator: "feature_coverage"
+      target: "100% of P1/P2 features have test cases"
+
+# ----------------------------------------------------------------------------
+# SECTION 14: Trigger Phrases
+# ----------------------------------------------------------------------------
+trigger_phrases:
+  - "generate UAT test cases"
+  - "create acceptance tests"
+  - "generate acceptance testing deliverables"
+  - "prepare UAT documentation"
+  - "discover application features for testing"

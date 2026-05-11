@@ -1,0 +1,86 @@
+# ──────────────────────────────────────────────────
+# AGENT SKILL CARD — video-uat-frame-extract
+# ──────────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: video-uat-frame-extract
+version: "1.0"
+author: uat-automation
+license: MIT
+category: testing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Extracts major screen transitions from video recordings using OpenCV
+  scene-change detection with low sensitivity (threshold 0.70) optimized
+  for UAT test case generation. Captures only significant page navigations,
+  form completions, and workflow outcomes. Outputs frames and manifest.json
+  for video-uat-journey-analyzer.
+tags:
+  - video-processing
+  - frame-extraction
+  - uat-testing
+  - scene-detection
+  - opencv
+keywords:
+  - video frames
+  - screen transition extraction
+  - scene change detection
+  - UAT test frames
+  - major screen capture
+  - user journey frames
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: input
+      type: file_path
+      description: Path to video file (MP4, AVI, MKV, MOV)
+    - name: output-dir
+      type: directory_path
+      description: Directory to save extracted frames (default uat-output/phase-1-video/frames)
+  optional:
+    - name: threshold
+      type: float
+      default: 0.70
+      description: >
+        Similarity threshold for scene detection. Lower = fewer frames
+        captured = only major screen transitions for UAT. Default 0.70.
+    - name: min-interval
+      type: integer
+      default: 5
+      description: Minimum frames between captures (high to skip animation bursts)
+    - name: format
+      type: string
+      default: jpg
+      description: Output format (jpg at quality 90 sufficient for visual analysis)
+    - name: quality
+      type: integer
+      default: 90
+      description: JPEG quality (90 sufficient — UAT uses visual inference not OCR)
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: frames/
+      type: directory
+      description: Extracted frame images (frame_000001.jpg, frame_000002.jpg, ...)
+    - name: manifest.json
+      type: json
+      description: Frame metadata with timestamps and similarity scores
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python:
+    - opencv-python
+  skills: []
+  notes: >
+    Requires only opencv-python. No other dependencies.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream: []  # First skill in the UAT video pipeline
+  downstream:
+    - video-uat-journey-analyzer  # Consumes frames/ and manifest.json

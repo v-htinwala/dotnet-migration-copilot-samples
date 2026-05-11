@@ -1,0 +1,142 @@
+// =============================================================================
+// xUnit + Moq Regression Test Template
+// =============================================================================
+// Replace {{CLASS_NAME}}, {{NAMESPACE}}, {{DEPENDENCY_*}}, {{METHOD_*}},
+// {{CHANGE_DESCRIPTION}}, {{IMPACTED_METHOD}}, {{REQUIREMENT_ID}},
+// {{FIXTURE_PATH}}, {{SCENARIO_NAME}}, {{SCENARIO_DESCRIPTION}} placeholders
+// with actual values.
+// Placeholders in {{OPTIONAL_*}} blocks are omitted when not applicable.
+// =============================================================================
+
+using Xunit;
+using Moq;
+using System.Text.Json;
+using {{SOURCE_NAMESPACE}};
+
+namespace {{TEST_NAMESPACE}};
+
+/// <summary>
+/// Regression tests for <see cref="{{CLASS_NAME}}"/> — {{CHANGE_DESCRIPTION}}
+/// </summary>
+[Trait("Category", "Regression")]
+// {{OPTIONAL_REQUIREMENT_TAG}} [Trait("Requirement", "{{REQUIREMENT_ID}}")]
+public class {{CLASS_NAME}}Tests
+{
+    // --- Mocks for constructor-injected dependencies ---
+    private readonly Mock<{{DEPENDENCY_INTERFACE_1}}> _{{DEPENDENCY_NAME_1}};
+    private readonly Mock<{{DEPENDENCY_INTERFACE_2}}> _{{DEPENDENCY_NAME_2}};
+    private readonly {{CLASS_NAME}} _sut;
+
+    public {{CLASS_NAME}}Tests()
+    {
+        _{{DEPENDENCY_NAME_1}} = new Mock<{{DEPENDENCY_INTERFACE_1}}>();
+        _{{DEPENDENCY_NAME_2}} = new Mock<{{DEPENDENCY_INTERFACE_2}}>();
+        _sut = new {{CLASS_NAME}}(
+            _{{DEPENDENCY_NAME_1}}.Object,
+            _{{DEPENDENCY_NAME_2}}.Object);
+
+        // {{OPTIONAL_FIXTURE_LOADING}}
+        // var json = File.ReadAllText("{{FIXTURE_PATH}}");
+        // testEntity = JsonSerializer.Deserialize<{{ENTITY_TYPE}}>(json);
+    }
+
+    // =========================================================================
+    // Behavior Preservation Tests — {{IMPACTED_METHOD}}
+    // =========================================================================
+
+    // Nested class for behavior tests
+    [Trait("Category", "Regression")]
+    public class {{IMPACTED_METHOD}}BehaviorTests : {{CLASS_NAME}}Tests
+    {
+        [Fact]
+        public async Task {{IMPACTED_METHOD}}_WithValidInput_ReturnsExpectedResult()
+        {
+            // Arrange — same setup as before the change
+            // _{{DEPENDENCY_NAME_1}}
+            //     .Setup(d => d.Method(It.IsAny<ArgType>()))
+            //     .ReturnsAsync(expectedValue);
+
+            // Act
+            // var result = await _sut.{{IMPACTED_METHOD}}(input);
+
+            // Assert — verify same behavior as before
+            // Assert.NotNull(result);
+            // Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public async Task {{IMPACTED_METHOD}}_WithNullInput_ThrowsArgumentNullException()
+        {
+            // await Assert.ThrowsAsync<ArgumentNullException>(
+            //     () => _sut.{{IMPACTED_METHOD}}(null!));
+        }
+    }
+
+    // =========================================================================
+    // Integration Point Regression — dependency interactions
+    // =========================================================================
+
+    [Trait("Category", "Regression")]
+    public class {{IMPACTED_METHOD}}InteractionTests : {{CLASS_NAME}}Tests
+    {
+        [Fact]
+        public async Task {{IMPACTED_METHOD}}_CallsDependencyWithCorrectArguments()
+        {
+            // Arrange
+            // _{{DEPENDENCY_NAME_1}}
+            //     .Setup(d => d.Method(It.IsAny<ArgType>()))
+            //     .ReturnsAsync(value);
+
+            // Act
+            // await _sut.{{IMPACTED_METHOD}}(input);
+
+            // Assert — verify dependency interactions unchanged
+            // _{{DEPENDENCY_NAME_1}}.Verify(
+            //     d => d.Method(It.IsAny<ArgType>()),
+            //     Times.Once);
+        }
+
+        [Fact]
+        public async Task {{IMPACTED_METHOD}}_WhenDependencyFails_PropagatesError()
+        {
+            // _{{DEPENDENCY_NAME_1}}
+            //     .Setup(d => d.Method(It.IsAny<ArgType>()))
+            //     .ThrowsAsync(new InvalidOperationException("dependency failed"));
+
+            // await Assert.ThrowsAsync<ServiceException>(
+            //     () => _sut.{{IMPACTED_METHOD}}(validInput));
+        }
+    }
+
+    // =========================================================================
+    // Backward Compatibility Tests
+    // =========================================================================
+
+    // [Theory]
+    // [InlineData("input1", "expected1")]
+    // [InlineData("input2", "expected2")]
+    // [Trait("Category", "Regression")]
+    // public async Task {{IMPACTED_METHOD}}_RegressionInputs_ProducesConsistentResults(
+    //     string input, string expected)
+    // {
+    //     var result = await _sut.{{IMPACTED_METHOD}}(input);
+    //     Assert.Equal(expected, result);
+    // }
+
+    // =========================================================================
+    // Scenario-Driven Regression Tests (when scenarios are provided)
+    // =========================================================================
+
+    // {{OPTIONAL_SCENARIO_SECTION}}
+    // [Trait("Requirement", "{{REQUIREMENT_ID}}")]
+    // public class {{SCENARIO_NAME}}Scenario : {{CLASS_NAME}}Tests
+    // {
+    //     [Fact(DisplayName = "[{{REQUIREMENT_ID}}] {{SCENARIO_DESCRIPTION}}")]
+    //     public async Task {{SCENARIO_NAME}}_BehaviorPreserved()
+    //     {
+    //         // Arrange — setup for scenario
+    //         // Act — invoke the scenario flow
+    //         // Assert — verify expected behaviors listed in scenario
+    //     }
+    // }
+}

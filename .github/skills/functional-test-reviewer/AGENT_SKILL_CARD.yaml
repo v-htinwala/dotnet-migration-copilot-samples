@@ -1,0 +1,126 @@
+# ──────────────────────────────────────────────────
+# AGENT SKILL CARD — functional-test-reviewer
+# ──────────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: functional-test-reviewer
+version: "1.0.0"
+author: functional-test-automation
+license: MIT
+category: reviewer
+domain: functional-testing
+user-invokable: false
+created_date: "2026-02-25"
+last_updated: "2026-02-25"
+
+# ── Categorization & Discovery ──
+description: >
+  Reviews functional test cases against qualified scenarios to identify coverage
+  gaps. Validates 35-field schema conformance, checks category distribution per
+  feature (Positive, Negative, Boundary, Validation, Security, Integration),
+  classifies gaps by severity, and outputs coverage report with per-feature
+  percentages.
+tags:
+  - reviewer
+  - coverage
+  - gap-analysis
+  - functional-testing
+  - quality-gate
+keywords:
+  - functional test review
+  - coverage gap analysis
+  - category distribution
+  - schema validation
+  - test completeness
+  - gap-fill
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: generated_tests_path
+      type: file_path
+      description: Path to functional-tests.jsonl (35-field schema)
+    - name: qualified_scenarios_path
+      type: file_path
+      description: Path to qualified-scenarios.jsonl from functional-qualification-gate
+    - name: output_dir
+      type: directory_path
+      description: Output directory for coverage report and gaps
+  optional:
+    - name: feature_map_path
+      type: file_path
+      description: Path to feature-map.json from functional-scenario-merger
+    - name: codebase_path
+      type: directory_path
+      description: Application codebase path for deeper gap analysis
+    - name: severity_filter
+      type: enum
+      values: [all, critical, high, medium]
+      default: all
+      description: Minimum gap severity to include in output
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: coverage-report.json
+      type: json
+      description: Coverage analysis with per-feature %, per-category %, gap summary
+  secondary:
+    - name: gaps.jsonl
+      type: jsonl
+      description: Gap records consumable by functional-test-generator for regeneration
+
+# ── Quality Rules ──
+quality:
+  validation_rules:
+    - rule: Existing tests never modified
+      severity: critical
+      description: Input test cases are read-only — reviewer never alters them
+    - rule: Gaps classified by severity
+      severity: error
+      description: Each gap must have Critical/High/Medium/Low severity
+    - rule: Coverage percentage calculated per feature
+      severity: error
+      description: Every feature in qualified scenarios must have a coverage metric
+    - rule: Category distribution checked
+      severity: warning
+      description: Each feature should have tests across all applicable categories
+
+  success_criteria:
+    - All qualified scenarios evaluated for test coverage
+    - Per-feature and per-category coverage percentages calculated
+    - Gap records formatted for direct consumption by test generator
+    - Coverage report includes actionable gap-fill recommendations
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python: []
+  notes: No external dependencies. Purely file-based analysis logic.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream:
+    - functional-test-generator         # Produces functional-tests.jsonl
+    - functional-qualification-gate     # Produces qualified-scenarios.jsonl
+    - functional-scenario-merger        # Produces feature-map.json
+  downstream:
+    - functional-test-generator         # Consumes gaps.jsonl for regeneration
+    - excel-workbook-generator          # Updates workbook with gap-fill tests
+  controller:
+    - functional-review-loop-controller # Invokes this skill iteratively
+
+# ── Workflow Stage ──
+workflow:
+  stage: testing
+  order: 3.0
+  position: After test generation (2.0), before final report
+
+# ── Execution Metadata ──
+execution:
+  estimated_duration: "5-15 minutes"
+  complexity: medium
+  timeout: "30 minutes"
+platform:
+  - generic
+artifact_type: skill

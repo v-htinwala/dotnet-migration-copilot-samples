@@ -1,0 +1,90 @@
+# =============================================================================
+# Regression Scenarios Example — C#/.NET
+# =============================================================================
+# Define regression scenarios to ensure critical business flows are tested
+# after code changes. Each scenario targets specific source files and defines
+# expected behaviors that must be preserved.
+#
+# Place this file in the project root or specify its path via the
+# `regression_scenarios` user input or `.regression-config.json`.
+# =============================================================================
+
+scenarios:
+
+  - name: PaymentProcessingIntegrity
+    description: >
+      Ensure payment processing still works correctly after auth service
+      refactoring. The payment flow must deduct from wallet, create a
+      transaction record, and send a confirmation email.
+    target_files:
+      - "**/Payment/**"
+      - "**/Services/PaymentService.cs"
+      - "**/Services/WalletService.cs"
+    expected_behaviors:
+      - "ProcessPayment deducts correct amount from user wallet"
+      - "ProcessPayment creates a transaction record with COMPLETED status"
+      - "ProcessPayment sends confirmation email to user"
+      - "ProcessPayment throws InsufficientFundsException for zero-balance wallet"
+      - "RefundPayment restores wallet balance and updates transaction status to REFUNDED"
+    requirement_ids:
+      - "REQ-PAY-001"
+      - "REQ-PAY-002"
+    priority: critical
+
+  - name: UserRegistrationBackwardCompat
+    description: >
+      Verify that the user registration flow maintains backward compatibility
+      after the email validation changes. Existing consumers must still be
+      able to register with valid emails and receive proper error messages
+      for invalid ones.
+    target_files:
+      - "**/Services/UserService.cs"
+      - "**/Controllers/UserController.cs"
+      - "**/Validators/EmailValidator.cs"
+    expected_behaviors:
+      - "CreateUser accepts valid email formats and returns user with generated ID"
+      - "CreateUser rejects emails without @ symbol with ValidationException"
+      - "CreateUser rejects empty or null email with ValidationException"
+      - "CreateUser still calls emailService.SendWelcomeEmailAsync on success"
+      - "POST /api/users returns 201 for valid registration"
+      - "POST /api/users returns 400 for invalid email"
+    requirement_ids:
+      - "REQ-USR-101"
+    priority: high
+
+  - name: OrderWorkflowDataIntegrity
+    description: >
+      Ensure the order processing workflow preserves data integrity after
+      the inventory service refactoring. Orders must transition through
+      correct statuses and maintain referential integrity with inventory.
+    target_files:
+      - "**/Services/OrderService.cs"
+      - "**/Services/InventoryService.cs"
+      - "**/Repositories/OrderRepository.cs"
+    expected_behaviors:
+      - "CreateOrder generates a unique order number"
+      - "CreateOrder decrements inventory stock for ordered items"
+      - "CreateOrder sets initial status to PENDING"
+      - "ConfirmOrder transitions status from PENDING to CONFIRMED"
+      - "CancelOrder restores inventory stock and sets status to CANCELLED"
+      - "CancelOrder on already-cancelled order throws InvalidOperationException"
+    requirement_ids:
+      - "REQ-ORD-201"
+      - "REQ-ORD-202"
+    priority: high
+
+  - name: APIResponseContractStability
+    description: >
+      Verify that all public API endpoints maintain their response contract
+      (field names, types, HTTP status codes) after the DTO refactoring.
+    target_files:
+      - "**/Controllers/**"
+      - "**/Dtos/**"
+    expected_behaviors:
+      - "All GET endpoints return 200 for existing resources"
+      - "All GET endpoints return 404 for non-existent resources"
+      - "Response DTOs contain all documented fields with correct types"
+      - "Pagination responses include TotalElements, TotalPages, Content fields"
+    requirement_ids:
+      - "REQ-API-301"
+    priority: medium

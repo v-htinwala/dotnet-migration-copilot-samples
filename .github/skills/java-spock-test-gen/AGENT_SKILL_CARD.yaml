@@ -1,0 +1,256 @@
+# ============================================================================
+# AGENT_SKILL_CARD.yaml - java-spock-test-gen
+# ============================================================================
+# Comprehensive agent configuration following AGENT_CARD_SCHEMA.yaml template
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# SECTION 1: Core Metadata
+# ----------------------------------------------------------------------------
+name: "java-spock-test-gen"
+version: "1.0.0"
+description: |
+  Generate comprehensive BDD-style unit tests for Java projects using the
+  Spock Framework. Auto-detects Maven or Gradle, Spring Boot integration,
+  and produces Groovy specification files with given/when/then blocks,
+  data-driven where: tables, and built-in Spock mocking. Covers Spring
+  controllers (@WebMvcTest), services, repositories (@DataJpaTest),
+  utilities, and configuration classes. Integrates with JaCoCo for coverage.
+author: "specification-project"
+created_date: "2026-03-15"
+last_updated: "2026-03-15"
+platform:
+  - generic
+artifact_type: skill
+
+# ----------------------------------------------------------------------------
+# SECTION 2: Categorization & Discovery
+# ----------------------------------------------------------------------------
+category: "generator"
+domain: "java-testing"
+tags:
+  - java
+  - spock
+  - groovy
+  - bdd
+  - testing
+  - unit-tests
+  - test-generation
+  - spring-boot
+
+keywords:
+  - "generate Spock tests"
+  - "Java BDD tests"
+  - "Spock specification generation"
+  - "Spring Boot Spock tests"
+  - "Groovy unit tests"
+  - "data-driven testing"
+
+# ----------------------------------------------------------------------------
+# SECTION 3: Input Requirements
+# ----------------------------------------------------------------------------
+inputs:
+  required:
+    - name: "project_path"
+      type: "path"
+      description: "Java project root containing pom.xml or build.gradle"
+
+  optional:
+    - name: "build_tool"
+      type: "string"
+      description: "Maven or Gradle (auto-detected from project)"
+    - name: "target_files"
+      type: "list"
+      description: "Specific Java files or packages to generate tests for"
+    - name: "coverage_gaps"
+      type: "boolean"
+      description: "Focus on coverage gap filling (default: false)"
+    - name: "spring_integration"
+      type: "boolean"
+      description: "Whether to use Spring test annotations (auto-detected)"
+
+  context_requirements:
+    - "JDK 17+ installed"
+    - "Maven 3.8+ or Gradle 7+ configured"
+    - "Spock Framework 2.x dependency declared"
+    - "Groovy 4.x (for Spock 2.4+) or Groovy 3.x (for Spock 2.3)"
+
+# ----------------------------------------------------------------------------
+# SECTION 4: Output Artifacts
+# ----------------------------------------------------------------------------
+outputs:
+  primary:
+    - name: "spec_files"
+      type: "files"
+      format: "groovy"
+      path: "src/test/groovy/**/*Spec.groovy"
+      description: "Spock specification files mirroring source package structure"
+
+  secondary:
+    - name: "test_summary"
+      type: "markdown"
+      format: "report"
+      path: "test-generation-report.md"
+      description: "Summary of generated specs and coverage analysis"
+
+# ----------------------------------------------------------------------------
+# SECTION 5: Dependencies & Relationships
+# ----------------------------------------------------------------------------
+dependencies:
+  required_skills: []
+
+  optional_skills:
+    - name: "java-regression-testcase-generation"
+      purpose: "Regression-focused test generation for Java"
+
+  tools:
+    - "Bash(mvn:*)"
+    - "Bash(gradle:*)"
+
+packages:
+  - "org.spockframework:spock-core"
+  - "org.spockframework:spock-spring (optional)"
+  - "org.apache.groovy:groovy-all"
+  - "org.jacoco:jacoco-maven-plugin or id 'jacoco' (Gradle)"
+
+# ----------------------------------------------------------------------------
+# SECTION 6: Workflow Relationships
+# ----------------------------------------------------------------------------
+workflow:
+  predecessors: []
+
+  successors:
+    - skill: "regression-test-runner"
+      receives: "Generated Spock specification files"
+
+  parallel_skills: []
+
+  workflow_stage: "testing"
+  workflow_order: 1.0
+
+# ----------------------------------------------------------------------------
+# SECTION 7: Execution Metadata
+# ----------------------------------------------------------------------------
+execution:
+  estimated_duration: "5-25 minutes"
+  complexity: "high"
+  resource_requirements:
+    memory: "medium"
+    api_calls: "none"
+
+  retry_policy:
+    max_retries: 1
+    retry_on:
+      - "compilation_error"
+
+  timeout: "30 minutes"
+
+# ----------------------------------------------------------------------------
+# SECTION 8: Quality & Validation
+# ----------------------------------------------------------------------------
+quality:
+  validation_rules:
+    - rule: "No source files modified"
+      severity: "critical"
+      description: "Only Groovy spec files in src/test/groovy may be created or modified"
+
+    - rule: "Specs compile and pass"
+      severity: "error"
+      description: "Generated Spock specs must compile with Groovy and pass"
+
+    - rule: "Proper BDD structure"
+      severity: "error"
+      description: "All specs must use given/when/then or expect blocks correctly"
+
+    - rule: "Pure Spock mocking"
+      severity: "warning"
+      description: "Use Spock Mock()/Stub()/Spy() — do not mix with Mockito"
+
+  success_criteria:
+    - "All target files classified by layer type"
+    - "Spec files generated with proper Spock BDD structure"
+    - "Build tool auto-detection successful"
+    - "Specs follow Spock and Groovy best practices"
+
+  output_validation:
+    - check: "specs_compile"
+      description: "All generated spec files compile and pass via Maven/Gradle"
+
+# ----------------------------------------------------------------------------
+# SECTION 9: Documentation & Learning
+# ----------------------------------------------------------------------------
+documentation:
+  detailed_methodology: "SKILL.md"
+  examples: "references/"
+
+  usage_examples:
+    - scenario: "Generate Spock BDD tests for a Spring Boot service"
+      input: "Java project path with Spring Boot + Spock dependencies"
+      output: "Groovy spec files with @WebMvcTest, Mock(), data tables"
+
+  best_practices:
+    - practice: "Auto-detect build tool and Spring integration"
+      rationale: "Determines correct test annotations and execution commands"
+
+    - practice: "Classify files by Spring layer before generating"
+      rationale: "Each layer type requires different test annotations and mocking patterns"
+
+    - practice: "Use where: tables for data-driven tests"
+      rationale: "Spock's data-driven testing is more expressive than parameterized JUnit"
+
+# ----------------------------------------------------------------------------
+# SECTION 10: Use Cases & Target Audience
+# ----------------------------------------------------------------------------
+use_cases:
+  primary:
+    - use_case: "Java Spock BDD test scaffolding"
+      description: "Generate comprehensive BDD specs for a Java/Spring Boot codebase"
+      user_types:
+        - "backend_developer"
+        - "fullstack_developer"
+
+  target_audience:
+    - role: "Backend Developer"
+      benefit: "Automated BDD test generation with proper Spring test slicing"
+    - role: "QA Engineer"
+      benefit: "Coverage improvement with expressive Spock specifications"
+
+# ----------------------------------------------------------------------------
+# SECTION 11: Metadata & Governance
+# ----------------------------------------------------------------------------
+governance:
+  owner: "GenAI CoE"
+  review_cycle: "quarterly"
+
+  change_log:
+    - version: "1.0.0"
+      date: "2026-03-15"
+      changes:
+        - "Initial AGENT_SKILL_CARD.yaml creation for Java/Spock"
+
+# ----------------------------------------------------------------------------
+# SECTION 12: Analytics & Usage
+# ----------------------------------------------------------------------------
+analytics:
+  track_metrics:
+    - metric: "specs_generated"
+      description: "Number of Spock spec files generated"
+    - metric: "file_layers_detected"
+      description: "Breakdown of controller, service, repository, utility classifications"
+    - metric: "data_tables_used"
+      description: "Number of @Unroll where: tables generated"
+
+  success_indicators:
+    - indicator: "specs_pass"
+      target: "All generated specs pass"
+
+# ----------------------------------------------------------------------------
+# SECTION 14: Trigger Phrases
+# ----------------------------------------------------------------------------
+trigger_phrases:
+  - "generate Spock tests"
+  - "create BDD tests for Java"
+  - "scaffold Spock specifications"
+  - "generate Groovy unit tests"
+  - "improve test coverage with Spock"
+  - "create Spring Boot Spock tests"

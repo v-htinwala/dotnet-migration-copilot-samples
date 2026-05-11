@@ -1,0 +1,91 @@
+# ──────────────────────────────────────────────────────────
+# AGENT SKILL CARD — functional-excel-workbook-generator
+# ──────────────────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: functional-excel-workbook-generator
+version: "1.0"
+author: functional-test-automation
+license: MIT
+category: testing
+domain: functional-testing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Generates professional Excel workbooks for functional test cases using the
+  35-field schema with 7 color-coded column groups. Produces an 8-sheet
+  workbook: Summary Dashboard, All Test Cases (35 columns), per-feature sheets,
+  API-Only Tests, Traceability Matrix, Coverage Matrix, Risk Heatmap, and
+  Dropdown Values. Consumes functional-tests.jsonl with FT-{MOD}-{SEQ} IDs.
+tags:
+  - excel
+  - xlsx
+  - functional-testing
+  - 35-field-schema
+  - coverage-matrix
+  - risk-heatmap
+  - per-feature-sheets
+  - test-reporting
+keywords:
+  - functional test Excel
+  - 35-field workbook
+  - coverage matrix
+  - risk heatmap
+  - API-only tests
+  - per-feature sheets
+  - FT test ID
+  - functional test reporting
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: test_cases
+      type: file_path
+      description: Path to functional-tests.jsonl (35-field schema) from functional-test-generator
+  optional:
+    - name: output_dir
+      type: directory_path
+      default: functional-tests/
+      description: Output directory for generated workbook
+    - name: app_name
+      type: string
+      description: Application name for filename and dashboard title (auto-detected if not provided)
+    - name: batch_chars
+      type: integer
+      default: 8000
+      description: Max characters per batch for incremental saves
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: Functional_Test_Cases_{AppName}_{Date}.xlsx
+      type: file
+      format: xlsx
+      description: >
+        8-sheet workbook with Summary Dashboard, All Test Cases (35 columns),
+        per-feature sheets, API-Only Tests, Traceability Matrix, Coverage
+        Matrix, Risk Heatmap, and Dropdown Values
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python:
+    - openpyxl
+  skills:
+    - functional-test-generator  # Produces functional-tests.jsonl
+  optional_skills:
+    - functional-test-reviewer  # May produce gap-fill tests
+  notes: >
+    Requires openpyxl for Excel generation. No other external dependencies.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream:
+    - functional-test-generator           # Provides functional-tests.jsonl
+    - functional-review-loop-controller   # May re-invoke after gap-fill
+  downstream: []
+  workflow_stage: output-generation
+platform:
+  - generic
+artifact_type: skill

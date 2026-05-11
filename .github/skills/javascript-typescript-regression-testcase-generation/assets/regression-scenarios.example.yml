@@ -1,0 +1,91 @@
+# =============================================================================
+# Regression Scenarios Example — JavaScript/TypeScript
+# =============================================================================
+# Define regression scenarios to ensure critical business flows are tested
+# after code changes. Each scenario targets specific source files and defines
+# expected behaviors that must be preserved.
+#
+# Place this file in the project root or specify its path via the
+# `regression_scenarios` user input or `.regression-config.json`.
+# =============================================================================
+
+scenarios:
+
+  - name: PaymentProcessingIntegrity
+    description: >
+      Ensure payment processing still works correctly after auth service
+      refactoring. The payment flow must deduct from wallet, create a
+      transaction record, and send a confirmation email.
+    target_files:
+      - "src/payment/**"
+      - "src/services/paymentService.ts"
+      - "src/services/walletService.ts"
+    expected_behaviors:
+      - "processPayment deducts correct amount from user wallet"
+      - "processPayment creates a transaction record with COMPLETED status"
+      - "processPayment sends confirmation email to user"
+      - "processPayment throws InsufficientFundsError for zero-balance wallet"
+      - "refundPayment restores wallet balance and updates transaction status to REFUNDED"
+    requirement_ids:
+      - "REQ-PAY-001"
+      - "REQ-PAY-002"
+    priority: critical
+
+  - name: UserRegistrationBackwardCompat
+    description: >
+      Verify that the user registration flow maintains backward compatibility
+      after the email validation changes. Existing consumers must still be
+      able to register with valid emails and receive proper error messages
+      for invalid ones.
+    target_files:
+      - "src/services/userService.ts"
+      - "src/controllers/userController.ts"
+      - "src/validators/emailValidator.ts"
+    expected_behaviors:
+      - "createUser accepts valid email formats and returns user with generated ID"
+      - "createUser rejects emails without @ symbol with ValidationError"
+      - "createUser rejects empty or null email with ValidationError"
+      - "createUser still calls emailService.sendWelcomeEmail on success"
+      - "POST /api/users returns 201 for valid registration"
+      - "POST /api/users returns 400 for invalid email"
+    requirement_ids:
+      - "REQ-USR-101"
+    priority: high
+
+  - name: OrderWorkflowDataIntegrity
+    description: >
+      Ensure the order processing workflow preserves data integrity after
+      the inventory service refactoring. Orders must transition through
+      correct statuses and maintain referential integrity with inventory.
+    target_files:
+      - "src/services/orderService.ts"
+      - "src/services/inventoryService.ts"
+      - "src/repositories/orderRepository.ts"
+    expected_behaviors:
+      - "createOrder generates a unique order number"
+      - "createOrder decrements inventory stock for ordered items"
+      - "createOrder sets initial status to PENDING"
+      - "confirmOrder transitions status from PENDING to CONFIRMED"
+      - "cancelOrder restores inventory stock and sets status to CANCELLED"
+      - "cancelOrder on already-cancelled order throws InvalidOperationError"
+    requirement_ids:
+      - "REQ-ORD-201"
+      - "REQ-ORD-202"
+    priority: high
+
+  - name: APIResponseContractStability
+    description: >
+      Verify that all public API endpoints maintain their response contract
+      (field names, types, HTTP status codes) after the DTO refactoring.
+    target_files:
+      - "src/controllers/**"
+      - "src/routes/**"
+      - "src/dtos/**"
+    expected_behaviors:
+      - "All GET endpoints return 200 for existing resources"
+      - "All GET endpoints return 404 for non-existent resources"
+      - "Response DTOs contain all documented fields with correct types"
+      - "Pagination responses include totalElements, totalPages, content fields"
+    requirement_ids:
+      - "REQ-API-301"
+    priority: medium

@@ -1,0 +1,192 @@
+// =============================================================================
+// Angular Integration Regression Test Templates
+// =============================================================================
+// Use these templates when test_level is "integration" or "both".
+// Integration tests use *.integration.spec.ts suffix.
+//
+// This file contains THREE template variants — use the one matching the
+// Angular component type under test.
+// =============================================================================
+
+
+// =============================================================================
+// VARIANT 1: HttpClientTestingModule — Service Integration Regression
+// =============================================================================
+// Use for: @Injectable services with HTTP calls
+// Dependencies: @angular/common/http/testing (included with Angular)
+// =============================================================================
+
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
+import { {{CLASS_NAME}} } from './{{FILE_NAME}}';
+
+// {{OPTIONAL_REQUIREMENT_TAG}} // @requirement {{REQUIREMENT_ID}}
+describe('Regression: {{CLASS_NAME}} integration — {{CHANGE_DESCRIPTION}}', () => {
+
+  let service: {{CLASS_NAME}};
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [{{CLASS_NAME}}]
+    });
+    service = TestBed.inject({{CLASS_NAME}});
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
+  });
+
+  describe('{{IMPACTED_METHOD}} — HTTP integration', () => {
+
+    it('should still make correct API request', () => {
+      // service.{{IMPACTED_METHOD}}(input).subscribe(result => {
+      //   expect(result).toBeTruthy();
+      // });
+      //
+      // const req = httpMock.expectOne('{{API_ENDPOINT}}');
+      // expect(req.request.method).toBe('{{HTTP_METHOD}}');
+      // expect(req.request.body).toEqual(expectedBody);
+      // req.flush(mockResponse);
+    });
+
+    it('should still handle error responses correctly', () => {
+      // service.{{IMPACTED_METHOD}}(input).subscribe({
+      //   error: (err) => {
+      //     expect(err.status).toBe({{ERROR_STATUS}});
+      //   }
+      // });
+      //
+      // const req = httpMock.expectOne('{{API_ENDPOINT}}');
+      // req.flush('Error', { status: {{ERROR_STATUS}}, statusText: '{{ERROR_TEXT}}' });
+    });
+  });
+
+  describe('{{IMPACTED_METHOD}} — response structure', () => {
+
+    it('should still parse response with all required fields', () => {
+      // service.{{IMPACTED_METHOD}}().subscribe(result => {
+      //   expect(result.id).toBeDefined();
+      //   expect(result.name).toBeDefined();
+      //   expect(result.email).toBeDefined();
+      // });
+      //
+      // const req = httpMock.expectOne('{{API_ENDPOINT}}');
+      // req.flush({ id: 1, name: 'Test', email: 'test@example.com' });
+    });
+  });
+});
+
+
+// =============================================================================
+// VARIANT 2: RouterTestingModule — Component/Guard Routing Integration
+// =============================================================================
+// Use for: Components with router dependencies, guards, resolvers
+// Dependencies: @angular/router/testing (included with Angular)
+// =============================================================================
+
+// import { TestBed, ComponentFixture } from '@angular/core/testing';
+// import { RouterTestingModule } from '@angular/router/testing';
+// import { Router } from '@angular/router';
+// import { Location } from '@angular/common';
+//
+// import { {{CLASS_NAME}} } from './{{FILE_NAME}}';
+//
+// // {{OPTIONAL_REQUIREMENT_TAG}} // @requirement {{REQUIREMENT_ID}}
+// describe('Regression: {{CLASS_NAME}} routing integration — {{CHANGE_DESCRIPTION}}', () => {
+//
+//   let router: Router;
+//   let location: Location;
+//   let fixture: ComponentFixture<{{CLASS_NAME}}>;
+//
+//   beforeEach(async () => {
+//     await TestBed.configureTestingModule({
+//       imports: [
+//         RouterTestingModule.withRoutes([
+//           // { path: '{{ROUTE_PATH}}', component: {{CLASS_NAME}} },
+//           // { path: '{{REDIRECT_PATH}}', component: {{REDIRECT_COMPONENT}} },
+//         ])
+//       ],
+//       declarations: [{{CLASS_NAME}}]
+//     }).compileComponents();
+//
+//     router = TestBed.inject(Router);
+//     location = TestBed.inject(Location);
+//     fixture = TestBed.createComponent({{CLASS_NAME}});
+//   });
+//
+//   describe('{{IMPACTED_METHOD}} — route behavior', () => {
+//
+//     it('should still navigate to correct route', async () => {
+//       // await router.navigate(['/{{ROUTE_PATH}}']);
+//       // expect(location.path()).toBe('/{{ROUTE_PATH}}');
+//     });
+//
+//     it('should still redirect unauthenticated users', async () => {
+//       // Mock unauthenticated state
+//       // await router.navigate(['/{{PROTECTED_ROUTE}}']);
+//       // expect(location.path()).toBe('/{{REDIRECT_PATH}}');
+//     });
+//   });
+//
+//   describe('{{IMPACTED_METHOD}} — route param handling', () => {
+//
+//     it('should still read route parameters correctly', async () => {
+//       // await router.navigate(['/{{ROUTE_PATH}}', '123']);
+//       // fixture.detectChanges();
+//       // expect(component.entityId).toBe('123');
+//     });
+//   });
+// });
+
+
+// =============================================================================
+// VARIANT 3: Full Module Integration — TestBed with Real Service Wiring
+// =============================================================================
+// Use for: Full module integration, configuration changes, cross-service testing
+// Dependencies: The Angular module under test + HttpClientTestingModule
+// =============================================================================
+
+// import { TestBed, ComponentFixture } from '@angular/core/testing';
+// import { HttpClientTestingModule } from '@angular/common/http/testing';
+// import { RouterTestingModule } from '@angular/router/testing';
+// import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+// import { NO_ERRORS_SCHEMA } from '@angular/core';
+//
+// import { {{MODULE_NAME}} } from './{{MODULE_FILE}}';
+// import { {{CLASS_NAME}} } from './{{FILE_NAME}}';
+//
+// // {{OPTIONAL_REQUIREMENT_TAG}} // @requirement {{REQUIREMENT_ID}}
+// describe('Regression: {{MODULE_NAME}} full integration — {{CHANGE_DESCRIPTION}}', () => {
+//
+//   beforeEach(async () => {
+//     await TestBed.configureTestingModule({
+//       imports: [
+//         {{MODULE_NAME}},
+//         HttpClientTestingModule,
+//         RouterTestingModule,
+//         NoopAnimationsModule,
+//       ],
+//       schemas: [NO_ERRORS_SCHEMA], // Shallow integration — ignore unknown elements
+//     }).compileComponents();
+//   });
+//
+//   it('should create module components without error', () => {
+//     // const fixture = TestBed.createComponent({{CLASS_NAME}});
+//     // expect(fixture.componentInstance).toBeTruthy();
+//   });
+//
+//   it('should inject all required services', () => {
+//     // const service = TestBed.inject({{SERVICE_TYPE}});
+//     // expect(service).toBeTruthy();
+//   });
+//
+//   it('should render component with real service wiring', () => {
+//     // const fixture = TestBed.createComponent({{CLASS_NAME}});
+//     // fixture.detectChanges();
+//     // expect(fixture.nativeElement.querySelector('.{{SELECTOR}}')).toBeTruthy();
+//   });
+// });

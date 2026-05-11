@@ -1,0 +1,168 @@
+// =============================================================================
+// Angular TestBed + Jasmine/Jest Regression Test Template
+// =============================================================================
+// Replace {{CLASS_NAME}}, {{SERVICE}}, {{COMPONENT}}, {{DEPENDENCY_*}},
+// {{METHOD_*}}, {{CHANGE_DESCRIPTION}}, {{IMPACTED_METHOD}},
+// {{REQUIREMENT_ID}}, {{FIXTURE_PATH}}, {{SCENARIO_NAME}},
+// {{SCENARIO_DESCRIPTION}} placeholders with actual values.
+// Placeholders in {{OPTIONAL_*}} blocks are omitted when not applicable.
+//
+// Auto-detect test framework:
+//   - Jasmine: angular.json builder is @angular-devkit/build-angular:karma
+//   - Jest: package.json has jest dependency or angular.json uses jest-builder
+// =============================================================================
+
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+// {{OPTIONAL_HTTP}} import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+// {{OPTIONAL_ROUTER}} import { RouterTestingModule } from '@angular/router/testing';
+// {{OPTIONAL_FORMS}} import { ReactiveFormsModule } from '@angular/forms';
+// {{OPTIONAL_ANIMATIONS}} import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { {{CLASS_NAME}} } from './{{FILE_NAME}}';
+// import { {{DEPENDENCY_TYPE_1}} } from './{{DEPENDENCY_PATH_1}}';
+// import { {{DEPENDENCY_TYPE_2}} } from './{{DEPENDENCY_PATH_2}}';
+
+// {{OPTIONAL_REQUIREMENT_TAG}} // @requirement {{REQUIREMENT_ID}}
+describe('Regression: {{CLASS_NAME}} — {{CHANGE_DESCRIPTION}}', () => {
+
+  // --- For Component Tests ---
+  // let component: {{COMPONENT}};
+  // let fixture: ComponentFixture<{{COMPONENT}}>;
+
+  // --- For Service Tests ---
+  // let service: {{CLASS_NAME}};
+
+  // --- Mocks (Jasmine) ---
+  // let mock{{DEPENDENCY_NAME_1}}: jasmine.SpyObj<{{DEPENDENCY_TYPE_1}}>;
+
+  // --- Mocks (Jest) ---
+  // const mock{{DEPENDENCY_NAME_1}} = {
+  //   {{METHOD_1}}: jest.fn(),
+  //   {{METHOD_2}}: jest.fn(),
+  // };
+
+  beforeEach(async () => {
+    // --- Jasmine SpyObj ---
+    // mock{{DEPENDENCY_NAME_1}} = jasmine.createSpyObj('{{DEPENDENCY_TYPE_1}}', ['{{METHOD_1}}', '{{METHOD_2}}']);
+
+    await TestBed.configureTestingModule({
+      // --- For Components ---
+      // declarations: [{{COMPONENT}}],
+      // --- For Standalone Components (Angular 14+) ---
+      // imports: [{{COMPONENT}}],
+      imports: [
+        // {{OPTIONAL_HTTP}} HttpClientTestingModule,
+        // {{OPTIONAL_ROUTER}} RouterTestingModule,
+        // {{OPTIONAL_FORMS}} ReactiveFormsModule,
+        // {{OPTIONAL_ANIMATIONS}} NoopAnimationsModule,
+      ],
+      providers: [
+        // {{CLASS_NAME}},
+        // { provide: {{DEPENDENCY_TYPE_1}}, useValue: mock{{DEPENDENCY_NAME_1}} },
+      ]
+    }).compileComponents();
+
+    // --- For Components ---
+    // fixture = TestBed.createComponent({{COMPONENT}});
+    // component = fixture.componentInstance;
+    // fixture.detectChanges();
+
+    // --- For Services ---
+    // service = TestBed.inject({{CLASS_NAME}});
+  });
+
+  // =========================================================================
+  // Behavior Preservation Tests — {{IMPACTED_METHOD}}
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — behavior preservation', () => {
+
+    it('should still return expected result with valid input', () => {
+      // Arrange — same setup as before the change
+      // mock{{DEPENDENCY_NAME_1}}.{{METHOD_1}}.and.returnValue(of(expectedValue)); // Jasmine
+      // mock{{DEPENDENCY_NAME_1}}.{{METHOD_1}}.mockReturnValue(of(expectedValue)); // Jest
+
+      // Act
+      // const result = service.{{IMPACTED_METHOD}}(input);
+      // OR: fixture.detectChanges();
+
+      // Assert — verify same behavior as before
+      // expect(result).toBeTruthy();
+    });
+
+    it('should still handle null/undefined input gracefully', () => {
+      // expect(() => service.{{IMPACTED_METHOD}}(null)).toThrow();
+      // OR: expect(() => service.{{IMPACTED_METHOD}}(null)).toThrowError('...');
+    });
+  });
+
+  // =========================================================================
+  // Integration Point Regression — dependency interactions
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — dependency interactions', () => {
+
+    it('should still call dependency with correct arguments', () => {
+      // Arrange
+      // mock{{DEPENDENCY_NAME_1}}.{{METHOD_1}}.and.returnValue(of(value)); // Jasmine
+      // mock{{DEPENDENCY_NAME_1}}.{{METHOD_1}}.mockReturnValue(of(value)); // Jest
+
+      // Act
+      // service.{{IMPACTED_METHOD}}(input);
+
+      // Assert — verify dependency interactions unchanged
+      // expect(mock{{DEPENDENCY_NAME_1}}.{{METHOD_1}}).toHaveBeenCalledWith(expectedArg);
+      // expect(mock{{DEPENDENCY_NAME_1}}.{{METHOD_1}}).toHaveBeenCalledTimes(1);
+    });
+
+    it('should still propagate error when dependency fails', () => {
+      // mock{{DEPENDENCY_NAME_1}}.{{METHOD_1}}.and.returnValue(throwError(() => new Error('failed'))); // Jasmine
+      // mock{{DEPENDENCY_NAME_1}}.{{METHOD_1}}.mockReturnValue(throwError(() => new Error('failed'))); // Jest
+
+      // service.{{IMPACTED_METHOD}}(validInput).subscribe({
+      //   error: (err) => expect(err.message).toBe('failed')
+      // });
+    });
+  });
+
+  // =========================================================================
+  // Backward Compatibility Tests
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — backward compatibility', () => {
+
+    // Parameterized tests (Jasmine)
+    // [
+    //   { input: input1, expected: expected1 },
+    //   { input: input2, expected: expected2 },
+    // ].forEach(({ input, expected }) => {
+    //   it(`should produce consistent result for ${JSON.stringify(input)}`, () => {
+    //     const result = service.{{IMPACTED_METHOD}}(input);
+    //     expect(result).toEqual(expected);
+    //   });
+    // });
+
+    // Parameterized tests (Jest)
+    // test.each([
+    //   [input1, expected1],
+    //   [input2, expected2],
+    // ])('should produce consistent result for %s', (input, expected) => {
+    //   const result = service.{{IMPACTED_METHOD}}(input);
+    //   expect(result).toEqual(expected);
+    // });
+  });
+
+  // =========================================================================
+  // Scenario-Driven Regression Tests (when scenarios are provided)
+  // =========================================================================
+
+  // {{OPTIONAL_SCENARIO_SECTION}}
+  // describe('Scenario: {{SCENARIO_NAME}} [{{REQUIREMENT_ID}}]', () => {
+  //
+  //   it('[{{REQUIREMENT_ID}}] {{SCENARIO_DESCRIPTION}}', () => {
+  //     // Arrange — setup for scenario
+  //     // Act — invoke the scenario flow
+  //     // Assert — verify expected behaviors listed in scenario
+  //   });
+  // });
+});

@@ -1,0 +1,174 @@
+// =============================================================================
+// JUnit 5 Data-Driven Regression Test Template
+// =============================================================================
+// Use this template when user-provided test data (fixtures, SQL seeds, golden
+// files) is available. Replace {{PLACEHOLDER}} variables with actual values.
+// =============================================================================
+
+package {{PACKAGE}};
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+@Tag("regression")
+// {{OPTIONAL_REQUIREMENT_TAG}} @Tag("{{REQUIREMENT_ID}}")
+@DisplayName("Regression: {{CLASS_NAME}} — {{CHANGE_DESCRIPTION}} (data-driven)")
+class {{CLASS_NAME}}DataDrivenTest {
+
+    @Mock
+    private {{DEPENDENCY_TYPE_1}} {{DEPENDENCY_NAME_1}};
+
+    @InjectMocks
+    private {{CLASS_NAME}} {{CLASS_INSTANCE}};
+
+    private ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setUp() {
+        objectMapper = new ObjectMapper();
+    }
+
+    // =========================================================================
+    // JSON Fixture-Driven Tests
+    // =========================================================================
+
+    @Nested
+    @DisplayName("{{IMPACTED_METHOD}} — JSON fixture tests")
+    class {{IMPACTED_METHOD}}FixtureTests {
+
+        private {{ENTITY_TYPE}} testEntity;
+
+        @BeforeEach
+        void loadFixture() throws Exception {
+            // Load test entity from user-provided JSON fixture
+            testEntity = objectMapper.readValue(
+                getClass().getResourceAsStream("{{FIXTURE_PATH}}"),
+                {{ENTITY_TYPE}}.class
+            );
+        }
+
+        @Test
+        @DisplayName("with fixture data still returns expected result")
+        void test{{IMPACTED_METHOD}}_withFixtureData_returnsExpected() {
+            // Arrange — mock dependencies as needed
+            // when({{DEPENDENCY_NAME_1}}.method(any())).thenReturn(expectedValue);
+
+            // Act
+            // var result = {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(testEntity);
+
+            // Assert — verify same behavior as before
+            // assertNotNull(result);
+        }
+    }
+
+    // =========================================================================
+    // CSV File-Driven Parameterized Tests
+    // =========================================================================
+
+    @Nested
+    @DisplayName("{{IMPACTED_METHOD}} — CSV data-driven tests")
+    class {{IMPACTED_METHOD}}CsvTests {
+
+        @ParameterizedTest
+        @CsvFileSource(resources = "{{CSV_FIXTURE_PATH}}", numLinesToSkip = 1)
+        @Tag("regression")
+        @DisplayName("produces consistent results from CSV fixture data")
+        void test{{IMPACTED_METHOD}}_csvFixture(
+                // CSV column parameters — match to fixture CSV columns
+                // String inputParam1, int inputParam2, String expectedResult
+        ) {
+            // Arrange
+            // when({{DEPENDENCY_NAME_1}}.method(any())).thenReturn(value);
+
+            // Act
+            // var result = {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(inputParam1, inputParam2);
+
+            // Assert
+            // assertEquals(expectedResult, result);
+        }
+    }
+
+    // =========================================================================
+    // Golden-File Assertion Tests
+    // =========================================================================
+
+    @Nested
+    @DisplayName("{{IMPACTED_METHOD}} — golden file assertions")
+    class {{IMPACTED_METHOD}}GoldenFileTests {
+
+        @Test
+        @DisplayName("output still matches golden file")
+        void test{{IMPACTED_METHOD}}_goldenFile_matchesExpected() throws Exception {
+            // Arrange — load input data
+            // {{ENTITY_TYPE}} input = objectMapper.readValue(
+            //     getClass().getResourceAsStream("{{FIXTURE_PATH}}"),
+            //     {{ENTITY_TYPE}}.class
+            // );
+            // when({{DEPENDENCY_NAME_1}}.method(any())).thenReturn(value);
+
+            // Act
+            // var result = {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(input);
+            // String actualJson = objectMapper.writerWithDefaultPrettyPrinter()
+            //     .writeValueAsString(result);
+
+            // Assert — compare against golden file
+            // String expectedJson = Files.readString(
+            //     Path.of("{{EXPECTED_OUTPUT_PATH}}")
+            // );
+            // JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.STRICT);
+        }
+    }
+
+    // =========================================================================
+    // Batch Fixture Tests (Multiple Entities)
+    // =========================================================================
+
+    @Nested
+    @DisplayName("{{IMPACTED_METHOD}} — batch fixture tests")
+    class {{IMPACTED_METHOD}}BatchTests {
+
+        // @ParameterizedTest
+        // @MethodSource("loadBatchFixtures")
+        // @Tag("regression")
+        // @DisplayName("processes each fixture entity correctly")
+        // void test{{IMPACTED_METHOD}}_batchFixture({{ENTITY_TYPE}} entity) {
+        //     var result = {{CLASS_INSTANCE}}.{{IMPACTED_METHOD}}(entity);
+        //     assertNotNull(result);
+        // }
+        //
+        // static Stream<{{ENTITY_TYPE}}> loadBatchFixtures() throws Exception {
+        //     ObjectMapper mapper = new ObjectMapper();
+        //     List<{{ENTITY_TYPE}}> entities = mapper.readValue(
+        //         {{CLASS_NAME}}DataDrivenTest.class.getResourceAsStream("{{BATCH_FIXTURE_PATH}}"),
+        //         new TypeReference<List<{{ENTITY_TYPE}}>>() {}
+        //     );
+        //     return entities.stream();
+        // }
+    }
+}

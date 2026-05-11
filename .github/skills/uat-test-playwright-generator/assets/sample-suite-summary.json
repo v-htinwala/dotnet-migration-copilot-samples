@@ -1,0 +1,34 @@
+{
+  "suiteId": "suite-2026-02-06-auth",
+  "suiteName": "Authentication Test Suite",
+  "application": "MyApp",
+  "applicationUrl": "https://app.example.com",
+  "executionDate": "2026-02-06T14:30:00Z",
+  "environment": {
+    "browser": "chromium",
+    "browserVersion": "120.0",
+    "os": "Windows 11",
+    "viewport": "1920x1080"
+  },
+  "summary": {
+    "total": 5,
+    "passed": 4,
+    "failed": 1,
+    "blocked": 0,
+    "skipped": 0,
+    "passRate": 80.0
+  },
+  "testCaseFile": "test-cases.jsonl",
+  "resultsFile": "execution-results.jsonl",
+  "defects": [
+    {
+      "defectId": "DEF-001",
+      "testCaseId": "TC-LOGIN-003",
+      "summary": "Email field missing required validation",
+      "severity": "medium",
+      "status": "open"
+    }
+  ],
+  "executedBy": "QA Agent",
+  "notes": "4 of 5 tests passed. One medium severity defect found in form validation."
+}

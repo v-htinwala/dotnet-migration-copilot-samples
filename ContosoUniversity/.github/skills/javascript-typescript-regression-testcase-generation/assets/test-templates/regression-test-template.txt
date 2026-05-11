@@ -1,0 +1,123 @@
+// =============================================================================
+// Jest/Vitest Regression Test Template
+// =============================================================================
+// Replace {{MODULE_NAME}}, {{MODULE_PATH}}, {{DEPENDENCY_*}}, {{METHOD_*}},
+// {{CHANGE_DESCRIPTION}}, {{IMPACTED_METHOD}}, {{REQUIREMENT_ID}},
+// {{FIXTURE_PATH}}, {{SCENARIO_NAME}}, {{SCENARIO_DESCRIPTION}} placeholders
+// with actual values.
+// Placeholders in {{OPTIONAL_*}} blocks are omitted when not applicable.
+// =============================================================================
+
+/**
+ * @regression {{CHANGE_DESCRIPTION}}
+ * {{OPTIONAL_REQUIREMENT_TAG}} @requirement {{REQUIREMENT_ID}}
+ */
+
+import { {{MODULE_NAME}} } from '{{MODULE_PATH}}';
+// import { {{DEPENDENCY_TYPE_1}} } from '{{DEPENDENCY_PATH_1}}';
+// import { {{DEPENDENCY_TYPE_2}} } from '{{DEPENDENCY_PATH_2}}';
+
+// jest.mock('{{DEPENDENCY_PATH_1}}');
+// jest.mock('{{DEPENDENCY_PATH_2}}');
+
+// {{OPTIONAL_FIXTURE_LOADING}}
+// import { readFileSync } from 'fs';
+// import { join } from 'path';
+// const loadFixture = <T>(name: string): T =>
+//   JSON.parse(readFileSync(join(__dirname, '__fixtures__', name), 'utf-8'));
+
+describe('Regression: {{MODULE_NAME}} — {{CHANGE_DESCRIPTION}}', () => {
+  // let {{MODULE_INSTANCE}}: {{MODULE_NAME}};
+  // let mock{{DEPENDENCY_NAME_1}}: jest.Mocked<{{DEPENDENCY_TYPE_1}}>;
+  // let mock{{DEPENDENCY_NAME_2}}: jest.Mocked<{{DEPENDENCY_TYPE_2}}>;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // Initialize module under test and mocked dependencies
+  });
+
+  // =========================================================================
+  // Behavior Preservation Tests — {{IMPACTED_METHOD}}
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — behavior preservation', () => {
+    test('with valid input still returns expected result', () => {
+      // Arrange — same setup as before the change
+      // mock{{DEPENDENCY_NAME_1}}.method.mockReturnValue(expectedValue);
+
+      // Act
+      // const result = {{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(input);
+
+      // Assert — verify same behavior as before
+      // expect(result).toBeDefined();
+      // expect(result).toEqual(expected);
+    });
+
+    test('with null/undefined input still throws error', () => {
+      // expect(() => {{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(null))
+      //   .toThrow('Expected error message');
+    });
+  });
+
+  // =========================================================================
+  // Integration Point Regression — dependency interactions
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — dependency interactions', () => {
+    test('still calls dependency with correct arguments', () => {
+      // Arrange
+      // mock{{DEPENDENCY_NAME_1}}.method.mockReturnValue(value);
+
+      // Act
+      // {{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(input);
+
+      // Assert — verify dependency interactions unchanged
+      // expect(mock{{DEPENDENCY_NAME_1}}.method).toHaveBeenCalledTimes(1);
+      // expect(mock{{DEPENDENCY_NAME_1}}.method).toHaveBeenCalledWith(
+      //   expect.objectContaining({ key: 'value' })
+      // );
+    });
+
+    test('when dependency fails still propagates error correctly', async () => {
+      // mock{{DEPENDENCY_NAME_1}}.method.mockRejectedValue(new Error('dependency failed'));
+      // await expect({{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(validInput))
+      //   .rejects.toThrow('dependency failed');
+    });
+  });
+
+  // =========================================================================
+  // Backward Compatibility Tests
+  // =========================================================================
+
+  describe('{{IMPACTED_METHOD}} — backward compatibility', () => {
+    // test.each([
+    //   ['scenario 1', input1, expected1],
+    //   ['scenario 2', input2, expected2],
+    // ])('produces consistent results for %s', (description, input, expected) => {
+    //   const result = {{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(input);
+    //   expect(result).toEqual(expected);
+    // });
+  });
+
+  // =========================================================================
+  // Snapshot Regression (optional — for data structures or React components)
+  // =========================================================================
+
+  // test('output shape is unchanged', () => {
+  //   const result = {{MODULE_INSTANCE}}.{{IMPACTED_METHOD}}(standardInput);
+  //   expect(result).toMatchSnapshot();
+  // });
+
+  // =========================================================================
+  // Scenario-Driven Regression Tests (when scenarios are provided)
+  // =========================================================================
+
+  // {{OPTIONAL_SCENARIO_SECTION}}
+  // describe('Scenario: {{SCENARIO_NAME}} [{{REQUIREMENT_ID}}]', () => {
+  //   test('[{{REQUIREMENT_ID}}] {{SCENARIO_DESCRIPTION}}', async () => {
+  //     // Arrange — setup for scenario
+  //     // Act — invoke the scenario flow
+  //     // Assert — verify expected behaviors listed in scenario
+  //   });
+  // });
+});

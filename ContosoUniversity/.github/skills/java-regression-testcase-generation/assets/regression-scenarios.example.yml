@@ -1,0 +1,90 @@
+# =============================================================================
+# Regression Scenarios Example
+# =============================================================================
+# Define regression scenarios to ensure critical business flows are tested
+# after code changes. Each scenario targets specific source files and defines
+# expected behaviors that must be preserved.
+#
+# Place this file in the project root or specify its path via the
+# `regression_scenarios` user input or `.regression-config.json`.
+# =============================================================================
+
+scenarios:
+
+  - name: PaymentProcessingIntegrity
+    description: >
+      Ensure payment processing still works correctly after auth service
+      refactoring. The payment flow must deduct from wallet, create a
+      transaction record, and send a confirmation email.
+    target_files:
+      - "com/example/payment/**"
+      - "com/example/service/PaymentService.java"
+      - "com/example/service/WalletService.java"
+    expected_behaviors:
+      - "processPayment deducts correct amount from user wallet"
+      - "processPayment creates a transaction record with COMPLETED status"
+      - "processPayment sends confirmation email to user"
+      - "processPayment throws InsufficientFundsException for zero-balance wallet"
+      - "refundPayment restores wallet balance and updates transaction status to REFUNDED"
+    requirement_ids:
+      - "REQ-PAY-001"
+      - "REQ-PAY-002"
+    priority: critical
+
+  - name: UserRegistrationBackwardCompat
+    description: >
+      Verify that the user registration flow maintains backward compatibility
+      after the email validation changes. Existing consumers must still be
+      able to register with valid emails and receive proper error messages
+      for invalid ones.
+    target_files:
+      - "com/example/service/UserService.java"
+      - "com/example/controller/UserController.java"
+      - "com/example/validator/EmailValidator.java"
+    expected_behaviors:
+      - "createUser accepts valid email formats and returns user with generated ID"
+      - "createUser rejects emails without @ symbol with ValidationException"
+      - "createUser rejects empty or null email with ValidationException"
+      - "createUser still calls emailService.sendWelcomeEmail on success"
+      - "POST /api/users returns 201 for valid registration"
+      - "POST /api/users returns 400 for invalid email"
+    requirement_ids:
+      - "REQ-USR-101"
+    priority: high
+
+  - name: OrderWorkflowDataIntegrity
+    description: >
+      Ensure the order processing workflow preserves data integrity after
+      the inventory service refactoring. Orders must transition through
+      correct statuses and maintain referential integrity with inventory.
+    target_files:
+      - "com/example/service/OrderService.java"
+      - "com/example/service/InventoryService.java"
+      - "com/example/repository/OrderRepository.java"
+    expected_behaviors:
+      - "createOrder generates a unique order number"
+      - "createOrder decrements inventory stock for ordered items"
+      - "createOrder sets initial status to PENDING"
+      - "confirmOrder transitions status from PENDING to CONFIRMED"
+      - "cancelOrder restores inventory stock and sets status to CANCELLED"
+      - "cancelOrder on already-cancelled order throws IllegalStateException"
+    requirement_ids:
+      - "REQ-ORD-201"
+      - "REQ-ORD-202"
+    priority: high
+
+  - name: APIResponseContractStability
+    description: >
+      Verify that all public API endpoints maintain their response contract
+      (field names, types, HTTP status codes) after the DTO refactoring.
+    target_files:
+      - "com/example/controller/**"
+      - "com/example/dto/**"
+    expected_behaviors:
+      - "All GET endpoints return 200 for existing resources"
+      - "All GET endpoints return 404 for non-existent resources"
+      - "Response DTOs contain all documented fields with correct types"
+      - "Pagination responses include totalElements, totalPages, content fields"
+    requirement_ids:
+      - "REQ-API-301"
+    priority: medium

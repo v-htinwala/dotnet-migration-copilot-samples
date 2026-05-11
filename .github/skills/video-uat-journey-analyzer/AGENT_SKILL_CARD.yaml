@@ -1,0 +1,94 @@
+# ──────────────────────────────────────────────────
+# AGENT SKILL CARD — video-uat-journey-analyzer
+# ──────────────────────────────────────────────────
+
+# ── Core Metadata ──
+name: video-uat-journey-analyzer
+version: "1.0"
+author: uat-automation
+license: MIT
+category: testing
+user-invokable: false
+
+# ── Categorization & Discovery ──
+description: >
+  Analyzes extracted video frames using multimodal capability to produce
+  UAT scenario candidates written in business language. Focuses on user
+  goals, acceptance criteria, and business outcomes rather than technical
+  implementation details. Supports optional OCR enrichment for UI label
+  clarity and optional transcript correlation for business context.
+tags:
+  - video-analysis
+  - multimodal
+  - uat-testing
+  - user-acceptance
+  - journey-mapping
+  - business-language
+  - scenario-candidates
+keywords:
+  - video frames
+  - scene analysis
+  - user journey
+  - UAT scenarios
+  - acceptance criteria
+  - business intent
+  - user goals
+  - end-user perspective
+
+# ── Input Requirements ──
+inputs:
+  required:
+    - name: frames_dir
+      type: directory_path
+      description: Directory containing extracted frames (PNG) from video-uat-frame-extract
+    - name: manifest_path
+      type: file_path
+      description: Path to manifest.json from video-uat-frame-extract
+  optional:
+    - name: output_dir
+      type: directory_path
+      default: uat-output/phase-1-video
+      description: Output directory for journey artifacts
+    - name: ocr_enabled
+      type: boolean
+      default: false
+      description: >
+        Enable OCR text extraction from frames. Default OFF for UAT — business
+        language descriptions are preferred over exact field-level precision.
+        Enable when exact button labels improve scenario clarity for stakeholders.
+    - name: transcript_path
+      type: file_path
+      description: >
+        Path to transcript.json from video-audio-extractor. When provided,
+        correlates timestamped narration segments with scenes and extracts
+        business intent from narrator commentary.
+
+# ── Output Artifacts ──
+outputs:
+  primary:
+    - name: journeys.jsonl
+      type: jsonl
+      description: Structured user journeys with scene references and business context
+    - name: scenario-candidates.jsonl
+      type: jsonl
+      description: UAT scenario candidates tagged source "video" with business language and acceptance criteria
+
+# ── Dependencies ──
+dependencies:
+  system: []
+  python: []
+  skills:
+    - video-uat-frame-extract  # Must run first to produce frames/ and manifest.json
+  optional_skills:
+    - video-audio-extractor  # Provides transcript.json for narration correlation
+  notes: >
+    No external dependencies beyond the model's multimodal capability. OCR mode
+    leverages the same multimodal capability with focused text extraction prompts.
+
+# ── Pipeline Position ──
+pipeline:
+  upstream:
+    - video-uat-frame-extract   # Provides frames/ and manifest.json
+    - video-audio-extractor     # Provides transcript.json (optional)
+  downstream:
+    - scenario-merger           # Consumes scenario-candidates.jsonl (UAT pipeline)
